@@ -45,3 +45,13 @@ por autoria: (i) recursos e bloqueios airside; (ii) turnaround, stand e energia;
 terminal; (iv) espera percebida, QoS e resposta da demanda; e (v) restrições de projeto e coordenação.
 As fontes regulatórias foram deliberadamente classificadas como restrições de cenário, não como
 dados de calibração.
+
+## Leitura dirigida para a Deliverable 2 — 18 de novembro de 2026
+
+| Fonte local | Inclusão verificada | Uso que altera a especificação |
+|---|---|---|
+| Schweiger, Knabe e Korn (2022), DOI `10.1016/j.ast.2021.107144` | Artigo completo, pp. 1–11 | Define uma topologia airside exemplar, recursos, estados de aeronave, FCFS, gates e a conexão airside–passageiro. |
+
+Foram extraídos um glossário com páginas de origem em
+`deliverables/GLOSSARY_VERTIDROME.md` e uma ressalva de evidência: LIEDT e seus tempos são
+premissas de um caso de estudo, não requisitos regulatórios nem parâmetros observados universais.
