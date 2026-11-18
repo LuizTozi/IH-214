@@ -1,0 +1,19 @@
+variable_id,name,symbol,unit,layer,definition,evidence_type,source_or_basis,model_role,initial_status
+VAR-001,passenger arrival intensity,lambda_pax,passengers per hour,passenger,Rate of passenger-group arrivals to the terminal,scenario,To be varied independently and then coupled to flight schedule,input,undefined
+VAR-002,aircraft arrival intensity,lambda_evtol,eVTOL per hour,airside,Rate of aircraft arriving for service,literature,LIT-006 scenario range,input,provisional
+VAR-003,passenger arrival lead time,t_lead,min,passenger,Time from passenger terminal arrival to scheduled departure,literature,LIT-002 scenario range,input,provisional
+VAR-004,check-in service time,S_checkin,s,terminal,Service time at check-in counter or kiosk,hypothesis,Distribution not yet selected,input,undefined
+VAR-005,security or access service time,S_security,s,terminal,Service time at security or access control,hypothesis,Distribution not yet selected,input,undefined
+VAR-006,pad occupancy time,S_pad,s,airside,Exclusive occupation time for a pad movement,literature,LIT-001 baseline,input,provisional
+VAR-007,stand turnaround time,S_stand,min,interface,Time a stand or gate is held by an eVTOL,literature,LIT-001 scenarios,input,provisional
+VAR-008,charging duration,S_charge,min,energy,Duration of charging if charging is required,hypothesis,Derived later from energy requirement and charger power,input,undefined
+VAR-009,number of pads,c_pad,count,airside,Available TLOF or operational pads,scenario,Topology subject to design constraints,input,undefined
+VAR-010,number of stands or gates,c_stand,count,interface,Available aircraft positions serving passenger interface,scenario,Topology subject to design constraints,input,undefined
+VAR-011,number of chargers,c_charge,count,energy,Available simultaneous charging positions,scenario,Topology subject to design constraints,input,undefined
+VAR-012,passenger wait to boarding,W_pax,min,passenger,Arrival to start of boarding,derived,Simulation event timestamps,output,defined
+VAR-013,eVTOL delay,W_evtol,min,airside,Queueing and blocking delay before required movement or departure,derived,Simulation event timestamps,output,defined
+VAR-014,passenger LoS threshold,t_LoS,min,passenger,Maximum accepted wait or total terminal time,scenario,No validated vertiport standard identified,input,undefined
+VAR-015,LoS compliance,p_LoS,ratio,passenger,Share of passengers satisfying declared LoS proxy,derived,Compare VAR-012 and total time to VAR-014,output,defined
+VAR-016,throughput,X,departures per hour,system,Completed passenger eVTOL departures per hour,derived,Simulation event timestamps,output,defined
+VAR-017,resource utilization,rho,ratio,system,Busy time divided by available time for each resource,derived,Resource logs,output,defined
+VAR-018,slot release rule,R_slot,category,coordination,Policy that admits or reschedules arrivals and departures,scenario,FAA UAM ConOps and DECEA motivate constraint only,input,undefined

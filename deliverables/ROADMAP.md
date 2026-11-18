@@ -30,6 +30,8 @@ estilo autor--data provisório.
 
 ### Fase 1 — Mapa de evidências e Deliverable 1
 
+**Situação:** concluída em 18 de novembro de 2026.
+
 **Objetivo:** transformar a pesquisa exploratória em uma base rastreável de literatura, normas e
 parâmetros, sem redigir o manuscrito.
 
@@ -54,6 +56,8 @@ centrais verificadas, cobertura dos cinco eixos e ao menos uma lacuna sustentada
 **Próxima fase:** Fase 2.
 
 ### Fase 2 — Modelo conceitual, dados e Deliverable 2
+
+**Situação:** em desenvolvimento.
 
 **Objetivo:** definir exatamente o que será representado, medido e inferido antes de programar.
 
