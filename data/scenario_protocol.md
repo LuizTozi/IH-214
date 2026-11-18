@@ -10,18 +10,20 @@ passageiro. Cenários não são previsões nem dados observados.
 | Fator | Níveis iniciais | Classificação |
 |---|---|---|
 | demanda de passageiros e eVTOL | baixa, intermediária, alta | cenário |
-| número de pads, stands e carregadores | topologias factíveis | cenário sujeito a restrição de projeto |
+| número de pads, stands e carregadores | base regulatória unitária; expansões factíveis | cenário sujeito a restrição de projeto |
 | turnaround e recarga | faixas da literatura, com sensibilidade | literatura/cenário |
 | processamento terminal | bypass, processo enxuto, processo completo | hipótese de processo |
-| coordenação | FCFS, reserva de slot, regra de prioridade declarada | cenário |
+| coordenação | agendamento/reserva de slot como base; FCFS como benchmark | cenário |
 | limiar LoS | faixa de sensibilidade, não valor normativo | cenário |
 
 ## Comparações essenciais
 
-1. desacoplado: aeronaves e passageiros sem sincronização de prontidão;
-2. acoplado: gate/stand, passageiro e eVTOL sincronizados;
-3. capacidade fixa: variar demanda e regra de coordenação;
-4. demanda fixa: variar um recurso escasso por vez.
+1. núcleo A: pouso e saída do TLOF com capacidade unitária e exclusão mútua;
+2. progressão A→D: inserir recursos e processos somente após verificação da fase anterior;
+3. desacoplado: aeronaves e passageiros sem sincronização de prontidão;
+4. acoplado: gate/stand, passageiro e eVTOL sincronizados;
+5. capacidade fixa: variar demanda e regra de coordenação;
+6. demanda fixa: variar um recurso escasso por vez.
 
 ## Regras de interpretação
 
