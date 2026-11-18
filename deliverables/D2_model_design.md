@@ -39,6 +39,38 @@ agendamento e FCFS sob a mesma demanda e topologia. Prioridades por emergência,
 de passageiro ficam fora da primeira comparação, salvo se uma fonte ou resultado justificar sua
 entrada.
 
+### Aeronaves de referência e sincronização passageiro--aeronave
+
+As aeronaves de referência serão a Eve eVTOL e a Joby S4, ambas em configuração pilotada de
+**quatro passageiros mais um piloto**. Logo, um grupo de passageiros por voo terá de 1 a 4 pessoas;
+o piloto não entra na demanda de passageiros. As especificações publicadas registram envergadura de
+15,2 m e comprimento de 10,3 m para Eve e aproximadamente 14,0 m e 7,6 m para Joby. Esses valores
+estão versionados em `data/aircraft_reference_registry.csv`.
+
+Não se deve chamar automaticamente essas envergaduras de **D de projeto**: na EASA, D é a menor
+circunferência que envolve a aeronave na configuração de decolagem/pouso. Até haver desenho de
+certificação/AFM para esse fim, as dimensões publicadas servirão apenas à caracterização das
+aeronaves; o dimensionamento geométrico regulatório ficará fora da Fase A e será tratado como dado
+pendente, não estimado por IA.
+
+A sincronização seguirá a lógica de turnaround de aeroportos/heliportos: uma partida requer aeronave
+no stand, desembarque encerrado, grupo de até quatro passageiros que completou todas as etapas
+obrigatórias, embarque concluído e slot de saída válido. A decisão de aguardar passageiro atrasado ou
+partir com assentos vazios continua como cenário explícito. Como a EASA permite carga/troca durante
+embarque, permanência a bordo ou desembarque somente sob avaliação de risco, procedimento e
+pessoal qualificado, o caso-base **não** sobrepõe recarga e fluxo de passageiros; sobreposição será
+cenário posterior condicionado a uma regra de segurança documentada.
+
+### Recarga: regra de evidência
+
+A localização e a necessidade de recarga não serão escolhidas por conveniência. O relatório FAA/NREL
+mostra que ambas dependem de características OEM, rota, programação, demanda, capacidade elétrica
+e restrições físicas; ele também observa que vertistops de turnaround rápido podem não justificar
+recarga. Assim, a Fase A não terá carregador. Para a Fase C, serão comparados somente cenários
+explicitamente justificados: recarga no stand, recarga em posição adjacente dedicada e ausência de
+recarga local para operação tipo vertistop. A necessidade de recarga será determinada por estado de
+energia e missão, quando parâmetros confiáveis forem disponíveis; não será imposta a cada pouso.
+
 ## Fronteira do sistema (versão 0)
 
 Uma unidade de análise é um vertiporto de passageiros em uma janela operacional finita. O modelo
@@ -61,7 +93,7 @@ manutenção profunda, meteorologia ou um sítio real específico na primeira ve
 | Coordenação | slot de chegada/partida | cenário | restringe liberação; não é tempo de serviço |
 | Airside | TLOF/pad e rota de táxi | cenário | ocupação exclusiva e bloqueio físico |
 | Interface | stand/gate | cenário | uma aeronave por posição; embarque/desembarque e energia podem requerê-lo |
-| Energia | carregador | cenário | servidor finito; política de recarga será cenário |
+| Energia | carregador | ausente na Fase A; cenário na Fase C | localização e necessidade definidas por evidência de missão, energia e infraestrutura |
 | Terminal | check-in e controle | cenário | estações opcionais com filas finitas ou infinitas declaradas |
 | Passageiro | grupo de voo | demanda | aguarda prontidão conjunta e tem limiar de LoS |
 

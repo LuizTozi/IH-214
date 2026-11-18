@@ -6,10 +6,14 @@ VAR-004,check-in service time,S_checkin,s,terminal,Service time at check-in coun
 VAR-005,security or access service time,S_security,s,terminal,Service time at security or access control,hypothesis,Distribution not yet selected,input,undefined
 VAR-006,pad occupancy time,S_pad,s,airside,Exclusive occupation time for a pad movement,literature,LIT-001 baseline,input,provisional
 VAR-007,stand turnaround time,S_stand,min,interface,Time a stand or gate is held by an eVTOL,literature,LIT-001 scenarios,input,provisional
-VAR-008,charging duration,S_charge,min,energy,Duration of charging if charging is required,hypothesis,Derived later from energy requirement and charger power,input,undefined
+VAR-008,charging duration,S_charge,min,energy,Duration of charging if charging is required,hypothesis,Derived later from mission energy requirement OEM data and charger power,input,undefined
 VAR-009,number of pads,c_pad,count,airside,Available TLOF or operational pads,scenario,EASA PTS-VPT-DSN modular baseline one FATO-TLOF,input,defined
 VAR-010,number of stands or gates,c_stand,count,interface,Available aircraft positions serving passenger interface,scenario,EASA PTS-VPT-DSN modular baseline one stand,input,defined
-VAR-011,number of chargers,c_charge,count,energy,Available simultaneous charging positions,scenario,Topology subject to design constraints,input,undefined
+VAR-011,number of chargers,c_charge,count,energy,Available simultaneous charging positions,scenario,Zero in Phase A; later scenarios informed by FAA NREL charging study,input,defined
+VAR-019,passengers per flight,n_pax,count,passenger,Passenger group matched to one piloted reference eVTOL,scenario,Eve and Joby published piloted capacity,input,defined
+VAR-020,aircraft reference geometry,D_design,m,layout,Certified enclosing-circle dimension used in applicable geometric design rules,observed,Requires aircraft AFM or certified design data,input,undefined
+VAR-021,charging location,L_charge,category,energy,Physical location where charging can occur,scenario,Compare stand adjacent dedicated or absent scenarios only after Phase B,input,defined
+VAR-022,passenger aircraft readiness,R_ready,boolean,interface,True when aircraft is at stand and passenger process prerequisites for departure are complete,derived,Turnaround synchronization rule based on airport heliport practice,output,defined
 VAR-012,passenger wait to boarding,W_pax,min,passenger,Arrival to start of boarding,derived,Simulation event timestamps,output,defined
 VAR-013,eVTOL delay,W_evtol,min,airside,Queueing and blocking delay before required movement or departure,derived,Simulation event timestamps,output,defined
 VAR-014,passenger LoS threshold,t_LoS,min,passenger,Maximum accepted wait or total terminal time,scenario,No validated vertiport standard identified,input,undefined

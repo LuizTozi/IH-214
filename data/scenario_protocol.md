@@ -14,6 +14,8 @@ passageiro. Cenários não são previsões nem dados observados.
 | turnaround e recarga | faixas da literatura, com sensibilidade | literatura/cenário |
 | processamento terminal | bypass, processo enxuto, processo completo | hipótese de processo |
 | coordenação | agendamento/reserva de slot como base; FCFS como benchmark | cenário |
+| passageiros por voo | 1 a 4; piloto excluído da demanda | cenário baseado nas aeronaves de referência |
+| recarga | ausente na Fase A; no stand, adjacente dedicada ou ausente na Fase C | cenário baseado em evidência de missão e infraestrutura |
 | limiar LoS | faixa de sensibilidade, não valor normativo | cenário |
 
 ## Comparações essenciais
@@ -24,6 +26,7 @@ passageiro. Cenários não são previsões nem dados observados.
 4. acoplado: gate/stand, passageiro e eVTOL sincronizados;
 5. capacidade fixa: variar demanda e regra de coordenação;
 6. demanda fixa: variar um recurso escasso por vez.
+7. sincronização: comparar partida com grupo completo e política declarada para ausência/atraso; não sobrepor recarga e embarque no caso-base.
 
 ## Regras de interpretação
 

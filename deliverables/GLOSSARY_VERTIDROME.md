@@ -12,6 +12,7 @@ estudo**; não deve ser confundido com exigência regulatória.
 |---|---|---|---|
 | UAM (*Urban Air Mobility*) | Modalidade de mobilidade aérea urbana que integra veículos, infraestrutura e serviços sob demanda ou programados. | Schweiger et al. (2022), pp. 1–2. | Contexto do sistema. |
 | VTOL (*Vertical Take-Off and Landing*) | Aeronave capaz de decolar e pousar verticalmente. | Schweiger et al. (2022), pp. 1, 3. | Tipo de veículo no escopo. |
+| D de projeto (EASA) | Diâmetro da menor circunferência que envolve a aeronave na configuração de decolagem/pouso, com rotores em operação quando aplicável. Não é sinônimo automático de envergadura. | EASA PTS-VPT-DSN (2022), pp. 5, 15–18. | Exige dado de aeronave certificado/AFM; não inferir de imagens ou de uma dimensão isolada. |
 | eVTOL | VTOL com propulsão elétrica. O artigo usa predominantemente “VTOL”; o “e” é uma especificação tecnológica usada na literatura e nas normas atuais. | Schweiger et al. (2022), p. 1; EASA PTS-VPT-DSN (2022). | Não assumir características energéticas sem especificação da aeronave. |
 | Aeródromo UAM | Termo genérico, adotado pelos autores a partir da FAA, para infraestrutura de solo apta a UAM. | Schweiger et al. (2022), p. 3. | Termo guarda-chuva. |
 | Vertidromo (*vertidrome*) | Aeródromo UAM que acomoda somente veículos VTOL; terminologia proposta pelos autores para o estudo. | Schweiger et al. (2022), p. 3. | Útil como sinônimo conceitual de vertiporto VTOL, mas não é denominação regulatória brasileira. |

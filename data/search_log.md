@@ -55,3 +55,12 @@ dados de calibração.
 Foram extraídos um glossário com páginas de origem em
 `deliverables/GLOSSARY_VERTIDROME.md` e uma ressalva de evidência: LIEDT e seus tempos são
 premissas de um caso de estudo, não requisitos regulatórios nem parâmetros observados universais.
+
+## Leitura dirigida para aeronave de referência e recarga — 18 de novembro de 2026
+
+| Fonte | Evidência verificada | Decisão que informa |
+|---|---|---|
+| Eve Air Mobility; documento societário oficial | Configuração inicial: 4 passageiros + piloto; envergadura publicada de 15,2 m e comprimento de 10,3 m. | Limite de grupo de passageiros; não usar envergadura como D regulatório. |
+| Joby Aviation; Expo 2025 oficial | Configuração: piloto + 4 passageiros; dimensões exibidas: aproximadamente 14,0 m de envergadura e 7,6 m de comprimento. | Segunda aeronave de referência; limite de grupo de passageiros. |
+| EASA Easy Access Rules for Air Operations, UAM.OP.MVCA.205 | Recarga/troca durante embarque, permanência a bordo ou desembarque exige avaliação de risco, procedimentos e pessoal qualificado. | Caso-base sem sobreposição de recarga e passageiros. |
+| FAA/NREL Vertiport Electrical Infrastructure Study | Local e necessidade de EVSE dependem de aeronave, missão, demanda, programação, rede elétrica e restrições físicas; vertistops rápidos podem não justificar recarga. | Recarga como cenário da Fase C, e não requisito automático em cada pouso. |
