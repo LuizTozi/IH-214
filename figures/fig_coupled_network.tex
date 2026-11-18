@@ -18,24 +18,24 @@
 \begin{document}
 \begin{tikzpicture}[font=\sffamily\small, node distance=9mm and 12mm]
   \node[box, fill=passenger!12] (arrival) {Passenger arrival};
-  \node[box, fill=passenger!12, right=of arrival] (terminal) {Check-in\\Access control\\Waiting};
+  \node[box, fill=passenger!12, right=of arrival, text width=31mm] (terminal) {Check-in\\Weight check\\Screening / access\\Waiting};
   \node[box, fill=passenger!12, right=of terminal] (boarding) {Boarding\\ready group};
   \node[fit=(arrival)(terminal)(boarding), group, label={[font=\bfseries]above:Passenger process}] (pgroup) {};
-  \node[box, fill=airside!12, below=16mm of arrival] (tlofarr) {Landing and\\TLOF release};
+  \node[box, fill=airside!12, below=30mm of arrival] (tlofarr) {Landing and\\TLOF release};
   \node[box, fill=airside!12, right=of tlofarr] (stand) {Taxi and\\stand / gate};
-  \node[box, fill=energy!12, right=of stand] (turn) {Turnaround\\and charging};
+  \node[box, fill=energy!12, right=of stand] (turn) {Turnaround\\charging only if\\SOC $<$ threshold\\(no passengers)};
   \node[box, fill=airside!12, right=of turn] (tlofdep) {Departure\\TLOF};
   \node[fit=(tlofarr)(stand)(turn)(tlofdep), group] (agroup) {};
   \node[box, fill=control!12, right=14mm of boarding, text width=31mm] (schedule) {Scheduled slot allocation\\FCFS benchmark};
-  \node[box, fill=metricfill, below=13mm of stand, text width=50mm] (metrics) {Outputs\\Throughput, utilisation, eVTOL delay\\Passenger mean / P95 wait\\LoS proxy};
+  \node[box, fill=metricfill, below=13mm of stand, text width=66mm] (metrics) {Outputs\\Throughput, utilisation, eVTOL delay\\Passenger mean / P95 wait\\LoS proxy};
   \draw[flow] (arrival) -- (terminal);
   \draw[flow] (terminal) -- (boarding);
   \draw[flow] (tlofarr) -- (stand);
   \draw[flow] (stand) -- (turn);
   \draw[flow] (turn) -- (tlofdep);
   \draw[coupling] (boarding.south) -- (stand.north);
-  \draw[constraint] (schedule.south west) to[out=-130,in=30] (tlofarr.north);
-  \draw[constraint] (schedule.south west) to[out=-110,in=55] (stand.north);
+  \draw[constraint] (schedule.south west) to[out=-150,in=50] (tlofarr.north);
+  \draw[constraint] (schedule.south west) to[out=-150,in=60] (stand.north);
   \draw[constraint] (schedule.south west) to[out=-55,in=70] (tlofdep.north);
   \draw[flow] (stand.south) -- (metrics.north);
   \draw[flow] (turn.south) -- (metrics.north east);
