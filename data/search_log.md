@@ -27,3 +27,21 @@ buscas externas, suas consultas, data e resultado serão acrescentados abaixo an
 
 Os registros completos foram inseridos na matriz e no arquivo BibTeX. A busca seguinte cobrirá
 satisfação, qualidade de serviço e despacho centrado no passageiro.
+
+## Busca dirigida e leitura de fontes primárias — 18 de novembro de 2026
+
+| Consulta / fonte | Inclusão verificada | Decisão de modelagem que suporta |
+|---|---|---|
+| `Passenger-centric Urban Air Mobility` / DOI | Bennaceur, Delmas e Hamadi (2022) | Espera, classes de serviço e equidade como resultados do passageiro; não modela estações de terminal. |
+| `Evaluating eVTOL Network Performance` / AIAA | Onat et al. (2024) | Simulação de fluxos acoplados de passageiro, aeronave e energia; atraso do passageiro como saída. |
+| `10.1016/j.tra.2024.104288` / repositório institucional | Chen et al. (2024) | Espera percebida e estados intra-vertiporto na resposta da demanda. |
+| `10.1016/j.jairtraman.2023.102486` / editora e repositório | Escribano Macias et al. (2023) | Rede aberta de filas para pads e condição de estabilidade; separar espera do passageiro de loiter da aeronave. |
+| FAA EB 105A; EASA PTS-VPT-DSN; FAA UAM ConOps v2.0; PCA 351-7; ANAC Panorama | Cinco documentos oficiais, lidos nas seções operativas | Geometria, segurança, slots e DCB viram limites de cenário; nenhum documento fornece calibração de LoS/satisfação ou tempos de fila. |
+
+### Resultado de triagem
+
+A matriz possui agora 20 fontes rastreáveis. A evidência foi agrupada por decisão de modelo, e não
+por autoria: (i) recursos e bloqueios airside; (ii) turnaround, stand e energia; (iii) processamento
+terminal; (iv) espera percebida, QoS e resposta da demanda; e (v) restrições de projeto e coordenação.
+As fontes regulatórias foram deliberadamente classificadas como restrições de cenário, não como
+dados de calibração.
