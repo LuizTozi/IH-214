@@ -185,3 +185,12 @@ aeronave no stand
 - **Lido o texto adotado do Reg. (UE) 2024/1111** (T1-S13). Corrige a leitura anterior: a UAM.OP.MVCA.205 cobre recarga **e troca** com passageiros e as **permite** com SOP baseada em avaliação de risco e com treinamento. A não sobreposição no caso-base é decisão da D2; a troca de bateria é decisão pendente (PC-12, PC-13). A UAM.OP.VCA.191(c) dá a composição do limiar energético (PC-14), e a UAM.OP.MVCA.175(b) e a .225(b)(1) reforçam a cadeia de prontidão (PC-08, PC-11).
 - **Lido o arXiv 2408.01152** (T1-S14): limite μ = min(μ_TLOF, μ_taxi, μ_G) para testes de verificação (PC-20) e ordem de saída do gate (PC-21).
 - `data/model_dictionary.csv` e `data/parameter_registry.csv` foram atualizados com estas correções.
+
+## Decisões do autor após a Tarefa 01 (18/11/2026)
+
+O autor decidiu, e as decisões foram registradas em `deliverables/D2_model_design.md`:
+
+- **Escopo da aeronave:** solo, pouso e decolagem; voo e energia de missão fora do escopo.
+- **Controle de acesso** em vez de inspeção completa (PC-01, PC-03); a justificativa registrada é a única fonte com tempo de serviço, Feldhoff e Soares Roque (2021).
+- **Massa do passageiro fora do escopo:** PC-02 e PC-11 não são adotados; VAR-023 e PAR-021 foram removidos.
+- **Troca de bateria excluída** (PC-13; PAR-011 marcado como `excluded`).

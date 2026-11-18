@@ -61,6 +61,20 @@ embarque, permanência a bordo ou desembarque somente sob avaliação de risco, 
 pessoal qualificado, o caso-base **não** sobrepõe recarga e fluxo de passageiros; sobreposição será
 cenário posterior condicionado a uma regra de segurança documentada.
 
+### Decisões do autor sobre escopo (18/11/2026)
+
+Registradas pelo autor após a Tarefa 01 (`claude/outputs/TASK_01_EVIDENCE.md`):
+
+- **Fronteira da aeronave:** o estudo trata a eVTOL em solo e nos eventos de pouso e decolagem no
+  TLOF. Voo, rota, espaço aéreo e energia de missão estão fora do escopo.
+- **Controle do passageiro:** controle de acesso, e não inspeção de segurança completa. Base:
+  Feldhoff e Soares Roque (2021), única fonte lida com tempo de serviço (U(5, 20) s, suposição dos
+  autores); para inspeção completa não foi encontrado tempo publicado para vertiporto.
+- **Massa do passageiro:** não modelada. O Reg. (UE) 2024/1111 (UAM.OP.MVCA.175(b)(1)) exige massa
+  e CG conhecidos antes do voo, mas o modo de obtê-los fica fora do escopo; não há estação de
+  pesagem.
+- **Troca de bateria:** excluída do estudo.
+
 ### Recarga: regra de evidência
 
 A localização e a necessidade de recarga não serão escolhidas por conveniência. O relatório FAA/NREL
@@ -77,7 +91,7 @@ Uma unidade de análise é um vertiporto de passageiros em uma janela operaciona
 representará dois fluxos sincronizados:
 
 ```text
-passageiro: chegada -> check-in/controle (opcional) -> espera -> gate -> embarque -> partida
+passageiro: chegada -> check-in -> controle de acesso -> espera -> gate -> embarque -> partida
 eVTOL:     chegada -> TLOF/pad -> táxi -> stand/gate -> turnaround/recarga -> pad -> partida
 ```
 
@@ -94,7 +108,7 @@ manutenção profunda, meteorologia ou um sítio real específico na primeira ve
 | Airside | TLOF/pad e rota de táxi | cenário | ocupação exclusiva e bloqueio físico |
 | Interface | stand/gate | cenário | uma aeronave por posição; embarque/desembarque e energia podem requerê-lo |
 | Energia | carregador | ausente na Fase A; cenário na Fase C | localização e necessidade definidas por evidência de missão, energia e infraestrutura |
-| Terminal | check-in e controle | cenário | estações opcionais com filas finitas ou infinitas declaradas |
+| Terminal | check-in e controle de acesso | cenário | estações obrigatórias com filas finitas ou infinitas declaradas |
 | Passageiro | grupo de voo | demanda | aguarda prontidão conjunta e tem limiar de LoS |
 
 ## Método proposto

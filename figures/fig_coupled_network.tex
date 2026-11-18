@@ -18,7 +18,7 @@
 \begin{document}
 \begin{tikzpicture}[font=\sffamily\small, node distance=9mm and 12mm]
   \node[box, fill=passenger!12] (arrival) {Passenger arrival};
-  \node[box, fill=passenger!12, right=of arrival, text width=31mm] (terminal) {Check-in\\Weight check\\Screening / access\\Waiting};
+  \node[box, fill=passenger!12, right=of arrival, text width=31mm] (terminal) {Check-in\\Access control\\Waiting};
   \node[box, fill=passenger!12, right=of terminal] (boarding) {Boarding\\ready group};
   \node[fit=(arrival)(terminal)(boarding), group, label={[font=\bfseries]above:Passenger process}] (pgroup) {};
   \node[box, fill=airside!12, below=30mm of arrival] (tlofarr) {Landing and\\TLOF release};
