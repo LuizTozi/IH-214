@@ -25,7 +25,7 @@ O desenvolvimento será deliberadamente incremental:
 | A | pouso no TLOF → liberação/saída do TLOF | eventos, exclusão mútua e tempos verificados em casos simples |
 | B | Fase A + táxi, stand/gate e saída para TLOF | bloqueio e ocupação de recursos reproduzíveis |
 | C | Fase B + turnaround e recarga | balanço de estados e energia/recurso consistente |
-| D | Fase C + chegada, check-in, inspeção/acesso, espera e embarque | sincronização completa passageiro--eVTOL e métricas de LoS/proxy |
+| D | Fase C + chegada, check-in, inspeção/acesso, espera e embarque | sincronização completa passageiro--eVTOL e métricas de LoS (critério de tempo da IATA ADRM) |
 
 Todas as etapas de passageiros serão obrigatórias na Fase D; nenhuma delas será eliminada da
 versão integrada por conveniência. O uso de fases serve para verificação do código, não para
@@ -114,17 +114,20 @@ manutenção profunda, meteorologia ou um sítio real específico na primeira ve
 | Congestionamento | utilização e bloqueio | fração de ocupação por recurso; tempo ou ocorrência de bloqueio |
 | Serviço do passageiro | espera até embarque | chegada ao vertiporto até início do embarque |
 | Confiabilidade | P95 da espera e pontualidade | percentil 95; proporção que parte dentro da tolerância declarada |
-| LoS / satisfação-proxy | atendimento ao limiar | proporção cuja espera e tempo total não excedem limiares de cenário |
+| LoS (IATA ADRM, critério de tempo) | atendimento ao tempo máximo de espera | proporção de passageiros cuja espera em cada estação não excede o tempo máximo da IATA ADRM (Feldhoff, 2022, Tabs. 5–6) |
 | Equidade | dispersão por classe/coorte | diferença de espera entre grupos definidos no cenário |
 
-Não será inferida satisfação psicológica a partir de tempo de espera. Na primeira versão, LoS e
-espera percebida são *proxies* explícitos, sujeitos a análise de sensibilidade.
+LoS não é tratado como *proxy*: na IATA ADRM ele é definido por critérios objetivos de tempo de
+espera e de espaço de fila (Feldhoff, 2022, pp. 7–8). A primeira versão mede apenas o critério de
+tempo; o critério de espaço exige layout do terminal. Satisfação é um construto distinto, não medido
+neste modelo, e não será inferida a partir do tempo de espera.
 
 ## Decisões ainda necessárias antes de implementação integrada
 
 - definir como passageiros são agrupados por voo e se a partida pode ocorrer com assentos vazios;
 - decidir se recarga ocorre no stand ou em recurso separado e estabelecer sua regra de necessidade;
-- escolher faixas de limiar LoS/proxy, sempre como cenários e não como satisfação observada;
+- escolher o conjunto de tempos máximos de LoS (Feldhoff, 2022, reporta dois: IATA ADRM primeira
+  classe/fast-track e economia × 0,167);
 - definir horizonte, aquecimento, número de replicações e sementes;
 - escolher as primeiras faixas de demanda e os tempos/distribuições ainda sem evidência observada.
 

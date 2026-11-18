@@ -27,7 +27,7 @@
   \node[box, fill=airside!12, right=of turn] (tlofdep) {Departure\\TLOF};
   \node[fit=(tlofarr)(stand)(turn)(tlofdep), group] (agroup) {};
   \node[box, fill=control!12, right=14mm of boarding, text width=31mm] (schedule) {Scheduled slot allocation\\FCFS benchmark};
-  \node[box, fill=metricfill, below=13mm of stand, text width=66mm] (metrics) {Outputs\\Throughput, utilisation, eVTOL delay\\Passenger mean / P95 wait\\LoS proxy};
+  \node[box, fill=metricfill, below=13mm of stand, text width=66mm] (metrics) {Outputs\\Throughput, utilisation, eVTOL delay\\Passenger mean / P95 wait\\LoS (IATA ADRM wait-time criterion)};
   \draw[flow] (arrival) -- (terminal);
   \draw[flow] (terminal) -- (boarding);
   \draw[flow] (tlofarr) -- (stand);

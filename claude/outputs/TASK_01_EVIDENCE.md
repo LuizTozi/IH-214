@@ -9,22 +9,22 @@ Nenhum arquivo central foi editado. As sugestões para `data/model_dictionary.cs
 | Pergunta | Resposta curta | Evidência suficiente? |
 |---|---|---|
 | Q1 Etapas transferíveis | check-in → pesagem → inspeção/controle de acesso → espera → caminhada → embarque. Sem despacho de bagagem e sem fronteira. | **Sim**, como sequência (PC-01). Tempos de serviço continuam fracos. |
-| Q2 Ordem e pré-requisitos | desembarque concluído → serviço → aeronave pronta para embarque → embarque → checagem → despacho → slot revalidado. Recarga/troca e passageiros mutuamente exclusivos no caso-base, por escolha conservadora; o Reg. (UE) 2024/1111 permite a sobreposição com SOP e treinamento. | **Sim** (PC-10, PC-12). |
-| Q3 Atraso, no-show, assentos vazios | Nenhuma fonte de vertiporto/eVTOL estabelece comportamento ou regra. | **Não.** Manter como cenário declarado. |
-| Q4 Eve/Joby e recarga | Os documentos oficiais trazem alcance-alvo e arquitetura, mas não trazem kWh, curva, tempo de carga nem reserva. Sustentam só a existência das classes de cenário. | **Parcial**: sustenta a classe de cenário, não sustenta valores. |
+| Q2 Ordem e pré-requisitos | desembarque concluído → serviço → aeronave pronta para embarque → embarque → checagem → despacho → slot revalidado. O Reg. (UE) 2024/1111 (UAM.OP.MVCA.205) permite recarga/troca com passageiros apenas com SOP baseada em avaliação de risco e treinamento; a não sobreposição no caso-base é decisão já registrada na D2. | **Sim** (PC-10, PC-12). |
+| Q3 Atraso, no-show, assentos vazios | Nenhuma fonte de vertiporto/eVTOL estabelece comportamento ou regra. | **Não.** Item permanece indefinido; nenhum valor ou política foi adotado. |
+| Q4 Eve/Joby e recarga | Os documentos oficiais trazem alcance-alvo e arquitetura, mas não trazem kWh, curva, tempo de carga nem reserva. | **Não** para valores. As classes de recarga vêm de NUAIR/NASA, NREL e EASA PTS, não de Eve/Joby. |
 | Q5 Vertistop × vertiporto | Nenhuma fonte vinculante. A definição "vertistop sem recarga" vem de um rascunho da FAA que o EB 105A final não manteve. | **Não** como regra; **sim** como cenário (PC-18). |
 
 ---
 
 ## Decisão 1 — Sequência obrigatória de processamento do passageiro (Q1)
 
-**Decisão:** fixar na Fase D a ordem `chegada → check-in → pesagem → inspeção/controle de acesso → espera → caminhada até o stand → embarque`. Todas as etapas são obrigatórias. A inspeção é uma estação cujo tempo de serviço varia por cenário (inspeção completa ou só controle de acesso); ela não é removida.
+**Decisão:** a ordem `chegada → check-in → pesagem → inspeção/controle de acesso → espera → caminhada até o stand → embarque` é a que as fontes abaixo descrevem. A regra "todas as etapas são obrigatórias" é decisão da D2. As fontes **divergem** sobre inspeção completa ou só controle de acesso, e nenhuma decide; a escolha fica pendente.
 
 **Evidência sintetizada:**
 - Feldhoff (2022, pp. 2–4, Fig. 3) revisa terminais aeroportuários, serviços de helicóptero (Uber Copter, BLADE) e conceitos de vertiporto (Wisk/Skyports). Deriva check-in (com identificação), registro de massa do passageiro e da bagagem e inspeção, depois embarque. Não há despacho de bagagem (tudo é bagagem de mão) nem controle de fronteira.
 - Feldhoff e Soares Roque (2021, "Passenger processing") acrescentam: controle de acesso à área de manobra, checagem da bagagem, peso e balanceamento "antes de cada voo" registrados em folha de carga, e área de espera para passageiros prontos a embarcar.
 - O ConOps NUAIR/NASA (2021, §5.1.1.1, pp. 61–63) descreve a mesma ordem: emissão de bilhete → inspeção pelo pessoal de segurança → fila antes do embarque → briefing de segurança na área de embarque.
-- O ICAO Doc 10121 (§6.3.2, p. 6-6) exige folha de carga finalizada antes de cada voo. Isso justifica a pesagem como **pré-requisito de prontidão**, não como conveniência.
+- O ICAO Doc 10121 (§6.3.2, p. 6-6) exige folha de carga finalizada antes de cada voo. O Reg. (UE) 2024/1111, UAM.OP.MVCA.175(b)(1) (p. 45), exige que o comandante esteja satisfeito quanto a massa e CG antes do voo. O regulamento não prescreve como a massa é obtida; a pesagem como estação vem de Feldhoff (2022, p. 4) e da prática da BLADE citada por ela (p. 3).
 
 **Implicação proposta para a D2:** registrar a sequência como regra (PC-01) e a declaração de massa como pré-requisito de partida (PC-11). Quanto aos canais de check-in, PAR-005 a PAR-007 já cobrem a divisão balcão/quiosque/online.
 
@@ -44,7 +44,7 @@ Nenhum arquivo central foi editado. As sugestões para `data/model_dictionary.cs
 | Entrar no gate | 19,7 s | idem | especialistas (n = 5) |
 | Sair do gate | 26,7 s | idem | especialistas (n = 2) |
 
-Nenhum desses valores é observado em vertiporto. Devem entrar como faixas de sensibilidade, e os tempos de check-in e de inspeção continuam como **lacuna** (VAR-004 e VAR-005 permanecem `undefined`).
+Nenhum desses valores é observado em vertiporto. São suposições ou estimativas **dos autores citados**, registradas com a fonte; a forma de usá-los no modelo é decisão pendente. Os tempos de check-in e de inspeção continuam como **lacuna** (VAR-004 e VAR-005 permanecem `undefined`).
 
 ---
 
@@ -74,10 +74,10 @@ aeronave no stand
 
 **Implicação proposta para a D2:**
 - (i) refinar a definição de VAR-022 com a cadeia acima (PC-10);
-- (ii) manter a exclusão recarga/troca × passageiros no caso-base (PC-12). É uma **escolha conservadora de modelagem**, não proibição: a regra permite a sobreposição sob condições, o que justifica o cenário posterior já previsto na D2;
-- (iii) deixar a troca de bateria (PAR-011) fora dos cenários-base (PC-13), pela mesma razão de simplicidade e porque nenhum OEM pesquisado pela NREL, nem Eve e Joby, prevê troca.
+- (ii) a não sobreposição recarga × passageiros no caso-base já é **decisão registrada na D2** (seção "Aeronaves de referência e sincronização"). O texto adotado confirma que a regra **permite** a sobreposição sob condições; portanto, a D2 deve descrever a exclusão como decisão de escopo, não como proibição (PC-12);
+- (iii) troca de bateria (PAR-011): **decisão pendente do autor**. Fatos: o regulamento a contempla (UAM.OP.MVCA.205); a CRD a classifica como manutenção; os OEMs pesquisados pela NREL (p. vi) não a consideram; os 10-K de Eve e Joby não a mencionam (PC-13).
 
-**Classificação:** literatura (regulamento vinculante, ConOps e documentos oficiais); cenário para a sobreposição.
+**Classificação:** literatura (regulamento vinculante, ConOps e documentos oficiais).
 
 **Limitações e condição de transferência:** o ConOps é prescritivo, para operação automatizada de alta densidade, e não traz durações. O ICAO trata de aeronaves convencionais. O regulamento vale para a UE; os AMC/GM associados não foram lidos.
 
@@ -85,18 +85,18 @@ aeronave no stand
 
 ## Decisão 3 — Passageiro atrasado, grupo incompleto, no-show e assentos vazios (Q3)
 
-**Decisão:** **não há evidência** para calibrar comportamento. Manter como **cenário explícito**, sem valor de base.
+**Decisão:** **não há evidência**. Nenhum valor, taxa ou política foi adotado; o item permanece indefinido até haver fonte.
 
 **Evidência sintetizada (o que existe):**
 - Feldhoff (2022, p. 6, Tab. 2) compila janelas de chegada: serviços UAM existentes pedem chegada até 15 min antes; Wisk/Skyports consideram 15 min suficientes. Isso é a origem de PAR-004 (15–60 min). Não há dado de atraso nem de no-show.
-- Feldhoff (2022, p. 10) alerta que walking e *bunching* (grupos que chegam juntos pelo mesmo modo de acesso) não foram modelados, e que esse efeito subestima as filas no check-in. Isso apoia gerar chegadas por grupo (1–4) em vez de passageiros independentes.
+- Feldhoff (2022, p. 10) alerta que walking e *bunching* (grupos que chegam juntos pelo mesmo modo de acesso) não foram modelados, e que esse efeito pode subestimar as filas no check-in. Não foi encontrada fonte com distribuição de chegada em grupo.
 - NUAIR/NASA (2021, §5.1.1.6.1, p. 71): se a aeronave fica indisponível, os passageiros esperam no terminal; sem aeronave substituta, o voo é cancelado e eles são reacomodados (PC-19). É regra de aeronave indisponível, não de passageiro atrasado.
 - Feldhoff e Soares Roque (2021): todos os passageiros de um eVTOL têm o mesmo destino, e há área de espera para "o próximo eVTOL disponível". Isso é suposição de utilização máxima.
-- Fator de ocupação: Feldhoff (2022, p. 6) usa 60% fora de pico e 80% no pico, por suposição, a partir de expectativas de fabricantes. Isso sustenta explicitamente partidas com assentos vazios como **cenário**, não como comportamento observado.
+- Fator de ocupação: Feldhoff (2022, p. 6) usa 60% fora de pico e 80% no pico, suposição da autora a partir de expectativas de fabricantes. Isso implica voos com assentos vazios na simulação dela, mas não descreve comportamento de atraso nem regra de partida.
 
-**Implicação proposta para a D2:** declarar três políticas de cenário, sem pretensão empírica: (a) aguardar o grupo completo até o STD e depois partir; (b) partir no slot com os assentos vazios; (c) reacomodar o atrasado no próximo voo com assento livre. A taxa de no-show/atraso fica como parâmetro de sensibilidade **suposto**, com valor 0 no caso-base.
+**Implicação para a D2:** nenhuma regra nova. A pendência já listada na D2 ("definir como passageiros são agrupados por voo e se a partida pode ocorrer com assentos vazios") continua aberta e exige fonte.
 
-**Classificação:** cenário.
+**Classificação:** sem evidência.
 
 **Limitações:** nenhuma fonte de vertiporto/eVTOL mede atraso, no-show ou tolerância de espera. Usar taxas de companhias aéreas exigiria uma fonte comportamental e uma justificativa de transferência que não foram encontradas.
 
@@ -115,9 +115,9 @@ aeronave no stand
 - **Eve** (10-K 2025, Item 1): 4 passageiros + piloto; alcance esperado de 100 km na entrada em serviço; oito rotores alimentados por caminhos redundantes de uma bateria de alta tensão; carga rápida é objetivo de projeto; baterias ainda em P&D. **Ausentes:** kWh, número de pacotes, química, interface, tempo de carga, reserva.
 - **Joby** (10-K 2025, Item 1): piloto + até 4 passageiros; alcance-alvo de até 100 milhas por carga; viagem média prevista de cerca de 25 milhas; quatro baterias separadas; sistema GEACS com carga simultânea de pacotes e condicionamento de bateria; especificação de interface universal a ser aberta. **Ausentes:** kWh, tempo de carga, reserva, turnaround numérico.
 
-**O que se pode inferir de Eve/Joby, e só isso:** as duas declaram alcance-alvo maior que a missão urbana típica que elas próprias citam. Isso torna **plausíveis** tanto um cenário sem recarga em cada escala quanto um cenário com recarga periódica. Os documentos não permitem decidir qual ocorre nem quanto dura, porque falta a energia por missão e a reserva regulatória. Logo, ambas as classes devem ser mantidas e nenhum tempo de carga deve ser derivado.
+**Eve e Joby:** os documentos oficiais **não** contêm energia por missão, reserva, curva nem tempo de carga. Por isso não determinam se há recarga a cada escala nem quanto ela dura. Nenhum tempo de carga foi derivado.
 
-**Implicação proposta para a D2:** (i) base de VAR-008: "duração = f(déficit de energia, potência), apenas quando a condição PC-14 não é atendida"; (ii) VAR-021 com as três categorias justificadas (PC-15, PC-18); (iii) fila de carregador FCFS no cenário (PC-16); (iv) 300–1000 kW apenas como limites de sensibilidade de potência (PC-17), sem conversão em duração.
+**Implicação para a D2:** (i) VAR-008 é disparada pela regra energética (Reg. 2024/1111 UAM.OP.VCA.191; NREL p. 53) e tem a duração declarada na reserva (NUAIR/NASA p. 73); o valor permanece `undefined`; (ii) as categorias de VAR-021 vêm de NUAIR/NASA (p. 73), EASA PTS (C.200(f)) e NREL/Schweiger e Preis (vertistop) (PC-15, PC-18); (iii) a NREL usou fila FCFS no carregador (PC-16); (iv) 300–1000 kW é o único intervalo de potência publicado, com OEMs anônimos (PC-17); seu uso no modelo é decisão pendente.
 
 **Classificação:** literatura (regras); observado (declarações OEM de metas de projeto); cenário (classes e potência).
 
@@ -143,15 +143,17 @@ aeronave no stand
 
 ---
 
-## Decisão 6 — Métrica de LoS por estação (apoio à Fase D)
+## Decisão 6 — Level of Service (LoS) por estação (apoio à Fase D)
 
-**Decisão:** além de `p_LoS` global (VAR-015), registrar a **proporção acima do limiar por estação** (NALoS, Feldhoff 2022) como métrica de diagnóstico de gargalo.
+**Terminologia:** LoS **não** é tratado como *proxy*. Na IATA ADRM, conforme Feldhoff (2022, pp. 7–8, Tab. 4 e Fig. 4), o LoS de uma instalação de processamento é definido por critérios objetivos de **tempo de espera** e de **espaço de fila**. Satisfação é um construto distinto e não é medido neste modelo.
 
-**Evidência:** Feldhoff (2022, pp. 8–9) usa os limites "Optimum" da IATA ADRM para primeira classe/fast-track: balcão 180 s, autoatendimento 120 s, inspeção 180 s, e pesagem 180 s por escolha da autora. Ela mostra ainda um conjunto alternativo com fator de tempo 0,167 (200, 20 e 100 s). O balcão de check-in foi o gargalo (pp. 10–12).
+**Decisão:** medir LoS pelo critério de tempo máximo de espera por estação e pela proporção de passageiros acima dele (NALoS, Feldhoff 2022, p. 10). O critério de espaço exige layout do terminal e não está no escopo atual da D2.
 
-**Implicação:** usar os dois conjuntos como níveis de cenário de VAR-014 (PC-09), nunca como satisfação.
+**Evidência:** Feldhoff (2022, pp. 8–9) reporta os tempos máximos "Optimum" da IATA ADRM para primeira classe/fast-track: balcão 180 s, autoatendimento 120 s, inspeção 180 s; para a pesagem, que não existe na ADRM, a autora fixou 180 s. Ela reporta também um conjunto alternativo, economia × 0,167 (200, 20 e 100 s), fator que vem de Schweiger et al. (2021). A ADRM não foi lida diretamente; os valores vêm da reprodução em Feldhoff (2022).
 
-**Classificação:** cenário. **Limitação:** é uma adaptação de uma autora sobre um manual aeroportuário; não há padrão de LoS de vertiporto.
+**Implicação:** qual conjunto aplicar em VAR-014 (PC-09) é decisão pendente do autor; as fontes não definem um padrão de LoS para vertiporto.
+
+**Classificação:** literatura (critério ADRM via Feldhoff 2022). **Limitação:** adaptação de uma autora sobre um manual aeroportuário.
 
 ---
 
@@ -167,19 +169,19 @@ aeronave no stand
 
 ## Conclusão
 
-- **Evidência suficiente para mudar o modelo:** **sim** para sequência de passageiros, cadeia de prontidão, exclusão recarga × passageiros, exclusão da troca de bateria do caso-base e regra energética de necessidade de recarga. **Não** para tempos de check-in/inspeção, comportamento de atraso/no-show, duração de carga de Eve/Joby e proibição regulatória de carga em vertistop.
-- **Alterações sugeridas para `data/model_dictionary.csv`** (não aplicadas; Codex decide):
-  1. **VAR-022** `R_ready`: substituir a definição pela cadeia da Decisão 2; `source_or_basis` = "NUAIR/NASA 2021 §5.1.1.1/§5.1.1.5; ICAO Doc 10121 §6.3; EASA CRD 2022-06 (UAM.OP.MVCA.205)".
-  2. **VAR-012** `W_pax`: definir o fim como "primeiro passageiro do grupo inicia o embarque" e registrar o evento "afivelado e pronto" (Preis e Hornung 2022, Tab. A1) como fim do embarque.
-  3. **VAR-005** `S_security`: nota "variante de controle de acesso U(5,20) s, Feldhoff e Soares Roque 2021; screening completo sem fonte"; manter `undefined`.
-  4. **VAR-008** `S_charge`: base "apenas quando o estado de carga não cobre a próxima missão (NREL 2023 p. 53); duração reservada (NUAIR/NASA 2021 p. 73)"; manter `undefined` por falta de energia por missão de Eve e Joby.
-  5. **VAR-021** `L_charge`: justificar "ausente" como classe touch-and-go, sem base regulatória (FAA EB 105A p. 3).
-  6. **Novas linhas sugeridas:** `S_weigh` (hipótese, 20 s); `t_walk_in`/`t_gate_in`/`t_gate_out` (literatura, Preis e Hornung 2022); `SOC_dispatch` (limiar energético, **undefined**); `p_noshow` (cenário, **suposto** = 0 no caso-base, sem fonte); `R_late_policy` (cenário: aguardar / partir vazio / reacomodar).
-  7. `parameter_registry.csv`, **PAR-011** (troca de bateria): nota "excluída do caso-base: manutenção sob Reg. (UE) 1321/2014 (EASA CRD 2022-06 p. 90)".
+- **Evidência suficiente para mudar o modelo:** **sim** para sequência de passageiros, cadeia de prontidão, condição regulatória para recarga/troca com passageiros e regra energética de necessidade de recarga. **Não** para tempos de check-in/inspeção, comportamento de atraso/no-show, duração de carga de Eve/Joby e proibição regulatória de carga em vertistop.
+- **Alterações aplicadas em `data/model_dictionary.csv` e `data/parameter_registry.csv`** (commits `claude:` de 18/11/2026; cada linha cita a fonte):
+  1. **VAR-022** `R_ready`: cadeia da Decisão 2 (NUAIR/NASA 2021; ICAO Doc 10121; Reg. 2024/1111).
+  2. **VAR-012** `W_pax`: fim do embarque = passageiro "afivelado e pronto" (Preis e Hornung 2022, Tab. A1).
+  3. **VAR-005** `S_security`: variante de controle de acesso registrada como suposição de Feldhoff e Soares Roque (2021); continua `undefined`.
+  4. **VAR-008** `S_charge`: disparo pela regra energética e duração reservada; continua `undefined`.
+  5. **VAR-021** `L_charge`: "ausente" justificada como classe touch-and-go das fontes, sem proibição regulatória (FAA EB 105A p. 3).
+  6. **Novas linhas:** VAR-023 `S_weigh` (suposição de Feldhoff 2022, 20 s); VAR-024 movimentos no gate (Preis e Hornung 2022); VAR-025 `SOC_dispatch` (estrutura do Reg. 2024/1111; valor `undefined`). As linhas de no-show e de política de atraso foram **removidas** por não terem fonte.
+  7. **PAR-011** (troca de bateria): nota apenas factual; a inclusão no caso-base é decisão pendente.
 - **O que permanece desconhecido:** distribuições de check-in e inspeção em vertiporto; tolerância de espera e taxas de atraso/no-show; energia por missão, valores de reserva final, curva e tempo de carga de Eve e Joby; AMC/GM da Part-IAM; requisito regulatório de inspeção de segurança de passageiros eVTOL na UE, nos EUA e no Brasil.
 
 ## Adendo — segunda rodada (18/11/2026)
 
-- **Lido o texto adotado do Reg. (UE) 2024/1111** (T1-S13). Corrige a leitura anterior: a UAM.OP.MVCA.205 cobre recarga **e troca** com passageiros e as **permite** com SOP baseada em avaliação de risco e com treinamento. A exclusão no caso-base é escolha de modelagem (PC-12, PC-13). A UAM.OP.VCA.191(c) dá a composição do limiar energético (PC-14), e a UAM.OP.MVCA.175(b) e a .225(b)(1) reforçam a cadeia de prontidão (PC-08, PC-11).
+- **Lido o texto adotado do Reg. (UE) 2024/1111** (T1-S13). Corrige a leitura anterior: a UAM.OP.MVCA.205 cobre recarga **e troca** com passageiros e as **permite** com SOP baseada em avaliação de risco e com treinamento. A não sobreposição no caso-base é decisão da D2; a troca de bateria é decisão pendente (PC-12, PC-13). A UAM.OP.VCA.191(c) dá a composição do limiar energético (PC-14), e a UAM.OP.MVCA.175(b) e a .225(b)(1) reforçam a cadeia de prontidão (PC-08, PC-11).
 - **Lido o arXiv 2408.01152** (T1-S14): limite μ = min(μ_TLOF, μ_taxi, μ_G) para testes de verificação (PC-20) e ordem de saída do gate (PC-21).
 - `data/model_dictionary.csv` e `data/parameter_registry.csv` foram atualizados com estas correções.
