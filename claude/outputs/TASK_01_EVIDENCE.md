@@ -194,3 +194,11 @@ O autor decidiu, e as decisões foram registradas em `deliverables/D2_model_desi
 - **Controle de acesso** em vez de inspeção completa (PC-01, PC-03); a justificativa registrada é a única fonte com tempo de serviço, Feldhoff e Soares Roque (2021).
 - **Massa do passageiro fora do escopo:** PC-02 e PC-11 não são adotados; VAR-023 e PAR-021 foram removidos.
 - **Troca de bateria excluída** (PC-13; PAR-011 marcado como `excluded`).
+
+### Revisão das decisões do autor (18/11/2026, segunda resposta)
+
+- **Inspeção completa**, em vez de controle de acesso. VAR-005 continua sem valor. Candidato com dados medidos: *Data-Driven Analysis of Airport Security Checkpoint Operations*, Aerospace 7(6):69 (2020), doi 10.3390/aerospace7060069. Ainda **não lido**: a editora recusou acesso automatizado (HTTP 403). A tese de Metzner (2020) não foi localizada no repositório.
+- **Checagem de bagagem incluída** (VAR-028, PAR-028), U(30, 60) s, suposição de Feldhoff e Soares Roque (2021).
+- **LoS:** conjunto IATA ADRM de primeira classe/fast-track (PAR-026: 180/120/180 s).
+- **Valores pontuais** de Preis e Hornung (2022) e de Feldhoff (2022) adotados como constantes.
+- **Recarga declarada na reserva**, com o tempo de Preis (2023) em todo turnaround: 0/30/60 min (PAR-002). A proporção de voos que recarregam não tem fonte; Preis (2023) e Kotwicz et al. (2024, recarga até 100% após cada voo) aplicam recarga a todo turnaround. VAR-025 foi removido (energia fora do escopo). PAR-027 (potência) não é usado: com duração declarada a potência é desnecessária, e uma faixa de potência não é distribuição de probabilidade.

@@ -67,9 +67,18 @@ Registradas pelo autor após a Tarefa 01 (`claude/outputs/TASK_01_EVIDENCE.md`):
 
 - **Fronteira da aeronave:** o estudo trata a eVTOL em solo e nos eventos de pouso e decolagem no
   TLOF. Voo, rota, espaço aéreo e energia de missão estão fora do escopo.
-- **Controle do passageiro:** controle de acesso, e não inspeção de segurança completa. Base:
-  Feldhoff e Soares Roque (2021), única fonte lida com tempo de serviço (U(5, 20) s, suposição dos
-  autores); para inspeção completa não foi encontrado tempo publicado para vertiporto.
+- **Inspeção do passageiro:** inspeção de segurança completa (revisão do autor, que antes escolhera
+  controle de acesso). Tempo de serviço (VAR-005) ainda sem fonte; candidato aeroportuário em leitura.
+- **Checagem de bagagem:** estação incluída, U(30, 60) s, suposição de Feldhoff e Soares Roque (2021).
+  A fonte não diz se ela vem antes ou depois da inspeção.
+- **LoS:** tempos máximos IATA ADRM de primeira classe/fast-track reproduzidos por Feldhoff (2022,
+  Tab. 5): balcão 180 s, autoatendimento 120 s, inspeção 180 s.
+- **Valores pontuais** de especialistas e autores (Preis e Hornung, 2022; Feldhoff, 2022) usados como
+  constantes, pois as fontes não publicam distribuição.
+- **Recarga:** declarada na reserva (NUAIR/NASA, 2021, p. 73), com o tempo de Preis (2023, Tab. 1,
+  pp. 355–356) em todo turnaround: 0 (só embarque), 30 (base) ou 60 min. Preis supõe embarque
+  simultâneo à recarga; aqui a recarga ocorre sem passageiros (UAM.OP.MVCA.205), como no caso-base.
+  Não se usa potência nem limiar energético, pois energia de missão está fora do escopo.
 - **Massa do passageiro:** não modelada. O Reg. (UE) 2024/1111 (UAM.OP.MVCA.175(b)(1)) exige massa
   e CG conhecidos antes do voo, mas o modo de obtê-los fica fora do escopo; não há estação de
   pesagem.
@@ -82,8 +91,9 @@ mostra que ambas dependem de características OEM, rota, programação, demanda,
 e restrições físicas; ele também observa que vertistops de turnaround rápido podem não justificar
 recarga. Assim, a Fase A não terá carregador. Para a Fase C, serão comparados somente cenários
 explicitamente justificados: recarga no stand, recarga em posição adjacente dedicada e ausência de
-recarga local para operação tipo vertistop. A necessidade de recarga será determinada por estado de
-energia e missão, quando parâmetros confiáveis forem disponíveis; não será imposta a cada pouso.
+recarga local para operação tipo vertistop. Por decisão do autor (18/11/2026), energia de missão
+fica fora do escopo: o tempo de recarga é declarado na reserva e aplicado a todo turnaround
+(Preis, 2023: 0, 30 ou 60 min).
 
 ## Fronteira do sistema (versão 0)
 
@@ -91,7 +101,7 @@ Uma unidade de análise é um vertiporto de passageiros em uma janela operaciona
 representará dois fluxos sincronizados:
 
 ```text
-passageiro: chegada -> check-in -> controle de acesso -> espera -> gate -> embarque -> partida
+passageiro: chegada -> check-in -> checagem de bagagem e inspeção (ordem a definir) -> espera -> gate -> embarque -> partida
 eVTOL:     chegada -> TLOF/pad -> táxi -> stand/gate -> turnaround/recarga -> pad -> partida
 ```
 
@@ -108,7 +118,7 @@ manutenção profunda, meteorologia ou um sítio real específico na primeira ve
 | Airside | TLOF/pad e rota de táxi | cenário | ocupação exclusiva e bloqueio físico |
 | Interface | stand/gate | cenário | uma aeronave por posição; embarque/desembarque e energia podem requerê-lo |
 | Energia | carregador | ausente na Fase A; cenário na Fase C | localização e necessidade definidas por evidência de missão, energia e infraestrutura |
-| Terminal | check-in e controle de acesso | cenário | estações obrigatórias com filas finitas ou infinitas declaradas |
+| Terminal | check-in, checagem de bagagem e inspeção | cenário | estações obrigatórias com filas finitas ou infinitas declaradas |
 | Passageiro | grupo de voo | demanda | aguarda prontidão conjunta e tem limiar de LoS |
 
 ## Método proposto

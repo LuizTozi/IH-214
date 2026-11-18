@@ -18,12 +18,12 @@
 \begin{document}
 \begin{tikzpicture}[font=\sffamily\small, node distance=9mm and 12mm]
   \node[box, fill=passenger!12] (arrival) {Passenger arrival};
-  \node[box, fill=passenger!12, right=of arrival, text width=31mm] (terminal) {Check-in\\Access control\\Waiting};
+  \node[box, fill=passenger!12, right=of arrival, text width=31mm] (terminal) {Check-in\\Baggage check\\Security screening\\Waiting};
   \node[box, fill=passenger!12, right=of terminal] (boarding) {Boarding\\ready group};
   \node[fit=(arrival)(terminal)(boarding), group, label={[font=\bfseries]above:Passenger process}] (pgroup) {};
   \node[box, fill=airside!12, below=30mm of arrival] (tlofarr) {Landing and\\TLOF release};
   \node[box, fill=airside!12, right=of tlofarr] (stand) {Taxi and\\stand / gate};
-  \node[box, fill=energy!12, right=of stand] (turn) {Turnaround\\charging only if\\SOC $<$ threshold\\(no passengers)};
+  \node[box, fill=energy!12, right=of stand] (turn) {Turnaround\\declared charging\\0 / 30 / 60 min\\(no passengers)};
   \node[box, fill=airside!12, right=of turn] (tlofdep) {Departure\\TLOF};
   \node[fit=(tlofarr)(stand)(turn)(tlofdep), group] (agroup) {};
   \node[box, fill=control!12, right=14mm of boarding, text width=31mm] (schedule) {Scheduled slot allocation\\FCFS benchmark};
