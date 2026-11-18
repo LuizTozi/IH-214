@@ -1,1 +1,15 @@
 parameter_id,name,symbol,unit,system_layer,definition,evidence_type,source_id,value_or_range,distribution_or_rule,scenario_role,uncertainty,validation_status,notes
+PAR-001,pad occupancy time,t_pad,s,airside,Aggregated approach and landing pad occupation,literature,LIT-001,99.2,scenario constant,capacity scenario,high,unvalidated,Preis 2023 baseline value.
+PAR-002,gate turnaround time,t_turn,min,gate,Time at gate including charging or passenger process,literature,LIT-001,0;30;60,scenario variants,capacity scenario,high,unvalidated,Preis 2023 variation.
+PAR-003,passenger load factor,LF,ratio,demand,Occupied seats divided by available seats,literature,LIT-001,1.0,scenario constant,throughput conversion,high,unvalidated,Preis 2023 baseline; must not be treated as observed demand.
+PAR-004,passenger arrival window,t_arrival_before_STD,min,terminal,Passenger arrival before scheduled departure,literature,LIT-002,15 to 60,arrival profile,terminal queue scenario,high,unvalidated,Feldhoff 2022.
+PAR-005,counter check-in share,p_counter,ratio,terminal,Share of passengers using staffed counter,literature,LIT-002,0.34,routing probability,terminal queue scenario,high,unvalidated,Feldhoff 2022 progressive scenario.
+PAR-006,kiosk check-in share,p_kiosk,ratio,terminal,Share of passengers using kiosk,literature,LIT-002,0.18,routing probability,terminal queue scenario,high,unvalidated,Feldhoff 2022 progressive scenario.
+PAR-007,online check-in share,p_online,ratio,terminal,Share of passengers arriving pre-checked-in,literature,LIT-002,0.48,routing probability,terminal queue scenario,high,unvalidated,Feldhoff 2022 progressive scenario.
+PAR-008,boarding time,t_board,s,gate,Passenger boarding process duration,literature,LIT-003,73.0,scenario constant,turnaround composition,high,unvalidated,Preis and Hornung 2022 expert-based value.
+PAR-009,deboarding time,t_deboard,s,gate,Passenger deboarding process duration,literature,LIT-003,65.8,scenario constant,turnaround composition,high,unvalidated,Preis and Hornung 2022 expert-based value.
+PAR-010,charging power,P_charge,kW,energy,Charging power available to an eVTOL,literature,LIT-003,311,scenario constant,energy scenario,high,unvalidated,Preis and Hornung 2022 expert-based value.
+PAR-011,battery swap duration,t_swap,s,energy,Duration of battery swapping,literature,LIT-003,349,scenario constant,turnaround alternative,high,unvalidated,Preis and Hornung 2022 expert-based value.
+PAR-012,gate service time,t_gate,min,gate,Aircraft gate sequence including charge passenger process and buffer,literature,LIT-006,10,deterministic M/M/N service approximation,aircraft queue scenario,high,unvalidated,Park et al. 2022.
+PAR-013,TLOF movement time,t_TLOF,s,airside,Time assigned to one TLOF movement,literature,LIT-006,30,deterministic approximation,aircraft queue scenario,high,unvalidated,Park et al. 2022.
+PAR-014,aircraft arrival rate,lambda_aircraft,aircraft per h,demand,Arrival intensity at the vertiport,literature,LIT-006,5 to 30,scenario range,demand scenario,high,unvalidated,Park et al. 2022.
