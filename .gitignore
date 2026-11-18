@@ -1,0 +1,19 @@
+# LaTeX build artifacts
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.pdf
+*.synctex.gz
+*.toc
+
+# Local editor and system files
+.DS_Store
+.vscode/
+
+# Private or raw research material
+data/raw/
+*.sqlite
