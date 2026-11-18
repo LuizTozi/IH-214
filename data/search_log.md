@@ -92,3 +92,12 @@ Síntese completa em `claude/outputs/TASK_01_EVIDENCE.md`; metadados em
 
 Não acessados nesta rodada: texto adotado do Reg. (UE) 2024/1111 (EUR-Lex não respondeu a acesso
 automatizado), Onat et al. (2024) e FAA AC 150/5390-2D.
+
+### Segunda rodada da Tarefa 01 — 18 de novembro de 2026
+
+| Consulta / fonte | Inclusão verificada | Decisão de modelagem que suporta |
+|---|---|---|
+| EUR-Lex PDF `CELEX:32024R1111` | `eu2024reg1111` (LIT-026), texto adotado lido | UAM.OP.MVCA.205 permite recarga **ou troca** com passageiros sob SOP e treinamento; a exclusão no caso-base é escolha de modelagem. UAM.OP.VCA.191(c) define a composição do limiar energético de despacho. |
+| arXiv 2408.01152 (cópia local) | `saxena2025vertiminal` (LIT-027) | Limites analíticos de throughput para verificar o DES; ordem de saída do gate. |
+| FAA AC 150/5390-2D | não obtido (faa.gov respondeu HTTP 403) | Pendente; o EB 105A já cobre o necessário para recarga e passageiros. |
+| Onat et al. (2024) | não obtido (AIAA, acesso pago) | Pendente. |

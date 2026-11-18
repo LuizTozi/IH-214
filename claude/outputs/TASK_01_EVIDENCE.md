@@ -9,7 +9,7 @@ Nenhum arquivo central foi editado. As sugestões para `data/model_dictionary.cs
 | Pergunta | Resposta curta | Evidência suficiente? |
 |---|---|---|
 | Q1 Etapas transferíveis | check-in → pesagem → inspeção/controle de acesso → espera → caminhada → embarque. Sem despacho de bagagem e sem fronteira. | **Sim**, como sequência (PC-01). Tempos de serviço continuam fracos. |
-| Q2 Ordem e pré-requisitos | desembarque concluído → serviço → aeronave pronta para embarque → embarque → checagem → despacho → slot revalidado. Recarga e passageiros mutuamente exclusivos no caso-base. | **Sim** (PC-10, PC-12). |
+| Q2 Ordem e pré-requisitos | desembarque concluído → serviço → aeronave pronta para embarque → embarque → checagem → despacho → slot revalidado. Recarga/troca e passageiros mutuamente exclusivos no caso-base, por escolha conservadora; o Reg. (UE) 2024/1111 permite a sobreposição com SOP e treinamento. | **Sim** (PC-10, PC-12). |
 | Q3 Atraso, no-show, assentos vazios | Nenhuma fonte de vertiporto/eVTOL estabelece comportamento ou regra. | **Não.** Manter como cenário declarado. |
 | Q4 Eve/Joby e recarga | Os documentos oficiais trazem alcance-alvo e arquitetura, mas não trazem kWh, curva, tempo de carga nem reserva. Sustentam só a existência das classes de cenário. | **Parcial**: sustenta a classe de cenário, não sustenta valores. |
 | Q5 Vertistop × vertiporto | Nenhuma fonte vinculante. A definição "vertistop sem recarga" vem de um rascunho da FAA que o EB 105A final não manteve. | **Não** como regra; **sim** como cenário (PC-18). |
@@ -66,13 +66,20 @@ aeronave no stand
 - NUAIR/NASA (2021): no pré-voo (§5.1.1.1, pp. 61–63), a tripulação confirma "pronta para embarque" antes de o gate abrir, e o despacho vem após checagem e autorização. No táxi e decolagem (§5.1.1.2, p. 64), o PSU revalida o slot antes da autorização. Na chegada (§5.1.1.5, pp. 69–70), os passageiros desembarcam e são conduzidos ao terminal antes de a aeronave ser declarada desembarcada e o serviço começar.
 - Preis e Hornung (2022, Tab. A1, p. 20) definem o embarque como iniciado no ato de entrar na aeronave e encerrado com o passageiro "afivelado e pronto para decolar". Esse é o evento que fecha `W_pax` e alimenta `R_ready` (PC-08).
 - ICAO Doc 10121 (§6.3.1, p. 6-5; Apêndice H): o turnaround é uma cadeia de dependências descrita num plano específico do operador, com metas relativas a STA/STD. O próprio manual diz que os tempos do Apêndice H são apenas indicativos.
-- EASA CRD 2022-06 (pp. 89–90, 106–107) confirma que **UAM.OP.MVCA.205** trata de "recarga de baterias com passageiros embarcando, a bordo ou desembarcando" para VCA elétricas. Também registra que a troca de bateria é manutenção (Reg. (UE) 1321/2014) e exige pessoal certificador.
+- **Reg. (UE) 2024/1111, Anexo IX (Part-IAM), texto adotado lido no Jornal Oficial:**
+  - **UAM.OP.MVCA.205** (p. 46), "Charging or swapping of VCA batteries while passengers embark, are on board, or disembark": a recarga **ou troca** com passageiros só pode ocorrer se o operador tiver (1) procedimentos operacionais padrão baseados em avaliação de risco e (2) programa de treinamento do pessoal envolvido.
+  - **UAM.OP.MVCA.175(b)** (p. 45): o voo não começa sem que o comandante esteja satisfeito quanto a massa e CG, bagagem, requisitos de energia do manual de operações e carga distribuída e presa.
+  - **UAM.OP.MVCA.225(b)(1)** (pp. 46–47): antes do táxi, cada passageiro sentado com o cinto afivelado.
+- A EASA CRD 2022-06 (pp. 89–90, 106–107) mostra a renumeração da regra para .205 e registra a posição da EASA de que a troca de bateria é manutenção (Reg. (UE) 1321/2014).
 
-**Implicação proposta para a D2:** (i) refinar a definição de VAR-022 com a cadeia acima (PC-10); (ii) manter a exclusão recarga × passageiros no caso-base (PC-12, confirma a decisão já tomada); (iii) retirar a troca de bateria (PAR-011) dos cenários-base e deixá-la, no máximo, como cenário exploratório rotulado (PC-13).
+**Implicação proposta para a D2:**
+- (i) refinar a definição de VAR-022 com a cadeia acima (PC-10);
+- (ii) manter a exclusão recarga/troca × passageiros no caso-base (PC-12). É uma **escolha conservadora de modelagem**, não proibição: a regra permite a sobreposição sob condições, o que justifica o cenário posterior já previsto na D2;
+- (iii) deixar a troca de bateria (PAR-011) fora dos cenários-base (PC-13), pela mesma razão de simplicidade e porque nenhum OEM pesquisado pela NREL, nem Eve e Joby, prevê troca.
 
-**Classificação:** literatura (ConOps e documentos oficiais); regra de cenário para a sobreposição.
+**Classificação:** literatura (regulamento vinculante, ConOps e documentos oficiais); cenário para a sobreposição.
 
-**Limitações e condição de transferência:** o ConOps é prescritivo, para operação automatizada de alta densidade, e não traz durações. O ICAO trata de aeronaves convencionais. O texto adotado de UAM.OP.MVCA.205 **não** foi relido literalmente nesta tarefa, porque o EUR-Lex não respondeu ao acesso automatizado. Uso o registro já feito por Codex em `data/search_log.md`, e a CRD confirma o objeto e a numeração da regra.
+**Limitações e condição de transferência:** o ConOps é prescritivo, para operação automatizada de alta densidade, e não traz durações. O ICAO trata de aeronaves convencionais. O regulamento vale para a UE; os AMC/GM associados não foram lidos.
 
 ---
 
@@ -100,6 +107,7 @@ aeronave no stand
 **Decisão:** a recarga é disparada por uma **condição energética de prontidão** (o estado de carga precisa cobrir a próxima missão), declarada na reserva com sua duração. Não ocorre em todo pouso. As classes de cenário mantidas são: no stand, em posição adjacente dedicada (com reposicionamento) e ausente (tipo vertistop).
 
 **Evidência sintetizada:**
+- Reg. (UE) 2024/1111, **UAM.OP.VCA.191(c)** (pp. 40–41): a energia utilizável calculada antes do voo é a soma de táxi, viagem, contingência, **reserva final** (baseada no tempo do AFM para arremeter do ponto de decisão de pouso e voltar a ele), adicional (se necessária) e extra. A UAM.OP.MVCA.175(b)(7) proíbe iniciar o voo sem cumprir esses requisitos. Assim, a **estrutura** do limiar de despacho (VAR-025) é regulatória; os valores dependem do AFM.
 - NREL (2023, p. 53): um voo não é programado até a aeronave ter carga suficiente para o destino. Pp. 55–56: recarga FCFS a potência constante até 100%. A NREL cita o perfil constante até 80% com queda linear apenas como "a suposição realista mais simples", sem calibrá-lo.
 - NUAIR/NASA (2021, §5.1.1.6.4, p. 73): a recarga é pedida no plano de voo e reservada com sua duração, e é feita no gate/estacionamento ou após reposicionamento, cujo tempo entra na reserva. Isso mapeia diretamente as categorias de VAR-021.
 - EASA PTS (p. 18; C.200(f), p. 25; C.320, p. 36): o stand é definido para embarque/desembarque, carga e serviço, e o projeto do stand deve considerar o local do carregador. FAA EB 105A (§3.1, p. 31; §5.0, pp. 47–48): equipamento de carga amplia folgas; não há consenso sobre conectores ou classes de carga.
@@ -152,10 +160,10 @@ aeronave no stand
 | Fonte | Situação | Motivo |
 |---|---|---|
 | EASA Opinion 01/2024 (ground handling) | lida, descartada | Não trata de VTOL nem de ordem de turnaround; é proposta de quadro geral de gestão. |
-| Onat et al. (2024) | **não acessada** | Sem cópia local; fica pendente para a regra de despacho com energia. |
-| FAA AC 150/5390-2D | **não lida** | O EB 105A (suplemento) foi lido; o AC-base não foi verificado nesta tarefa. |
-| Texto adotado de UAM.OP.MVCA.205 (Reg. (UE) 2024/1111) | **não relido** | O EUR-Lex não respondeu ao acesso automatizado; ver Decisão 2. |
-| arXiv 2408.01152 (vertiport terminal scheduling) | não triada | Fora do tempo desta rodada; candidata para a política de alocação passageiro–voo. |
+| Onat et al. (2024) | **não acessada** | Sem cópia local; artigo AIAA com acesso pago; fica pendente para a regra de despacho com energia. |
+| FAA AC 150/5390-2D | **não lida** | faa.gov recusou o acesso automatizado (HTTP 403). O EB 105A, que é o suplemento, foi lido. |
+| Texto adotado de UAM.OP.MVCA.205 (Reg. (UE) 2024/1111) | **lido** (segunda rodada) | Ver Decisões 2 e 4 e T1-S13. |
+| arXiv 2408.01152 (Saxena et al.) | **lida** (segunda rodada) | Limites analíticos de throughput para verificar o DES (PC-20) e ordem de saída do gate (PC-21). Preprint. |
 
 ## Conclusão
 
@@ -168,4 +176,10 @@ aeronave no stand
   5. **VAR-021** `L_charge`: justificar "ausente" como classe touch-and-go, sem base regulatória (FAA EB 105A p. 3).
   6. **Novas linhas sugeridas:** `S_weigh` (hipótese, 20 s); `t_walk_in`/`t_gate_in`/`t_gate_out` (literatura, Preis e Hornung 2022); `SOC_dispatch` (limiar energético, **undefined**); `p_noshow` (cenário, **suposto** = 0 no caso-base, sem fonte); `R_late_policy` (cenário: aguardar / partir vazio / reacomodar).
   7. `parameter_registry.csv`, **PAR-011** (troca de bateria): nota "excluída do caso-base: manutenção sob Reg. (UE) 1321/2014 (EASA CRD 2022-06 p. 90)".
-- **O que permanece desconhecido:** distribuições de check-in e inspeção em vertiporto; tolerância de espera e taxas de atraso/no-show; energia por missão, reserva final, curva e tempo de carga de Eve e Joby; texto literal adotado de UAM.OP.MVCA.205; requisito regulatório de inspeção de segurança de passageiros eVTOL na UE, nos EUA e no Brasil.
+- **O que permanece desconhecido:** distribuições de check-in e inspeção em vertiporto; tolerância de espera e taxas de atraso/no-show; energia por missão, valores de reserva final, curva e tempo de carga de Eve e Joby; AMC/GM da Part-IAM; requisito regulatório de inspeção de segurança de passageiros eVTOL na UE, nos EUA e no Brasil.
+
+## Adendo — segunda rodada (18/11/2026)
+
+- **Lido o texto adotado do Reg. (UE) 2024/1111** (T1-S13). Corrige a leitura anterior: a UAM.OP.MVCA.205 cobre recarga **e troca** com passageiros e as **permite** com SOP baseada em avaliação de risco e com treinamento. A exclusão no caso-base é escolha de modelagem (PC-12, PC-13). A UAM.OP.VCA.191(c) dá a composição do limiar energético (PC-14), e a UAM.OP.MVCA.175(b) e a .225(b)(1) reforçam a cadeia de prontidão (PC-08, PC-11).
+- **Lido o arXiv 2408.01152** (T1-S14): limite μ = min(μ_TLOF, μ_taxi, μ_G) para testes de verificação (PC-20) e ordem de saída do gate (PC-21).
+- `data/model_dictionary.csv` e `data/parameter_registry.csv` foram atualizados com estas correções.
