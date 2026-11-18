@@ -75,3 +75,20 @@ publicada foi aceita como tempo de serviço, curva de carga certificada ou dimen
 O plano de figuras em `figures/FIGURE_PLAN.md` estabelece diagramas originais em TikZ e gráficos
 vetoriais a partir de resultados. A primeira figura conceitual, `figures/fig_coupled_network.tex`,
 representa a rede acoplada e não reutiliza imagens promocionais.
+
+## Tarefa 01 de Claude — passageiro, turnaround e recarga — 18 de novembro de 2026
+
+Síntese completa em `claude/outputs/TASK_01_EVIDENCE.md`; metadados em
+`claude/outputs/TASK_01_SOURCE_TABLE.csv`.
+
+| Consulta / fonte | Inclusão verificada | Decisão de modelagem que suporta |
+|---|---|---|
+| Acervo local IT-214 (Feldhoff 2022; Preis e Hornung 2022; NUAIR/NASA 2021; NREL 2023; EB 105A; PTS) | Releitura dirigida, com páginas | Sequência obrigatória do passageiro, cadeia de prontidão, regra energética de recarga. |
+| `10.1007/s13272-021-00544-4` / PMC8395386 | Feldhoff e Soares Roque (2021), já na matriz | Controle de acesso U(5,20) s, checagem de bagagem U(30,60) s, folha de carga antes de cada voo. |
+| ICAO Doc 10121 (cópia local) | `icao2019doc10121` (LIT-023) | Plano de turnaround como cadeia de dependências; tempos do Apêndice H apenas indicativos. |
+| EASA CRD 2022-06 (download EASA) | `easa2023crd202206` (LIT-024) | UAM.OP.MVCA.205 trata de recarga com passageiros; troca de bateria é manutenção. |
+| `10.3390/drones6070179` (cópia local) | `schweigerPreis2022` (LIT-025) | "Vertistop sem recarga" vem de rascunho do FAA EB 105; tratar como cenário. |
+| SEC 10-K 2025 de Eve e Joby | Já registrados (OEM-002, OEM-004) | Sem kWh, curva, tempo de carga ou reserva: sustentam apenas classes de cenário de recarga. |
+
+Não acessados nesta rodada: texto adotado do Reg. (UE) 2024/1111 (EUR-Lex não respondeu a acesso
+automatizado), Onat et al. (2024) e FAA AC 150/5390-2D.
