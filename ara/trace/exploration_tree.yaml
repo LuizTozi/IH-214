@@ -1,0 +1,33 @@
+tree:
+  - id: N01
+    type: question
+    title: Filas em vertiportos e experiência de passageiros
+    provenance: user
+    timestamp: "2026-11-18T11:01:49-03:00"
+    description: >
+      Desenvolver um artigo sobre teoria de filas de vertiportos, com eVTOLs como foco
+      operacional e passageiros como dimensão de nível de serviço.
+    children:
+      - id: N02
+        type: decision
+        title: Excluir o Vertiporto Sarah do artigo
+        provenance: user
+        timestamp: "2026-11-18T11:01:49-03:00"
+        choice: >
+          O Vertiporto Sarah foi apenas trabalho anterior e não poderá ser citado nem usado
+          como estudo de caso, dado ou resultado.
+        alternatives:
+          - Usar o Vertiporto Sarah como estudo de caso.
+        evidence: Declaração explícita do autor do projeto.
+        children:
+          - id: N03
+            type: decision
+            title: Organizar o artigo por entregáveis e em LaTeX
+            provenance: user
+            timestamp: "2026-11-18T11:01:49-03:00"
+            choice: >
+              Usar como referência a divisão em deliverables do curso IT 212 e desenvolver
+              o manuscrito em Overleaf/LaTeX.
+            alternatives:
+              - Desenvolver em editor de texto sem entregáveis.
+            evidence: Template IT 212 fornecido pelo autor.

@@ -1,0 +1,41 @@
+session:
+  id: "2026-11-18_001"
+  timestamp: "2026-11-18T11:01:49-03:00"
+  summary: "Fundação do repositório e definição do roteiro sequencial do artigo."
+
+events_logged:
+  - type: decision
+    id: N02
+    provenance: user
+    summary: "Exclusão do Vertiporto Sarah do escopo do artigo."
+  - type: decision
+    id: N03
+    provenance: user
+    summary: "Adoção de entregáveis inspirados no IT 212 e desenvolvimento em LaTeX."
+  - type: claim
+    id: C01
+    provenance: ai-suggested
+    summary: "Lacuna integrativa a ser testada pela revisão de literatura."
+  - type: heuristic
+    id: H01
+    provenance: ai-suggested
+    summary: "Classificar a origem de cada parâmetro do modelo."
+
+ai_actions:
+  - action: "Criou e enviou a estrutura inicial do repositório LaTeX."
+    provenance: ai-executed
+    files_changed: ["main.tex", "README.md", ".gitignore"]
+  - action: "Criou o roteiro sequencial de fases."
+    provenance: ai-executed
+    files_changed: ["deliverables/ROADMAP.md"]
+
+claims_touched:
+  - id: C01
+    action: created
+    provenance: ai-suggested
+
+open_threads:
+  - "Executar a Fase 1: mapa de evidências e Deliverable 1."
+
+ai_suggestions_pending:
+  - "Confirmar a lacuna integrativa após revisão sistemática."
