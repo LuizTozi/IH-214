@@ -64,3 +64,14 @@ premissas de um caso de estudo, não requisitos regulatórios nem parâmetros ob
 | Joby Aviation; Expo 2025 oficial | Configuração: piloto + 4 passageiros; dimensões exibidas: aproximadamente 14,0 m de envergadura e 7,6 m de comprimento. | Segunda aeronave de referência; limite de grupo de passageiros. |
 | EASA Easy Access Rules for Air Operations, UAM.OP.MVCA.205 | Recarga/troca durante embarque, permanência a bordo ou desembarque exige avaliação de risco, procedimentos e pessoal qualificado. | Caso-base sem sobreposição de recarga e passageiros. |
 | FAA/NREL Vertiport Electrical Infrastructure Study | Local e necessidade de EVSE dependem de aeronave, missão, demanda, programação, rede elétrica e restrições físicas; vertistops rápidos podem não justificar recarga. | Recarga como cenário da Fase C, e não requisito automático em cada pouso. |
+
+## Fontes oficiais dos fabricantes e plano de figuras — 18 de novembro de 2026
+
+Foram triados documentos e páginas oficiais da Eve e da Joby em
+`data/oem_source_register.csv`. Os itens aproveitáveis para o modelo são capacidade de passageiros,
+arquitetura de propulsão/bateria, alcance-alvo e contexto de interface de recarga. Nenhuma fonte OEM
+publicada foi aceita como tempo de serviço, curva de carga certificada ou dimensão D regulatória.
+
+O plano de figuras em `figures/FIGURE_PLAN.md` estabelece diagramas originais em TikZ e gráficos
+vetoriais a partir de resultados. A primeira figura conceitual, `figures/fig_coupled_network.tex`,
+representa a rede acoplada e não reutiliza imagens promocionais.
