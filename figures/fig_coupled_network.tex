@@ -12,13 +12,13 @@
   box/.style={draw=ink, rounded corners=2pt, align=center, minimum height=8mm, text width=25mm, fill=white},
   flow/.style={-{Stealth[length=2mm]}, thick, ink},
   constraint/.style={-{Stealth[length=2mm]}, dashed, thick, control},
-  coupling/.style={-{Stealth[length=2mm]}, thick, passenger},
+  coupling/.style={{Stealth[length=2mm]}-{Stealth[length=2mm]}, thick, passenger!80!black},
   group/.style={draw=outline, rounded corners=3pt, inner sep=5mm}
 }
 \begin{document}
 \begin{tikzpicture}[font=\sffamily\small, node distance=9mm and 12mm]
   \node[box, fill=passenger!12] (arrival) {Passenger arrival};
-  \node[box, fill=passenger!12, right=of arrival, text width=31mm] (terminal) {Check-in\\Baggage check\\Security screening\\Waiting};
+  \node[box, fill=passenger!12, right=of arrival, text width=36mm] (terminal) {Check-in\\Baggage and screening\\(order pending)\\Waiting};
   \node[box, fill=passenger!12, right=of terminal] (boarding) {Boarding\\ready group};
   \node[fit=(arrival)(terminal)(boarding), group, label={[font=\bfseries]above:Passenger process}] (pgroup) {};
   \node[box, fill=airside!12, below=30mm of arrival] (tlofarr) {Landing and\\TLOF release};
@@ -27,7 +27,9 @@
   \node[box, fill=airside!12, right=of turn] (tlofdep) {Departure\\TLOF};
   \node[fit=(tlofarr)(stand)(turn)(tlofdep), group] (agroup) {};
   \node[box, fill=control!12, right=14mm of boarding, text width=31mm] (schedule) {Scheduled slot allocation\\FCFS benchmark};
-  \node[box, fill=metricfill, below=13mm of stand, text width=66mm] (metrics) {Outputs\\Throughput, utilisation, eVTOL delay\\Passenger mean / P95 wait\\LoS (IATA ADRM wait-time criterion)};
+  \node[box, fill=metricfill, below=13mm of stand, text width=75mm] (metrics) {Outputs\\Throughput, utilisation, eVTOL delay\\Time to boarding and station queue waits\\LoS by station (IATA ADRM time criterion)};
+  \node[anchor=west, font=\sffamily\bfseries] at ([yshift=8mm]pgroup.north west)
+    {Integrated vertiport model (Phase D)};
   \draw[flow] (arrival) -- (terminal);
   \draw[flow] (terminal) -- (boarding);
   \draw[flow] (tlofarr) -- (stand);
@@ -37,8 +39,9 @@
   \draw[constraint] (schedule.south west) to[out=-150,in=50] (tlofarr.north);
   \draw[constraint] (schedule.south west) to[out=-150,in=60] (stand.north);
   \draw[constraint] (schedule.south west) to[out=-55,in=70] (tlofdep.north);
-  \draw[flow] (stand.south) -- (metrics.north);
-  \draw[flow] (turn.south) -- (metrics.north east);
-  \draw[coupling] (boarding.south east) |- (metrics.east);
+  \coordinate (legend) at ([yshift=-7mm]metrics.south west);
+  \draw[flow] (legend) -- ++(7mm,0) node[right] {Flow};
+  \draw[coupling] ([xshift=25mm]legend) -- ++(7mm,0) node[right] {Readiness coupling};
+  \draw[constraint] ([xshift=69mm]legend) -- ++(7mm,0) node[right] {Slot constraint};
 \end{tikzpicture}
 \end{document}

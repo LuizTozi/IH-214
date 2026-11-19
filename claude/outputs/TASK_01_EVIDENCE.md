@@ -2,7 +2,22 @@
 
 Autor: Claude (Opus 5.5), 18/11/2026. Formato: `claude/OUTPUT_TEMPLATE.md`, organizado por decisão de modelagem.
 Fontes completas em `TASK_01_SOURCE_TABLE.csv` (T1-Sxx); regras e valores em `TASK_01_PARAMETER_CANDIDATES.csv` (PC-xx).
-Nenhum arquivo central foi editado. As sugestões para `data/model_dictionary.csv` estão na seção final.
+O histórico da Tarefa 01 inclui alterações na D2, no dicionário, no registro de parâmetros,
+na matriz de literatura, na bibliografia, no log de busca e na figura (diff `3e5ec30..ab88d62`).
+
+## Aplicação vigente na D2
+
+As propostas históricas nas seções abaixo documentam o raciocínio da Tarefa 01. Para
+implementação, usar a [D2 revisada](../../deliverables/D2_model_design.md), o
+[protocolo](../../data/scenario_protocol.md) e o estado registrado para cada candidato.
+
+| Tema | Aplicação vigente |
+|---|---|
+| Fluxo do terminal | Check-in, checagem de bagagem obrigatória e inspeção completa, depois espera, gate e embarque. Ordem entre bagagem e inspeção pendente. Sem estação de pesagem. |
+| Prontidão | Início individual de embarque encerra VAR-012. Conclusão do embarque integra a prontidão de partida em VAR-022. |
+| Recarga | Caso-base de 30 min com variantes de 0 e 60 min declaradas; sem passageiros durante o serviço. Regra energética e troca fora da especificação. |
+| LoS | Limites IATA via Feldhoff Tab. 5 adotados em VAR-014/PAR-026; comparar com VAR-029 por estação. Bagagem segue sem limiar. |
+| Lacunas | Fonte de Janssen et al. foi lida no repositório da TU Delft (LIT-030). Seus tempos de passagem incluem esperas internas. Candidatos de Félix para check-in estão em LIT-031. Ambos exigem análise de transferência. |
 
 ## Resumo executivo
 

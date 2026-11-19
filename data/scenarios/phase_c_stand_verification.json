@@ -1,0 +1,17 @@
+{
+  "scenario_id": "phase_c_stand_verification",
+  "kind": "literature_scenario_verification",
+  "basis": "Unit topology from B; taxi_s PAR-044, occupancy_s PAR-043. Declared minutes PAR-002 per request. One passenger each way, stand charger, immediate crew clearance and outbound passenger ready at gate door are verification assumptions. Requests, windows, horizon, departure occupancy (aggregate), both separations are synthetic.",
+  "service_basis": {"detach_tug": "PAR-037", "deboard": "PAR-009", "exit_gate": "PAR-024", "enter_gate": "PAR-023", "board": "PAR-008", "attach_tug": "PAR-037"},
+  "service_s": {"detach_tug": 27, "deboard": 65.8, "exit_gate": 26.7, "enter_gate": 19.7, "board": 73, "attach_tug": 27},
+  "horizon_s": 6000,
+  "separation_s": 3,
+  "taxi_s": 22.8,
+  "departure_occupancy_s": 50,
+  "departure_separation_s": 3,
+  "requests": [
+    {"id": "A1", "request_s": 0, "occupancy_s": 37.7, "window_s": [0, 10], "declared_charge_min": 30},
+    {"id": "A2", "request_s": 30, "occupancy_s": 37.7, "window_s": [30, 100], "declared_charge_min": 0},
+    {"id": "A3", "request_s": 140, "occupancy_s": 37.7, "window_s": [2200, 2300], "declared_charge_min": 60}
+  ]
+}

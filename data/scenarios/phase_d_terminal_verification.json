@@ -1,0 +1,141 @@
+{
+  "scenario_id": "phase_d_terminal_verification",
+  "kind": "literature_scenario_verification",
+  "basis": "Author-stipulated deterministic verification trace. PAR-043 arrival occupancy, PAR-044 taxi, PAR-002 declared charging. Single TLOF, shared route, stand/charger, counter, baggage and full security server. One inbound passenger. FCFS queues with space for the entire trace. Declared arrival windows only. Crew clearance and dispatch immediate. All timestamps, group cutoffs, destinations, targets and manifests set by authors.",
+  "service_basis": {
+    "detach_tug": "PAR-037",
+    "deboard": "PAR-009",
+    "exit_gate": "PAR-024",
+    "enter_gate": "PAR-023",
+    "board": "PAR-008",
+    "attach_tug": "PAR-037",
+    "walk_in": "PAR-022",
+    "terminal_service_s": "PAR-046/047",
+    "bag_service_s": "Fixed realizations within PAR-028 for paired deterministic verification",
+    "wait_limits_s": "PAR-026",
+    "departure_occupancy_s": "PAR-045",
+    "separation_s": "PAR-048",
+    "departure_separation_s": "PAR-048",
+    "punctuality_tolerance_s": "PAR-049"
+  },
+  "service_s": {
+    "detach_tug": 27,
+    "deboard": 65.8,
+    "exit_gate": 26.7,
+    "enter_gate": 19.7,
+    "board": 73,
+    "attach_tug": 27,
+    "walk_in": 31.9
+  },
+  "horizon_s": 6000,
+  "separation_s": 3,
+  "taxi_s": 22.8,
+  "departure_occupancy_s": 50,
+  "departure_separation_s": 3,
+  "requests": [
+    {
+      "id": "A1",
+      "request_s": 10,
+      "manifest_close_s": 10,
+      "target_departure_s": 900,
+      "destination": "D1",
+      "occupancy_s": 37.7,
+      "window_s": [
+        10,
+        20
+      ],
+      "declared_charge_min": 0,
+      "manifest": [
+        {
+          "id": "P11",
+          "arrival_s": 0,
+          "bag_service_s": 45
+        },
+        {
+          "id": "P12",
+          "arrival_s": 0,
+          "bag_service_s": 50
+        }
+      ]
+    },
+    {
+      "id": "A2",
+      "request_s": 100,
+      "manifest_close_s": 100,
+      "target_departure_s": 2900,
+      "destination": "D1",
+      "occupancy_s": 37.7,
+      "window_s": [
+        100,
+        160
+      ],
+      "declared_charge_min": 30,
+      "manifest": [
+        {
+          "id": "P21",
+          "arrival_s": 15,
+          "bag_service_s": 45
+        },
+        {
+          "id": "P22",
+          "arrival_s": null,
+          "bag_service_s": 50
+        }
+      ]
+    },
+    {
+      "id": "A3",
+      "request_s": 150,
+      "manifest_close_s": 150,
+      "target_departure_s": 6800,
+      "destination": "D1",
+      "occupancy_s": 37.7,
+      "window_s": [
+        3000,
+        3250
+      ],
+      "declared_charge_min": 60,
+      "manifest": [
+        {
+          "id": "P31",
+          "arrival_s": 35,
+          "bag_service_s": 45
+        },
+        {
+          "id": "P32",
+          "arrival_s": 151,
+          "bag_service_s": 50
+        }
+      ]
+    },
+    {
+      "id": "A4",
+      "request_s": 200,
+      "manifest_close_s": 200,
+      "target_departure_s": 4500,
+      "destination": "D1",
+      "occupancy_s": 37.7,
+      "window_s": [
+        4000,
+        4050
+      ],
+      "declared_charge_min": 0,
+      "manifest": [
+        {
+          "id": "P41",
+          "arrival_s": null,
+          "bag_service_s": 45
+        }
+      ]
+    }
+  ],
+  "terminal_service_s": {
+    "counter": 180,
+    "security": 90
+  },
+  "wait_limits_s": {
+    "counter": 180,
+    "security": 180
+  },
+  "punctuality_tolerance_s": 60
+}

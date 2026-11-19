@@ -57,7 +57,7 @@ centrais verificadas, cobertura dos cinco eixos e ao menos uma lacuna sustentada
 
 ### Fase 2 — Modelo conceitual, dados e Deliverable 2
 
-**Situação:** em desenvolvimento.
+**Situação:** concluída em 19 de novembro de 2026 para o caso-base sintético. Diagrama, dicionário, parâmetros e protocolo disponíveis. As fases técnicas A a D passaram nos 18 testes de verificação.
 
 **Objetivo:** definir exatamente o que será representado, medido e inferido antes de programar.
 

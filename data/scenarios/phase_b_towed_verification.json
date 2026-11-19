@@ -1,0 +1,16 @@
+{
+  "scenario_id": "phase_b_towed_verification",
+  "kind": "literature_scenario_verification",
+  "basis": "Approved 2026-11-19: PAR-036 to PAR-038 and PAR-041 to PAR-044; round to 0.1 s. Requests, windows, separations, stand dwell and departure occupancy are synthetic test inputs.",
+  "horizon_s": 240,
+  "separation_s": 3,
+  "taxi_s": 22.8,
+  "stand_service_s": 40,
+  "departure_occupancy_s": 10,
+  "departure_separation_s": 3,
+  "requests": [
+    {"id": "A1", "request_s": 0, "occupancy_s": 37.7, "window_s": [0, 10]},
+    {"id": "A2", "request_s": 30, "occupancy_s": 37.7, "window_s": [30, 100]},
+    {"id": "A3", "request_s": 140, "occupancy_s": 37.7, "window_s": [140, 200]}
+  ]
+}

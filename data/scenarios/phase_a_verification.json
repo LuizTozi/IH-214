@@ -1,0 +1,13 @@
+{
+  "scenario_id": "phase_a_contention",
+  "kind": "synthetic_verification",
+  "basis": "D2: VAR-009 (one TLOF), VAR-006 (touchdown to exit), VAR-031 (separation), VAR-039 (test windows only); data/scenario_protocol.md, Fase A executable run. All numeric timing values are synthetic.",
+  "horizon_s": 40,
+  "separation_s": 3,
+  "requests": [
+    {"id": "A1", "request_s": 0, "occupancy_s": 10, "window_s": [5, 5]},
+    {"id": "A2", "request_s": 0, "occupancy_s": 10, "window_s": [10, 20]},
+    {"id": "A3", "request_s": 5, "occupancy_s": 10, "window_s": [10, 15]},
+    {"id": "A4", "request_s": 30, "occupancy_s": 10, "window_s": [31, 39]}
+  ]
+}

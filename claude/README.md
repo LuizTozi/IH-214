@@ -15,8 +15,9 @@ O artigo estuda teoria de filas em vertiportos de passageiros, conectando opera�
 - Coordenação: agendamento/reserva como caso-base; FCFS como benchmark.
 - Aeronaves de referência: Eve eVTOL e Joby S4, configuração pilotada de 4 passageiros + 1 piloto.
 - Não chamar envergadura publicada de “D regulatório”; D requer geometria certificada/AFM.
-- Recarga: ainda não fixada. Deve ser informada por evidência de missão, energia e infraestrutura; não é obrigatória em todo pouso.
-- LoS/satisfação: usar proxies explícitos de espera/confiabilidade; não alegar satisfação observada sem instrumento ou dado específico.
+- Recarga: paradas com 0, 30 (caso-base) ou 60 min declarados como entradas de cenário, sem passageiros durante a recarga. A posição no stand é a proposta inicial; posição separada exige reposicionamento definido. Energia de missão fica fora do escopo.
+- LoS: medir o critério de espera por estação com os limites adotados na D2. O critério de espaço depende de layout. Satisfação requer instrumento próprio.
+- Rastreabilidade: documentar fonte, página ou seção, natureza, decisão de adoção e limitação de transferência. Onde faltar base, registrar `undefined`.
 
 ## Arquivos que devem ser lidos primeiro
 
