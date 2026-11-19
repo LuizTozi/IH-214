@@ -85,6 +85,24 @@ modelo; toda métrica responde a uma parte da pergunta provisória.
 
 **Objetivo:** consolidar a sustentação conceitual sem antecipar resultados.
 
+Por orientação do autor, a revisão da D3 seguirá o **Methodi Ordinatio**.
+O acervo metodológico está em `/home/rique-tozi/Documentos/ITA/TESE/Methodi_Ordinatio`.
+A matriz bibliográfica da D1 será o conjunto inicial para testar descritores
+e verificar a recuperação de trabalhos conhecidos nos quatro blocos teóricos.
+
+Registrar a pergunta, as buscas exploratórias, as expressões finais por base,
+as datas, os resultados exportados, a deduplicação e os motivos de exclusão.
+Para os artigos elegíveis, identificar ano, citações com fonte e data e
+indicador do periódico com edição e procedência. Antes de ordenar o portfólio,
+registrar a versão da equação e os pesos adotados. A versão 2.0 é a referência
+inicial de trabalho. A variante NI será avaliada se a comparação entre áreas
+exigir normalização. FInder e RankIn estão disponíveis no acervo local.
+
+Após a ordenação, localizar os textos integrais e extrair, por artigo, o
+conceito sustentado, o trecho ou página e sua ligação com a rede da D2.
+Regulamentos e documentos operacionais terão seleção por autoridade,
+aplicabilidade e dispositivo pertinente, com rastreabilidade própria.
+
 **Ações:**
 
 1. Organizar a teoria em quatro blocos: teoria de filas, operações de vertiportos, processamento
