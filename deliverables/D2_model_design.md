@@ -7,6 +7,17 @@ aprovada usa 37,7 s do toque à saída do TLOF e 22,8 s por trecho de táxi.
 As lacunas de calibração e de execução do experimento integrado estão
 identificadas por variável no protocolo de cenários.
 
+**Revisão de 21 de novembro de 2026, após a D3.** A revisão bibliográfica não
+alterou topologia, entradas, durações nem resultados dos traços A–D. Ela
+precisou três definições: (1) quantidade de recursos, vazão observada (VAR-016)
+e capacidade operacional sob critério de atraso são grandezas distintas;
+(2) o contraste de política (VAR-018) é a admissão antecipada, e não o uso de
+uma reserva técnica, que também existe em FCFS; (3) as comparações entre
+políticas partem dos pedidos oferecidos e reportam admitidos, recusados e
+pendentes. As fontes citadas nessas passagens foram conferidas no texto
+integral em 21/11/2026. Os testes das fases A–D continuam passando (18 testes
+e 5 subtestes). O estado de 19/11 permanece no commit `8d508bf`.
+
 ## Decisões tomadas para a versão 0
 
 ### Topologia-base regulatória
@@ -15,9 +26,28 @@ A topologia-base será a composição modular da EASA PTS-VPT-DSN (2022), e não
 topologia proposta por artigo. Ela contém um **FATO--TLOF**, uma **taxiway/ground taxi-route** e
 um **stand** conectado à área de passageiros. A PTS define esses elementos como blocos do
 vertiporto e assume, no seu caso-base de projeto, no máximo uma aeronave no FATO. Portanto, a
-versão-base terá capacidade unitária para o FATO--TLOF e um fluxo de uma aeronave; expansões serão
+versão-base terá ocupação unitária do FATO--TLOF, com uma aeronave por vez; expansões serão
 cenários posteriores. A PTS é uma especificação técnica protótipo, não uma regra vinculante, e
 define geometria/viabilidade, não tempos de serviço ou capacidade horária.
+
+### Quantidade de recursos, vazão e capacidade operacional
+
+Na D2, **capacidade de atendimento simultâneo** designa a quantidade de recursos
+que podem atender ao mesmo tempo: TLOF (VAR-009), stand/gate (VAR-010), posição de
+recarga (VAR-011) e postos de cada estação do terminal (VAR-042). Essas quantidades
+são entradas de cenário, com unidade e regra de ocupação próprias. Duração de
+serviço e separação temporal são entradas distintas; aumentar a duração não
+equivale a retirar fisicamente um posto. **Vazão observada** (VAR-016) é a
+contagem de decolagens concluídas dividida pela janela de observação. Uma
+**capacidade operacional sob critério de atraso** só pode ser estimada após
+declarar demanda, política, horizonte e limiar de atraso; não é a contagem de
+posições nem a vazão de um único traço. Zhang et al. (2023, D005, DOI
+10.3390/su15010709, §2 e §5.3) e Preis e Hornung (2022, D023, DOI
+10.3390/app12147260, §§3.1 e 3.4) mostram por que o critério altera a capacidade
+reportada: Zhang et al. obtêm 53,3 ou 31,9 surtidas/h para a mesma
+configuração conforme o atraso aceitável seja 90 s ou 30 s; Preis e Hornung
+definem a capacidade prática pelo limiar de atraso médio. Os valores e limiares desses estudos não são entradas transferidas
+para a D2. Localizadores e limites constam da [extração da D3](../data/d3/extracao.md).
 
 ### Crescimento incremental
 
@@ -41,6 +71,17 @@ compatíveis. **FCFS** será implementado como benchmark de alocação local; os
 agendamento e FCFS sob a mesma demanda e topologia. Prioridades por emergência, energia ou classe
 de passageiro ficam fora da primeira comparação, salvo se uma fonte ou resultado justificar sua
 entrada.
+
+O contraste de política é a **admissão antecipada** condicionada à janela e à
+disponibilidade futura, versus a alocação local por ordem da solicitação ao
+recurso. Uma reserva técnica em linha de tempo após a solicitação pode integrar
+um agendador FCFS; Guerreiro et al. (2020, D026, DOI 10.2514/6.2020-2903,
+pp. 3–4 e 9–10) usam esse tipo de registro. Por isso, a presença de uma reserva
+no código não classifica, sozinha, a política como agendada. A comparação
+conserva os **pedidos oferecidos**, o manifesto, os serviços, os recursos e a
+condição inicial; a quantidade admitida pode mudar e será reportada como
+resultado da política. Os detalhes de janela, tolerância e realocação seguem
+em VAR-039.
 
 ### Aeronaves de referência e sincronização passageiro--aeronave
 
@@ -198,6 +239,19 @@ gate (VAR-044).
 3. Declarar cada entrada como observada, de literatura, hipótese ou cenário. A primeira rodada
    será uma análise de cenários, não uma previsão de uma operação real.
 
+A revisão D3 encontrou acoplamento entre operações do lado ar e atraso de
+passageiros em Preis e Hornung (2022, D036, DOI 10.3390/electronics11071071,
+§§3.2–3.4) e em Preis e Hornung (2022, D023, DOI 10.3390/app12147260,
+§§2–4). Assim, a contribuição a testar na D2 é mais específica: medir filas
+**por estação do terminal** e sua sincronização com a prontidão da aeronave,
+a recarga declarada e a retenção do stand, acompanhando desfechos em ambos os
+lados. A espera agregada do passageiro nessas fontes não substitui a espera
+de fila da estação definida em VAR-029: em D023 (§3.3), o atraso do passageiro
+é a diferença entre o tempo no lado ar em operação real e em operação ideal.
+A leitura dirigida da D3 foi concluída (`data/d3/sintese_mecanismos.md`) e
+sustenta esse recorte restrito, não uma alegação ampla de novidade; o efeito
+dos dois contrastes continua sendo hipótese a testar nos experimentos.
+
 ## Métricas ligadas à pergunta de pesquisa
 
 | Dimensão | Métrica | Definição operacional |
@@ -210,6 +264,19 @@ gate (VAR-044).
 | Equidade | dispersão por classe/coorte | diferença de espera entre grupos definidos no cenário |
 
 A espera média por estação resume o congestionamento típico entre as visitas com início de atendimento observado. O P95 do tempo entre chegada ao terminal e início do embarque caracteriza os passageiros com maior demora entre os que iniciaram embarque. A diferença de espera média entre coortes, quando definidas no cenário, permite examinar a distribuição dessa demora.
+
+Cada tabela comparativa identificará a **demanda oferecida comum** e, por
+política, os pedidos admitidos, recusados, cancelados, concluídos e pendentes ao
+fim da janela. Para indicadores de passageiro, apresentará a população elegível,
+o número de observações completas, a censura e o denominador. Uma diferença
+entre médias ou percentis calculados apenas entre embarcados pode refletir
+mudança de composição quando uma política recusa um voo; não deve ser
+interpretada isoladamente como melhora de atendimento. A comparação principal
+de partidas usa todos os pedidos oferecidos e o mesmo horizonte; esperas
+condicionais aos atendidos serão interpretadas junto à cobertura e às recusas.
+No traço D de verificação, A2 é recusado no agendamento e concluído em FCFS:
+o P95 até embarque usa duas pessoas numa política e três na outra. Esse traço
+verifica a contabilidade, sem estimar efeito populacional.
 
 Para cada estação, `VAR-029` mede o tempo da entrada em fila ao início do atendimento, em
 segundos. Atendimento imediato registra 0 s. Cada estação tem seu denominador, formado pelas

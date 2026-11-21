@@ -8,6 +8,11 @@ iniciais em cada réplica pareada. No caso agendado, a admissão depende de jane
 recursos compatíveis. No FCFS, a posição na fila depende do instante de solicitação
 ao recurso (LIT-004 fundamenta o benchmark; sua implementação é local). Conservar
 o horário solicitado em ambas as políticas como referência para medir atraso.
+Uma reserva técnica de ocupação gerada pelo agendador depois da solicitação é
+compatível com FCFS (Guerreiro et al., 2020, D026, pp. 3–4 e 9–10); o fator
+experimental é a regra de admissão antecipada e alocação, não o uso de uma
+estrutura de dados chamada reserva. A unidade comum entre políticas é o
+conjunto de pedidos **oferecidos**, não o subconjunto admitido.
 Janelas, tolerâncias, realocação e desempate em igualdade de horário operacional
 continuam pendentes (VAR-039). O cenário deve distinguir voo solicitado, admitido,
 concluído e pendente no fim. As etapas do terminal são obrigatórias na Fase D.
@@ -142,6 +147,17 @@ de desempenho exige um experimento com demanda, durações e janelas fundamentad
   espera de fila por estação, tempo até embarque, P95, conformidade de LoS nos
   postos com limiar e passageiros que não embarcaram. Manter pendências e
   censura visíveis. Pontualidade por tolerância depende de valor declarado (VAR-040).
+- **Interpretação entre políticas.** Reportar primeiro pedidos oferecidos,
+  admitidos, recusados, cancelados, concluídos e pendentes por política e por
+  réplica. Usar a mesma janela para decolagens/h. Para cada indicador de
+  passageiro, indicar população elegível, observações completas, censura e
+  denominador. Quando a admissão altera quem embarca, comparar a espera
+  condicional dos atendidos junto à fração atendida; não atribuir a diferença
+  de uma média ou P95, isoladamente, à eficiência da fila. Se a pergunta for
+  efeito sobre todos os pedidos oferecidos, usar também desfechos definidos
+  para recusas e pendências, sem imputar uma espera observada a quem não
+  embarcou. O traço D mostra essa diferença de composição e não estima um
+  efeito entre políticas.
 - **Ordem bagagem–inspeção.** A checagem de bagagem de mão de PAR-028 é
   uma estação distinta do raio X da inspeção. As fontes
   de Tarefa 01 não estabelecem a precedência entre as duas etapas distintas.
