@@ -32,6 +32,13 @@ Parte dessa ausência vem da edição de 2021, e não da falta de indexação. E
 
 **Decisão do autor (19/11/2026): opção (a), edição mais atual.** A edição mais recente é o **CiteScore 2025**, publicado pela Elsevier em 3/6/2026, com janela de citações 2022–2025 ([anúncio da Elsevier](https://www.elsevier.com/products/scopus/resources/introducing-citescore-2025); [MDPI, 4/6/2026](https://www.mdpi.com/news/16779)). **Situação: valores ainda não coletados.** A página pública da fonte na Scopus (`scopus.com/sourceid/…`) redireciona para login em `id.elsevier.com`, e a extensão do Chrome não estava conectada. Nenhum valor foi preenchido a partir de páginas secundárias. Faltam 23 ISSNs a coletar na lista oficial de fontes da Scopus (Sources → CiteScore 2025); os 22 trabalhos AIAA sem ISSN continuam sem indicador.
 
+**Atualização 20/11/2026: valores coletados.** A coleta foi feita na página de cada fonte da Scopus Preview (`scopus.com/sourceid/<id>`), com a sessão do autor no Chrome e o rótulo "CiteScore 2025". O identificador de cada fonte veio do ISSN na lista oficial `ext_list_Oct_2026.xlsx`, e o ISSN exibido em cada página foi conferido. Resultado em `claude/outputs/D3_CITESCORE_2025_COLETA_NAVEGADOR.csv`: 25 de 26 fontes com valor.
+- Duas correspondem só por título, com ISSN divergente do OpenAlex: IJASS (D043) e IEEE CDC (W4407949957). Confirmar pelo DOI.
+- O *Journal of Airline and Airport Management* (D040) não está indexado na Scopus.
+- Quatro fontes são anais seriados com CiteScore: CDC, Winter Simulation Conference, IROS e Transportation Research Procedia. Incluí-las ou não no indicador é decisão metodológica do autor/Codex.
+
+A planilha usa as mesmas colunas de `data/d3/citescore_2025_coleta.csv` (Codex), para fusão sem retrabalho.
+
 Os trabalhos de congresso (AIAA) continuarão sem indicador de periódico em qualquer opção. O protocolo já prevê que eles permaneçam disponíveis para leitura técnica.
 
 ## 2. Afirmações da seção teórica e da extração

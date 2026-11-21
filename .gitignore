@@ -17,3 +17,15 @@
 # Private or raw research material
 data/raw/
 *.sqlite
+
+# Secrets (API keys)
+.env
+
+# Python cache and office lock files
+__pycache__/
+.~lock.*#
+
+# Large Scopus source-list exports (download again from Scopus; ~70 MB)
+deliverables/Scopus_book_list_Q2.xlsx
+deliverables/ext_list_Oct_2026.xlsx
+deliverables/1000-source-results.xlsx

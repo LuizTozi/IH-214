@@ -1,0 +1,49 @@
+\section{D2 — Modelo e desenho operacional}
+
+\subsection{Fronteira, recursos e eventos}
+
+A unidade de análise é um vertiporto genérico de passageiros durante uma janela operacional finita. A topologia de referência contém um FATO--TLOF, uma rota compartilhada de táxi no solo e um stand ligado ao terminal. A composição usa os elementos da especificação técnica protótipo PTS-VPT-DSN da EASA, sem atribuir à especificação tempos de serviço ou uma capacidade horária \citep{easa2022ptsvptdsn}. As aeronaves de referência são Eve eVTOL e Joby S4 em configuração pilotada de quatro assentos de passageiros; suas dimensões publicadas caracterizam a classe, mas não substituem o diâmetro certificado de projeto exigido para dimensionamento geométrico. Voo, rota aérea e energia de missão ficam fora da fronteira.
+
+Cada aeronave segue toque no TLOF, liberação física, táxi até o stand, desembarque, eventual recarga, embarque, retorno pela rota, ocupação do TLOF de partida e decolagem. A separação depois da saída física é registrada em intervalo distinto. O stand permanece ocupado enquanto a aeronave está retida por serviço ou prontidão do grupo. Os passageiros confirmados percorrem check-in, checagem de bagagem de mão, inspeção completa, espera e embarque. No traço integrado, a ordem é check-in, bagagem e inspeção; a precedência entre as duas últimas etapas é uma hipótese de cenário, pois a evidência reunida não fixa a ordem para o vertiporto proposto. A recarga declarada de 0, 30 ou 60 minutos termina antes da entrada dos passageiros na aeronave. Trata-se de uma decisão do caso-base; \citet{preis2023} admite simultaneidade diferente em seu próprio cenário.
+
+O início do embarque requer aeronave no stand, desembarque e recarga previstos concluídos, gate disponível e passageiro apto após todas as estações obrigatórias. A partida requer conclusão do embarque dos passageiros aceitos, despacho e recursos de saída disponíveis. A prontidão do passageiro pode, assim, reter a aeronave; a prontidão da aeronave pode prolongar a espera após a inspeção. O modelo registra entrada em fila, início e fim de serviço, aquisição e liberação de cada recurso, início e fim do embarque individual, entrada no TLOF de partida e decolagem.
+
+\subsection{Entradas e procedência}
+
+As entradas são classificadas em valores observados, valores de literatura, hipóteses dos autores e saídas derivadas. A Tabela~\ref{tab:entradas} resume as entradas ativas da verificação integrada; a identificação PAR e VAR remete aos registros versionados do projeto. O cenário de táxi rebocado aprovado pelo autor combina 5 s de desligamento, 27 s de acoplamento e 15 m percorridos a 2,63 m/s, resultando em 37,7 s do toque à saída física do TLOF. A rota de 60 m à mesma velocidade resulta em 22,8 s por trecho. As distâncias são estipuladas pelos autores; os tempos resultantes não foram calibrados para Eve ou Joby \citep{preisHornung2022,wille2024icas}.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Entradas da verificação integrada e sua natureza}
+\label{tab:entradas}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.36\linewidth}>{\raggedright\arraybackslash}p{0.18\linewidth}>{\raggedright\arraybackslash}p{0.35\linewidth}@{}}
+\toprule
+Entrada & Valor do traço & Procedência \\
+\midrule
+TLOF: toque à saída (PAR-043, VAR-006) & 37,7 s & cenário calculado; distâncias dos autores \\
+Táxi por trecho (PAR-044, VAR-041) & 22,8 s & cenário calculado; rota dos autores \\
+Recarga declarada (PAR-002, VAR-008) & 0, 30 ou 60 min & variantes adotadas a partir de \citet{preis2023} \\
+Check-in e inspeção (PAR-046/047) & 180 s; 90 s & estipulações dos autores para teste \\
+Bagagem (PAR-028) & 30--60 s & hipótese de \citet{feldhoffSoaresRoque2021}; realizações fixas no traço \\
+TLOF de partida; separação (PAR-045/048) & 50 s; 3 s & estipulações dos autores para teste \\
+Postos do terminal e recursos do lado ar & um de cada tipo & topologia sintética unitária \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Os limites temporais de nível de serviço do caso-base são 180 s para balcão, 120 s para autoatendimento e 180 s para inspeção, correspondentes à Tabela 5 reproduzida por \citet{feldhoff2022}. O traço usa apenas o balcão; a checagem de bagagem não recebe um limiar improvisado. Os limites são critérios de espera, não tempos de serviço nem medidas de satisfação declarada. Os números e regras completos encontram-se em \path{data/model_dictionary.csv}, \path{data/parameter_registry.csv} e \path{data/scenarios/phase_d_terminal_verification.json}.
+
+\subsection{Políticas, fatores e indicadores}
+
+Na política agendada, o pedido só é aceito se a janela de chegada e as reservas dos recursos necessários forem compatíveis. No benchmark FCFS, a alocação local segue o instante da solicitação do recurso. A reserva técnica de uma posição em uma linha de tempo também pode existir em um agendador FCFS \citep{guerreiro2020}; a diferença entre as políticas deste estudo está na \emph{admissão antecipada} por janela e disponibilidade futura. Para isolar esse fator, a comparação deve conservar pedidos oferecidos, manifesto, tempos, configuração, estado inicial e horizonte. Para estudar quantidade de atendimento simultâneo, deve-se alterar apenas um recurso por vez sob política fixa. O traço de verificação não constitui esse experimento fatorial.
+
+Para cada estação $j$, a espera individual é $W_{ij}=t^{\mathrm{inicio}}_{ij}-t^{\mathrm{entrada}}_{ij}$. A conformidade temporal é
+\begin{equation}
+ C_j=\frac{\sum_{i\in O_j}\mathbf{1}(W_{ij}\leq \tau_j)}{|O_j|},
+\end{equation}
+em que $O_j$ contém somente visitas cujo início do atendimento foi observado e $\tau_j$ é o limite declarado. Visitas ainda em fila ao fim da janela são censuradas e reportadas à parte; sem limiar ou sem visitas completas, $C_j$ fica indefinida. O tempo até embarque vai da chegada individual ao terminal até o início do embarque. A vazão $X=N_{\mathrm{decolagens}}/T$ é reportada em partidas por hora na janela $T$; recusas, cancelamentos e aeronaves ainda em atendimento permanecem visíveis. Utilização é o tempo de ocupação física dividido pela janela de observação, distinguindo reserva e separação de ocupação.
+
+\subsection{Implementação e verificação}
+
+A implementação usa simulação determinística de eventos discretos em Python. A Fase A verifica exclusão mútua e separação no TLOF; a B acrescenta rota e stand; a C decompõe turnaround e recarga; a D acrescenta manifesto, três estações obrigatórias, embarque e métricas de serviço. Casos mínimos testam pedidos simultâneos, bloqueio de rota ou stand, duração de recarga nula e positiva, espera exatamente no limite e grupo incompleto. A verificação pergunta se eventos e invariantes correspondem à especificação; não estima demanda real nem valida tempos empíricos.
+

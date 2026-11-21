@@ -1,0 +1,30 @@
+\subsection{Resultados de verificação da D2}
+
+O traço integrado da Fase D contém quatro pedidos de aeronave, sete reservas individuais e horizonte de 6.000 s. Dois passageiros de A1 e um de A2 estão presentes no fechamento dos respectivos manifestos; A3 tem um presente e um atrasado; A4 não tem passageiro presente. Os horários de chegada, fechamento, janelas e durações são entradas sintéticas estipuladas pelos autores. No traço, o terminal processa os presentes nas duas políticas, inclusive quando a aeronave é recusada na agenda, pois o atendimento permanece ativo até a comunicação do resultado. A Tabela~\ref{tab:trace} apresenta as saídas reproduzidas pelo simulador versionado.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Saídas do traço sintético da Fase D; não são estimativas de operação real}
+\label{tab:trace}
+\begin{tabular}{@{}p{0.52\linewidth}rr@{}}
+\toprule
+Indicador no horizonte de 6.000 s & Agendado & FCFS \\
+\midrule
+Partidas observadas & 1 & 2 \\
+Partidas por hora observada & 0,6 & 1,2 \\
+Pedidos recusados por janela/recursos & 1 & 0 \\
+Pedido ainda no sistema ao fechamento & 1 & 1 \\
+Pedido cancelado por grupo vazio & 1 & 1 \\
+Passageiros com início de embarque observado & 2 & 3 \\
+P95 chegada ao terminal--início do embarque & 551,6 s & 2.744,0 s \\
+Conformidade no balcão (limite de 180 s) & 2/4 & 2/4 \\
+Conformidade na inspeção (limite de 180 s) & 4/4 & 4/4 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Em ambas as políticas, as quatro visitas observadas à checagem de bagagem têm espera zero no traço. A conformidade dessa estação é indefinida por ausência de limiar adotado. No balcão, as esperas são 0, 180, 345 e 505 s: o caso exatamente no limite conta como conforme. Todas as quatro visitas observadas à inspeção iniciam atendimento sem fila. As populações dos indicadores importam: a conformidade nas estações inclui o passageiro de A2 mesmo quando o pedido agendado é recusado, ao passo que o P95 até embarque usa somente os passageiros que efetivamente iniciaram embarque. Assim, os dois valores de P95 não descrevem a mesma coorte.
+
+A primeira aeronave tem os mesmos marcos de partida nas duas políticas: saída do stand em 651,6 s, entrada no TLOF em 674,4 s, decolagem em 724,4 s e liberação em 727,4 s. Os intervalos sucessivos são 22,8 s de táxi, 50 s de ocupação física e 3 s de separação. A contagem de partidas aumenta na decolagem; a liberação do TLOF é outro evento. A execução FCFS também decola A2 em 2.931,8 s; na agenda, A2 é recusado por incompatibilidade de janela e recursos. A3 permanece no sistema ao fechamento nas duas políticas. Essa decomposição permite verificar que táxi, ocupação e separação não foram somados duas vezes.
+
+As fases A--C também possuem casos determinísticos de exclusão mútua, bloqueio e sequência do turnaround. A série saturada isolada da Fase A satisfaz a identidade de teste $3600/(s+d)$ liberações por hora para serviço constante $s$ e separação $d$; ela não é a capacidade do vertiporto acoplado. Na Fase C, o primeiro pedido com 30 min de recarga ocupa o carregador de 180 a 1.980 s no traço próprio. Esses resultados verificam a lógica de eventos e de recursos das fases parciais, enquanto a Fase D verifica a sincronização com o terminal.

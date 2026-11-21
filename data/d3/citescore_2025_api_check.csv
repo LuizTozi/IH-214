@@ -1,0 +1,32 @@
+issn_portfolio,issn_consultado,scopus_source_id,titulo_scopus,citescore_api,citescore_coleta,estado,data_consulta,tipo_fonte
+0001-9240,0001-9240,12444,Aeronautical Journal,3.8,3.8,coincide,2026-11-20T13:18:46+00:00,periodico
+0191-2216,0743-1546,87424,Proceedings of the IEEE Conference on Decision and Control,1.8,1.8,coincide,2026-11-20T13:18:46+00:00,anais_seriados
+0307-904X,0307-904X,28065,Applied Mathematical Modelling,10.2,10.2,coincide,2026-11-20T13:18:47+00:00,periodico
+0308-1060,0308-1060,20871,Transportation Planning and Technology,3.3,3.3,coincide,2026-11-20T13:18:48+00:00,periodico
+0361-1981,0361-1981,27418,Transportation Research Record,4.1,4.1,coincide,2026-11-20T13:18:48+00:00,periodico
+0509-6669,0509-6669,,,,,http_404,2026-11-20T13:18:56+00:00,periodico
+0891-7736,0891-7736,145228,Proceedings - Winter Simulation Conference,1.5,1.5,coincide,2026-11-20T13:18:49+00:00,anais_seriados
+0957-4174,0957-4174,24201,Expert Systems with Applications,17,,novo_valor_confirmado,2026-11-20T13:18:56+00:00,periodico
+0965-8564,0965-8564,20891,Transportation Research Part A: Policy and Practice,12.1,12.1,coincide,2026-11-20T13:18:49+00:00,periodico
+0968-090X,0968-090X,20893,Transportation Research Part C: Emerging Technologies,15.4,15.4,coincide,2026-11-20T13:18:50+00:00,periodico
+0969-6997,0969-6997,20532,Journal of Air Transport Management,8.4,8.4,coincide,2026-11-20T13:18:50+00:00,periodico
+1225-9705,1225-9705,,,,,http_404,2026-11-20T13:18:57+00:00,periodico
+1229-9626,2093-274X,20500195078,International Journal of Aeronautical and Space Sciences,3.1,3.1,coincide,2026-11-20T13:18:50+00:00,periodico
+1270-9638,1270-9638,12507,Aerospace Science and Technology,10.3,10.3,coincide,2026-11-20T13:18:51+00:00,periodico
+1366-5545,1366-5545,20909,Transportation Research Part E: Logistics and Transportation Review,14,14.0,coincide,2026-11-20T13:18:51+00:00,periodico
+1523-5955,1523-5955,19700175904,Collegiate Aviation Review,0.9,0.9,coincide,2026-11-20T13:18:51+00:00,periodico
+1524-9050,1524-9050,18378,IEEE Transactions on Intelligent Transportation Systems,20.5,,novo_valor_confirmado,2026-11-20T13:18:57+00:00,periodico
+1869-5582,1869-5582,21100367685,CEAS Aeronautical Journal,4.4,4.4,coincide,2026-11-20T13:18:52+00:00,periodico
+2014-4865,2014-4865,,,,,http_404,2026-11-20T13:27:59+00:00,periodico
+2071-1050,2071-1050,21100240100,Sustainability (Switzerland),8.9,8.9,coincide,2026-11-20T13:18:52+00:00,periodico
+2076-3417,2076-3417,21100829268,Applied Sciences (Switzerland),6.1,6.1,coincide,2026-11-20T13:18:53+00:00,periodico
+2079-9292,2079-9292,21100829272,Electronics (Switzerland),7,7.0,coincide,2026-11-20T13:18:53+00:00,periodico
+2153-0858,2153-0858,66854,IEEE International Conference on Intelligent Robots and Systems,3.7,3.7,coincide,2026-11-20T13:18:53+00:00,anais_seriados
+2226-4310,2226-4310,21100853739,Aerospace,4.8,4.8,coincide,2026-11-20T13:18:54+00:00,periodico
+2324-9935,2324-9935,21100237201,Transportmetrica A: Transport Science,9.1,9.1,coincide,2026-11-20T13:18:54+00:00,periodico
+2327-3097,2327-3097,21100239834,Journal of Aerospace Information Systems,4,4.0,coincide,2026-11-20T13:18:54+00:00,periodico
+2330-2674,2330-2674,21100886529,International Journal of Systems Science: Operations and Logistics,6.1,6.1,coincide,2026-11-20T13:18:55+00:00,periodico
+2352-1457,2352-1457,21100448300,Transportation Research Procedia,2.6,2.6,coincide,2026-11-20T13:18:55+00:00,anais_seriados
+2379-8858,2379-8858,21100976127,IEEE Transactions on Intelligent Vehicles,19.9,,novo_valor_confirmado,2026-11-20T13:18:57+00:00,periodico
+2504-446X,2504-446X,21101017244,Drones,10,10.0,coincide,2026-11-20T13:18:55+00:00,periodico
+2941-198X,2941-198X,21101312751,Journal of the Air Transport Research Society,7.2,7.2,coincide,2026-11-20T13:18:56+00:00,periodico
