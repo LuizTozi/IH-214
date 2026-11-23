@@ -100,7 +100,7 @@ class TestAirsideFCFS(unittest.TestCase):
 
     def test_invariants_on_generated_day(self):
         rows = family_requests(generate_day(12), 8, 30)
-        for policy in ("fcfs",):
+        for policy in ("fcfs", "agenda"):
             for stands in (4, 5):
                 r = run_cell(rows, {**ONE, "counter": 2}, stands, policy)
                 m = r["metrics"]
@@ -113,6 +113,68 @@ class TestAirsideFCFS(unittest.TestCase):
         rows = family_requests(generate_day(1), 6, 30)
         self.assertEqual(run_cell(rows, ONE, 5, "fcfs")["metrics"],
                          run_cell(rows, ONE, 5, "fcfs")["metrics"])
+
+
+class TestAgenda(unittest.TestCase):
+    def test_isolated_flight_planned_at_request_equals_fcfs(self):
+        rows = [row("A", 3000, 30, [2100, 2100])]
+        agenda, fcfs = run_cell(rows, ONE, 5, "agenda"), run_cell(rows, ONE, 5, "fcfs")
+        a = flight(agenda, "A")
+        self.assertEqual((a["planned_touchdown_s"], a["planned_stand"]), (3000, 1))
+        self.assertEqual(a["planned_exit_s"], S("5256.2"))
+        self.assertEqual(a["liftoff_s"], flight(fcfs, "A")["liftoff_s"])
+
+    def test_simultaneous_requests_reserve_arrival_and_departure(self):
+        # Em 3060,5 s (rota livre) a partida de B ocuparia o TLOF em [5192,1; 5267,9),
+        # sobre a partida reservada de A [5131,6; 5207,4). A agenda reserva também a
+        # partida: B toca em 3075,8 s e sai do stand quando a partida de A termina.
+        r = run_cell([row("A", 3000, 30, [2100]), row("B", 3000, 30, [2100])], ONE, 5, "agenda")
+        a, b = flight(r, "A"), flight(r, "B")
+        self.assertEqual([a["planned_touchdown_s"], b["planned_touchdown_s"]], [3000, S("3075.8")])
+        self.assertEqual([a["stand"], b["stand"]], [1, 2])
+        self.assertEqual(b["planned_exit_s"], S("5207.4"))
+        self.assertEqual(b["stand_exit_s"], b["planned_exit_s"])
+
+    def test_refusal_at_decision_removes_passengers(self):
+        rows = [row("A", 3000, 30, [2100]), row("B", 3100, 30, [2200, 3500])]
+        r = run_cell(rows, ONE, 1, "agenda")
+        b = flight(r, "B")
+        self.assertEqual((b["state"], b["refused_s"]), ("refused", 3100))
+        self.assertEqual(r["passengers"]["B-P1"]["state"], "left_lounge_refusal")
+        self.assertEqual(r["passengers"]["B-P1"]["exit_s"], 3100)
+        self.assertEqual(r["passengers"]["B-P2"]["state"], "not_arrived_refusal")
+        self.assertEqual(r["metrics"]["refused"], 1)
+
+    def test_pessimistic_forecast_holds_aircraft_until_planned_exit(self):
+        rows = [row("A", 3000, 30, [3500])]          # ainda não chegou na decisão
+        base = flight(run_cell(rows, ONE, 5, "agenda"), "A")
+        self.assertEqual(base["planned_exit_s"], S("5266.6"))   # 4800 + 315 + 124,6 + 27
+        self.assertEqual(base["ready_depart_s"], S("5131.6"))
+        self.assertEqual((base["stand_exit_s"], base["stand_blocked_s"]), (S("5266.6"), S("135.0")))
+        perfect = flight(run_cell(rows, ONE, 5, "agenda", perfect=True), "A")
+        self.assertEqual(perfect["planned_exit_s"], S("5131.6"))
+        self.assertEqual(perfect["stand_blocked_s"], 0)
+
+    def test_longer_bag_than_forecast_delays_exit_beyond_plan(self):
+        # Decisão em 3000 s com o passageiro no balcão; bagagem prevista 45 s, realizada 60 s.
+        rows = [row("A", 3000, 0, [2950], bag=60)]
+        r = run_cell(rows, ONE, 5, "agenda")
+        a = flight(r, "A")
+        self.assertEqual(a["planned_exit_s"], S("3416.6"))
+        self.assertEqual(a["stand_exit_s"], S("3431.6"))
+        self.assertEqual(r["metrics"]["late_vs_plan"], 1)
+        p = flight(run_cell(rows, ONE, 5, "agenda", perfect=True), "A")
+        self.assertEqual(p["planned_exit_s"], p["stand_exit_s"])
+
+    def test_decision_ignores_future_requests(self):
+        alone = run_cell([row("A", 3000, 30, [2100])], ONE, 1, "agenda")
+        later = run_cell([row("A", 3000, 30, [2100]), row("B", 3200, 30, [2300])], ONE, 1, "agenda")
+        keys = ("planned_touchdown_s", "planned_stand", "planned_exit_s")
+        self.assertEqual([flight(alone, "A")[k] for k in keys], [flight(later, "A")[k] for k in keys])
+
+    def test_perfect_information_requires_agenda(self):
+        with self.assertRaises(ValueError):
+            run_cell([row("A", 3000, 30, [2100])], ONE, 5, "fcfs", perfect=True)
 
 
 def check_resources(test, result, stands):

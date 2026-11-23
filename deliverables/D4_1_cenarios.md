@@ -210,6 +210,11 @@ Assim, as duas políticas têm o mesmo prazo máximo para iniciar o atendimento,
 **Execução agendada**
 
 - Respeitar a ordem dos compromissos por recurso, seus horários mínimos e as precedências físicas.
+- **Interpretação adotada na D4.2, a revisar pelo autor.**
+  - **Horários mínimos:** o toque não ocorre antes do instante planejado, e a saída do stand não ocorre antes da saída planejada. A aeronave pronta antes do plano aguarda no stand, e essa espera entra no tempo bloqueado.
+  - **Ordem dos compromissos:** é aplicada como prioridade. Entre solicitações prontas, prevalece a de menor horário planejado. Um compromisso que ainda não está pronto não bloqueia os seguintes.
+  - **Por que não a ordem estrita:** como todo toque e toda partida usam o TLOF e a rota, a ordem estrita serializaria o vertiporto inteiro atrás de qualquer atraso.
+- A agenda reserva também a partida (rota e TLOF a partir da saída planejada). Um toque pode, portanto, ser adiado dentro da janela para que a partida prevista não se sobreponha a outra.
 - Uma demora, inclusive a de um passageiro que fica pronto depois do previsto, propaga o início até a primeira disponibilidade conjunta.
 - Preservar a admissão concedida. Registrar o toque fora da janela e atualizar o calendário dos compromissos restantes antes de avaliar outro pedido.
 - A D4.2 deverá verificar uma propagação de atraso causada pelo grupo e a viabilidade das reservas simultâneas de rota e destino.

@@ -48,6 +48,18 @@ O desenho experimental será redigido após a conclusão de todas as fases da D4
   - A chegada exige TLOF, rota e stand ao mesmo tempo. A aeronave desvia se a chegada não começar até t + 300 s (janela inclusiva), e o terminal é avisado.
   - Embarque dos confirmados na ordem de prontidão. A espera da aeronave pelo grupo é a retenção.
   - O terminal ganhou sala de espera por voo e a previsão de prontidão que a agenda usará.
+- **Etapa 4 concluída em 23/11/2026:** a agenda (`scripts/d4_agenda.py`, testes em `scripts/test_d4_sim.py`).
+  - **Calendário:** atualizado na decisão com a previsão de cada voo admitido.
+  - **Busca:** primeiro toque viável em [t, t + 300 s] e stand de menor índice. Sem toque viável, recusa com aviso ao terminal.
+  - **Execução:** horários mínimos de toque e de saída, com prioridade pelo horário planejado.
+  - **Previsão:** reservas não chegadas pelo fechamento mais as durações declaradas. A informação perfeita usa chegadas, bagagens e ausências realizadas.
+  - **Verificação:**
+    - recusa no instante da decisão;
+    - reserva da partida;
+    - espera até a saída planejada sob previsão pessimista, nula com informação perfeita;
+    - saída posterior ao plano quando a bagagem excede a previsão;
+    - decisão independente de pedidos futuros.
+  - **Constatação:** com janela de 300 s, um erro de previsão de bagagem se resolve pelo menos 241,6 s antes da saída do stand. Uma decisão posterior que dependa dessa saída já vê o valor correto. Logo, o erro de previsão atrasa o próprio voo, mas dificilmente se propaga a voos decididos depois.
 - **Levantamento de código aberto em 23/11/2026, antes da etapa 2.**
   - **VertiSim** (`eminb61/vertisim`, licença MIT; Onat, ligado a D001).
     - Usa SimPy, com tempo inteiro em milissegundos.

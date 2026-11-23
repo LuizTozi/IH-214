@@ -19,8 +19,11 @@ número de ordem. Varreduras ocorrem após as liberações do mesmo instante.
 - FCFS: a aeronave que não inicia a chegada até t + 300 s desvia, e o terminal é
   avisado (PAR-055, PAR-062).
 - Agenda: decide em t pelo módulo d4_agenda; recusa avisa o terminal. Na execução,
-  o toque não ocorre antes do instante planejado e usa o stand reservado; uma
-  demora propaga o início até a primeira disponibilidade conjunta.
+  o toque não ocorre antes do instante planejado e usa o stand reservado; a saída
+  do stand não ocorre antes da saída planejada (horários mínimos). Entre
+  solicitações prontas prevalece o menor horário planejado; uma demora propaga o
+  início até a primeira disponibilidade conjunta (não há bloqueio por compromisso
+  ainda não pronto).
 """
 
 from decimal import Decimal
@@ -130,7 +133,7 @@ class Airside:
             "reservations": [p["id"] for p in row["manifest"]],
             "planned_touchdown_ms": None, "planned_exit_ms": None, "planned_stand": None,
             "touchdown_ms": None, "stand": None, "stand_entry_ms": None, "ready_board_ms": None,
-            "avail_ms": None, "boarded": [], "await_ms": 0, "ready_depart_ms": None,
+            "avail_ms": None, "boarded": [], "taken": [], "await_ms": 0, "ready_depart_ms": None,
             "stand_exit_ms": None, "liftoff_ms": None, "diverted_ms": None, "refused_ms": None,
         }
         self.env.process(self._flight(fid))
@@ -200,6 +203,7 @@ class Airside:
             yield got
             f["await_ms"] += env.now - f["avail_ms"]
             pid = got.value
+            f["taken"].append(pid)
             f["avail_ms"] = env.now + WALK + ENTER + BOARD
             yield env.timeout(WALK + ENTER)
             self.boarding[pid] = env.now          # início do embarque
@@ -207,8 +211,11 @@ class Airside:
             f["boarded"].append(pid)
         yield env.timeout(ATTACH)
         f["ready_depart_ms"] = env.now
-        key = env.now if self.policy == "fcfs" else f["planned_exit_ms"]
-        req = self._request("dep", fid, key=key)
+        if self.policy == "fcfs":
+            req = self._request("dep", fid, key=env.now)
+        else:   # agenda: a saída planejada é horário mínimo e chave de prioridade
+            req = self._request("dep", fid, key=f["planned_exit_ms"],
+                                eligible_from=f["planned_exit_ms"])
         yield req["event"]
         f["stand_exit_ms"] = env.now
         self._close(stand_occ)
@@ -257,6 +264,7 @@ def collect(airside, terminal, horizon, servers, n_stands, policy, perfect):
             "stand": None if f["stand"] is None else f["stand"] + 1,
             "planned_touchdown_s": to_s(f["planned_touchdown_ms"]),
             "planned_stand": None if f["planned_stand"] is None else f["planned_stand"] + 1,
+            "planned_exit_s": to_s(f["planned_exit_ms"]),
             "touchdown_s": seen(f["touchdown_ms"]), "stand_entry_s": seen(f["stand_entry_ms"]),
             "ready_board_s": seen(f["ready_board_ms"]), "ready_depart_s": seen(f["ready_depart_ms"]),
             "stand_exit_s": seen(f["stand_exit_ms"]), "liftoff_s": seen(f["liftoff_ms"]),
@@ -318,6 +326,8 @@ def metrics(flights, passengers, intervals, horizon, n_stands):
         "mean_stand_blocked_s": mean(f["stand_blocked_s"] for f in departed),
         "mean_air_wait_s": mean(f["touchdown_s"] - f["request_s"] for f in landed),
         "outside_window": sum(f["outside_window"] for f in flights.values()),
+        "late_vs_plan": sum(f["planned_exit_s"] is not None and f["stand_exit_s"] is not None
+                            and f["stand_exit_s"] > f["planned_exit_s"] for f in flights.values()),
         "boarded_passengers": len(waits),
         "lost_passengers": lost,
         "terminal_to_board_p95_s": waits[ceil(0.95 * len(waits)) - 1] if waits else None,
