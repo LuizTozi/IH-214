@@ -57,6 +57,23 @@ Fonte: modelo do evento em `aero2027/modelo_oficial_AERO2027.docx`, que deve ser
 - **Termos.** O LoS da IATA tem critérios objetivos de tempo e espaço; não chamá-lo de proxy. A satisfação percebida exige uma medida declarada pelo passageiro.
 - **Tom.** Afirmações proporcionais à evidência; não alegar ineditismo absoluto.
 
+## Skills de escrita do projeto
+
+As skills ficam versionadas em `.agents/skills/`, a pasta de skills do projeto usada pelo Codex. `.claude/skills` é um link para a mesma pasta, usado pelo Claude Code. A procedência e as licenças (MIT, e Apache 2.0 na `docx`) estão em `.agents/skills/FONTES.md`.
+
+As regras deste `AGENTS.md` prevalecem sobre as instruções das skills: formato oficial, nenhum número sem resultado arquivado, dados sempre com fonte.
+
+| Etapa da escrita | Skills |
+|---|---|
+| Redigir o resumo e as seções | `scientific-writing`, `academic-writing`, `research-paper-writing`, `research-writing-skill`, `academic-paper-composer` |
+| Enquadrar a contribuição sem tom defensivo | `anti-defensive-writing-en` |
+| Polir a voz sem alterar números e citações | `academic-humanizer` |
+| Revisar antes de enviar | `peer-review`, `rigor-reviewer`, `scholar-evaluation`, `scientific-critical-thinking` |
+| Conferir e formatar referências | `citation-management` (metadados sempre de `references/references.bib`) |
+| Formato do evento e versão Word | `venue-templates` (o modelo oficial do AERO2027 prevalece), `docx` (transpor para `aero2027/modelo_oficial_AERO2027.docx`) |
+| Figura ou tabela do resumo | `academic-plotting`, `scientific-visualization` |
+| Apresentação oral ou pôster | `presenting-conference-talks`, `latex-posters` |
+
 ## Onde está cada coisa
 
 | Assunto | Arquivo |
