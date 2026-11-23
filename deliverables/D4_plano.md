@@ -32,6 +32,13 @@ O desenho experimental será redigido após a conclusão de todas as fases da D4
 
 ## D4.2 · Preparar e verificar as execuções
 
+**Andamento.** A D4.2 está dividida em cinco etapas, cada uma com seu commit: gerador do dia, terminal, lado ar com FCFS, agenda e testes de integração. Os scripts das fases A a D não são alterados.
+
+- **Etapa 1 concluída em 23/11/2026:** o gerador do dia (`scripts/d4_dia.py`, testes em `scripts/test_d4_dia.py`).
+  - Gera os pedidos a 8/h e os afina para 6/h e 4/h.
+  - Sorteia, para cada passageiro, ausência, antecedência de chegada e duração da bagagem antes da política.
+  - Usa um gerador próprio para cada fonte de acaso.
+
 Adaptar o simulador integrado para configurar os recursos escolhidos e produzir uma linha por cenário, política e réplica. Arquivar configuração, versão do código, semente e identificador do traço oferecido. Gerar pedidos, manifestos e durações antes da decisão de admissão, com valores vinculados aos respectivos pedidos e passageiros. Assim, uma recusa não desloca a sequência de sorteios para o próximo voo.
 
 Rodar os testes das fases A–D e verificar manualmente um caso com disputa de recurso e outro com atendimento interrompido pelo horizonte. Conferir o balanço de pedidos entre cancelados, recusados, concluídos e pendentes, a capacidade física de cada recurso e a ordem dos eventos de embarque. A janela principal será terminante, com estado inicial declarado e contagem até o horizonte comum. Usar o período inteiro se o início vazio fizer parte da operação estudada.
