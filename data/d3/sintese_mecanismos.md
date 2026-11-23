@@ -13,7 +13,7 @@
 
 Há evidência anterior tanto de gargalos físicos quanto de efeitos de políticas sob recursos fixos; D029 é uma comparação direta de FCFS com sequenciamento alternativo. Há também evidência anterior de ligação entre operações de pad/gate e atraso de passageiros (D036). A contribuição investigável da D2 é combinar **os dois contrastes definidos no protocolo** com a observação local das filas de passageiros, o instante de prontidão do grupo, a retenção do stand e as partidas, mantendo população e condições de comparação explícitas. Essa formulação descreve um recorte analítico, não reivindica exclusividade ou superioridade empírica.
 
-O modelo e os traços da D2 são sintéticos e foram estipulados pelos autores. O desenho dos experimentos posteriores deve emparelhar pedidos, duração de serviço, manifesto, horizonte e configuração entre políticas; variar um recurso por vez para o contraste de atendimento simultâneo; registrar recusas, pendências e o denominador efetivamente observado. O sinal de cada efeito, inclusive um possível deslocamento da espera da inspeção para o gate, é hipótese de teste.
+O modelo e os traços da D2 são sintéticos e foram estipulados pelos autores. O desenho dos experimentos posteriores deve emparelhar pedidos, duração de serviço, manifesto, horizonte e configuração entre políticas; variar um recurso por vez para o contraste de atendimento simultâneo; registrar recusas, pendências e o denominador efetivamente observado. O sinal de cada efeito, inclusive um possível deslocamento da espera entre estações do terminal ou para a sala de embarque, é hipótese de teste. Na D4.1 v2.1, esse deslocamento é observável pelos contrastes de servidor no balcão e na inspeção.
 
 ## Repercussão da D4.1 · 23/11/2026
 

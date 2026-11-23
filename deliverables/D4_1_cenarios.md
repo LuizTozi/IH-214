@@ -1,4 +1,4 @@
-# D4.1 — Especificação do experimento integrado, versão 2
+# D4.1 — Especificação do experimento integrado, versão 2.1
 
 Versão de trabalho revisada em 23/11/2026. A redação do desenho experimental do artigo ocorrerá após a conclusão integral da D4. A unidade de comparação é uma janela operacional sintética. A pergunta é quanto mudam as decolagens por hora, a cobertura da demanda oferecida, a espera **em cada estação do terminal** e a retenção da aeronave pelo grupo quando se altera a admissão, a quantidade de stands ou a quantidade de servidores de uma estação. O piloto avaliará a precisão e a adequação da faixa de carga.
 
@@ -17,6 +17,15 @@ A versão 2 corrige cada ponto com quatro decisões do autor:
 - **Terminal:** contrastes de servidor no balcão e na inspeção, avaliados um por vez.
 - **Recusa:** avisada no instante da decisão.
 - **Chegadas:** relativas à partida programada, com a janela da fonte.
+
+A versão 2.1 aplica os pontos da revisão crítica:
+
+- **Ponto 1:** a espera por estação igual entre Base e S4, na ausência de recusas e desvios, passa a ser declarada como resultado esperado e verificação.
+- **Ponto 2:** a informação perfeita é cruzada com recarga de 30 e de 0 min, e o texto indica onde cada mecanismo pode aparecer.
+- **Ponto 3:** a janela de chegada e o fechamento do manifesto vêm da fonte. A forma da distribuição continua suposta, porque seus parâmetros não foram encontrados.
+- **Ponto 4:** o FCFS desvia a aeronave que não inicia a chegada até t + 300 s, a mesma janela da agenda.
+- **Ponto 5:** a STD acompanha a recarga, com a folga estimada e justificada.
+- **Pontos menores:** declaração dos contrastes principais e exploratórios.
 
 ## Configurações e contrastes
 
@@ -40,7 +49,7 @@ A estação de bagagem mantém um servidor em todas as células.
 
 - Os contrastes de servidor mudam diretamente a capacidade de uma estação.
 - O contraste de política muda a carga do terminal, porque a recusa passa a retirar passageiros das filas.
-- O contraste de stands não muda o terminal diretamente. Ele aparece na espera depois da inspeção e na retenção do stand.
+- O contraste de stands só altera o terminal por meio de recusas e desvios, que retiram passageiros das filas. Sem eles, a espera por estação é idêntica em Base e S4, por construção. Essa igualdade é um **resultado esperado**, não um achado, e serve de verificação da implementação. Para o contraste de stands, a tabela por estação será usada apenas para comparar as famílias de demanda. O efeito do stand aparece na espera depois da inspeção, na retenção do stand e nas partidas.
 
 ## Matriz de famílias para cada réplica
 
@@ -52,10 +61,13 @@ A estação de bagagem mantém um servidor em todas as células.
 | Sem recarga local | 6 | 0 min | durações declaradas |
 | Recarga longa | 6 | 60 min | durações declaradas |
 | Informação perfeita | 6 | 30 min | chegadas e durações de bagagem realizadas |
+| Informação perfeita sem recarga | 6 | 0 min | chegadas e durações de bagagem realizadas |
 
 - **Cinco primeiras famílias:** 8 células cada, total de 40.
-- **Família de informação perfeita:** acrescenta quatro execuções de agendamento, uma por configuração. Seus controles FCFS são os da referência, pois o FCFS usa apenas eventos realizados.
-- **Total:** 44 execuções distintas por réplica. Pedidos futuros permanecem desconhecidos em todas as células.
+- **Duas famílias de informação perfeita:** cada uma acrescenta quatro execuções de agendamento, uma por configuração. Seus controles FCFS são os da referência e os da família sem recarga, respectivamente, pois o FCFS usa apenas eventos realizados.
+- **Total:** 48 execuções distintas por réplica. Pedidos futuros permanecem desconhecidos em todas as células.
+
+A informação perfeita é cruzada com recarga de 30 e de 0 min. Com recarga zero, o ciclo do stand é curto. A reserva feita pela previsão mais tardia do grupo pesa mais na ocupação dos stands, e o valor da informação tende a ser maior. O cruzamento mostra se esse valor depende da duração do ciclo.
 
 ### Escolha da faixa de demanda
 
@@ -96,8 +108,10 @@ Na demanda alta, a configuração S4 fica acima da capacidade estimada. A inspe�
 
 **Partida programada (PAR-056)**
 
-- STD = t + 900 s + recarga declarada.
+- STD = t + 900 s + recarga declarada (R).
 - Vincular o alvo à recarga mantém constante, em todas as famílias, a folga entre a aeronave pronta e a partida. A pontualidade deixa de ser trivial com recarga de 60 min. Assim, a família de recarga mede o efeito da duração do ciclo sobre a capacidade, sem tornar todo voo atrasado por construção.
+- **Folga estimada pelos autores.** Para toque em t, sem fila no lado ar nem retenção pelo grupo, a decolagem ocorre por volta de t + 560 s + R + 124,6 × (n − 2,25) s, em que n é o número de embarcados. A folga em relação à STD é de cerca de 340 s para o grupo médio e de 122 s para quatro passageiros, mais a tolerância de 60 s. Atrasos maiores vêm de espera no lado ar ou de retenção pelo grupo, que são os mecanismos estudados.
+- **Coerência com o manifesto.** Com essa regra, o fechamento do manifesto (STD − 900 s) coincide com t + R, o fim da recarga de uma aeronave que toca em t. O instante relativo entre a prontidão do grupo e a da aeronave fica igual em todas as famílias de recarga.
 - Os 900 s são escolha dos autores.
 
 **Manifesto e chegadas**
@@ -105,8 +119,8 @@ Na demanda alta, a configuração S4 fica acima da capacidade estimada. A inspe�
 - **Reservas:** para cada pedido, sortear de 1 a 4 reservas equiprováveis para um destino comum (PAR-052).
 - **Ausência:** por reserva, com probabilidade 0,10 (PAR-053).
 - **Chegada de quem comparece:** em STD − U(900, 3600) s, ou seja, entre 60 e 15 min antes da partida programada (PAR-054).
-  - **Fonte da janela:** Feldhoff 2022, p. 6. A fonte comprime a distribuição diurna da IATA em 15–60 min antes da STD.
-  - **Forma: SUPOSTA.** A fonte modela a chegada por uma distribuição beta, mas não informa os parâmetros. Adota-se a uniforme como suposição declarada até que os parâmetros sejam obtidos.
+  - **Fonte da janela:** Feldhoff 2022, p. 6. A fonte comprime a distribuição diurna da IATA em 15–60 min antes da STD. O mínimo de 15 min é o mesmo do serviço por assento da Voom (Ref. [47] da fonte) e do requisito de chegada da BLADE (PAR-034).
+  - **Forma: SUPOSTA.** A fonte modela a chegada por uma distribuição beta, mas não publica os parâmetros. A distribuição da IATA em que ela se baseia (ADRM, 9ª ed., Ref. [46] da fonte) é publicação comercial e não foi encontrada em acesso aberto em 23/11/2026. Adota-se a uniforme como suposição declarada até que os parâmetros sejam obtidos, por exemplo com a autora ou no ADRM.
 - **Bagagem:** duração sorteada separadamente em U(30, 60) s (PAR-028).
 - **Independência:** os sorteios são independentes, condicionados ao horário e à vinculação ao voo.
 
@@ -137,9 +151,13 @@ A recusa de um pedido é comunicada a todas as reservas no instante da decisão 
 
 Registrar cada saída com a estação e o instante. A espera desses passageiros fica censurada no instante da saída e é contada à parte.
 
-O FCFS não recusa pedidos. Sua carga de terminal é a de todas as reservas presentes.
+**Desvio no FCFS (PAR-055 e PAR-062).** O FCFS não decide antes do toque, mas usa a mesma janela da agenda:
 
-**Hipótese declarada, a confirmar pelo autor:** no FCFS, a aeronave sem recursos disponíveis aguarda no ar sem limite de tempo e sem desvio. Essa assimetria em relação à janela de 300 s da agenda será informada ao lado das pendências. Um limite de espera no ar pode ser acrescentado como sensibilidade.
+- Se a aeronave não puder iniciar a chegada até t + 300 s, ela desvia para outro vertiporto.
+- O desvio é comunicado às reservas nesse instante, com as mesmas regras da recusa.
+- Registrar desvios separadamente das recusas.
+
+Assim, as duas políticas têm o mesmo prazo máximo para iniciar o atendimento, e nenhuma aeronave espera no ar sem limite. A diferença entre elas fica na reserva antecipada dos recursos e no momento em que o passageiro é avisado: em t na agenda, até t + 300 s no FCFS.
 
 ## Recursos, admissão e sincronização
 
@@ -164,7 +182,7 @@ O FCFS não recusa pedidos. Sua carga de terminal é a de todas as reservas pres
 **FCFS**
 
 - Cada recurso atende a solicitação elegível mais antiga.
-- Para iniciar a chegada, verificar a disponibilidade conjunta de TLOF, rota e stand.
+- Para iniciar a chegada, verificar a disponibilidade conjunta de TLOF, rota e stand. Se ela não ocorrer até t + 300 s, a aeronave desvia.
 - Antes do retorno, reservar rota e TLOF. O stand é liberado na saída.
 - Em empate, processar liberações antes das aquisições e usar o identificador crescente do voo ou passageiro.
 - Registrar separadamente reserva, ocupação física e bloqueio.
@@ -205,15 +223,31 @@ A tabela usa a mesma notação do texto: t é o pedido, STD = t + 900 + R, e R �
 | Fila por estação | Ocupação do balcão entre 0,45 e 0,90 | Todas. Os contrastes B2, I2 e de política mudam a espera |
 | Retenção pelo grupo | Chegada tardia (até t + R) somada a cerca de 315 s de serviço e à fila. A aeronave fica pronta em torno de t + 180 s + R | Todas. Cresce com a fila do balcão, logo com a demanda, e cai em B2 |
 | Bloqueio por estacionamento | Ocupação dos stands perto de 1 | Demanda alta e S4 |
-| Efeito da informação | Agenda reserva o stand pela previsão mais tardia do grupo | Família de informação perfeita |
+| Efeito da informação | Agenda reserva o stand pela previsão mais tardia do grupo | Famílias de informação perfeita, com recarga de 30 e de 0 min |
+| Espera por estação igual entre Base e S4 | Ausência de recusas e desvios | Resultado esperado por construção; serve de verificação |
+
+Como a STD acompanha a recarga, a posição relativa entre a prontidão do grupo e a da aeronave é a mesma nas três famílias de recarga. Nessas famílias, a recarga muda a duração do ciclo e a ocupação dos stands, não a ordem entre grupo e aeronave.
 
 Essa tabela registra hipóteses de teste, não resultados. O sinal e a magnitude de cada efeito serão estimados nas réplicas.
+
+## Contrastes principais e exploratórios
+
+Para evitar conclusões a partir de muitos intervalos simultâneos, cada contraste tem um único indicador principal, estimado na família de referência:
+
+| Contraste | Indicador principal |
+|---|---|
+| Agenda menos FCFS, na Base | Decolagens por hora |
+| Base menos S4, sob cada política | Decolagens por hora |
+| B2 menos Base, sob cada política | Espera média no balcão |
+| I2 menos Base, sob cada política | Espera média na inspeção |
+
+Todos os demais resultados são explicativos ou exploratórios, inclusive retenção pelo grupo, P95, conformidade, pontualidade e as famílias de sensibilidade. Eles serão relatados com intervalo de 95%, mas sem afirmação de efeito confirmado. O piloto da D4.3 dimensiona as réplicas pelo indicador principal que exigir mais réplicas.
 
 ## Observação e critério de passagem
 
 **Fechamento no horizonte**
 
-- Fechar os pedidos em cancelados, recusados, decolados ou pendentes de decolagem.
+- Fechar os pedidos em cancelados, recusados (agenda), desviados (FCFS), decolados ou pendentes de decolagem.
 - Uma decolagem antes do horizonte conta mesmo que a separação termine depois.
 
 **Estações do terminal**

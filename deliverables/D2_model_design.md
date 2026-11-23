@@ -336,11 +336,11 @@ horizonte recebe valor nulo na medição e conserva o horário previsto no plano
 
 ## Revisão decorrente da D4.1 · 23/11/2026
 
-A [especificação experimental](D4_1_cenarios.md), versão 2, estende o caso verificado para quatro ou cinco stands com TLOF e rota compartilhados. Cada stand tem carregador e gate próprios, por suposição declarada. A especificação também traz:
+A [especificação experimental](D4_1_cenarios.md), versão 2.1, estende o caso verificado para quatro ou cinco stands com TLOF e rota compartilhados. Cada stand tem carregador e gate próprios, por suposição declarada. A especificação também traz:
 
 - estações do terminal com um ou dois servidores;
 - partida programada como referência das chegadas (15 a 60 min antes) e do fechamento do manifesto (15 min antes);
 - distinção entre duração prevista e realizada;
-- comunicação da recusa no instante da decisão, com saída dos passageiros do terminal.
+- comunicação da recusa (agenda) ou do desvio (FCFS, se a chegada não começar até 300 s após o pedido), com saída dos passageiros do terminal.
 
 O dia terminante, os pedidos oferecidos e os manifestos definem a população comum. A verificação da extensão pertence à D4.2.

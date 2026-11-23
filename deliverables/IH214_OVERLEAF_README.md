@@ -8,4 +8,4 @@ Ao obter um novo resultado da D2 ou da D3, atualize a respectiva seção, as fon
 
 Os CSVs, o JSON e a matriz de extração em `data/` acompanham o pacote para rastrear entradas do modelo e afirmações da literatura. Eles não são carregados automaticamente pelo manuscrito.
 
-O manuscrito reúne a verificação da D2 e a discussão teórica da D3 sobre estacionamento e inspeção. A especificação da D4.1, versão 2, acompanha o projeto como material para revisão em `deliverables/D4_1_cenarios.md`.
+O manuscrito reúne a verificação da D2 e a discussão teórica da D3 sobre estacionamento e inspeção. A especificação da D4.1, versão 2.1, acompanha o projeto como material para revisão em `deliverables/D4_1_cenarios.md`.

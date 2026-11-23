@@ -36,7 +36,7 @@ Rodar os testes das fases A–D e verificar manualmente um caso com disputa de r
 
 ## D4.3 · Dimensionar o experimento com o piloto
 
-Registrar as taxas de demanda e a configuração-base antes das rodadas definitivas. Fazer um piloto para estimar a dispersão das diferenças pareadas em partidas/h. Definir a margem de precisão operacionalmente relevante e dimensionar as réplicas independentes para um intervalo de confiança de 95% com essa semilargura. Documentar o número escolhido e a precisão efetivamente obtida.
+Registrar as taxas de demanda e a configuração-base antes das rodadas definitivas. Fazer um piloto para estimar a dispersão das diferenças pareadas nos quatro indicadores principais da [especificação](D4_1_cenarios.md): decolagens/h nos contrastes de política e de stands, espera média no balcão em B2 e espera média na inspeção em I2. Dimensionar as réplicas pelo indicador que exigir mais réplicas. Definir a margem de precisão operacionalmente relevante e dimensionar as réplicas independentes para um intervalo de confiança de 95% com essa semilargura. Documentar o número escolhido e a precisão efetivamente obtida.
 
 ## D4.4 · Executar os contrastes pareados
 
@@ -45,13 +45,13 @@ Registrar as taxas de demanda e a configuração-base antes das rodadas definiti
 | Qual o efeito da admissão antecipada? | Agendamento e FCFS local | Mesmos recursos, pedidos oferecidos, passageiros e durações em cada par. A recusa altera a carga do terminal |
 | Qual o efeito do estacionamento? | 5 stands (Base) contra 4 stands (S4) | Mesma política e mesma demanda em cada par. Repetir sob ambas as políticas |
 | Qual o efeito de um servidor no terminal? | Segundo balcão (B2) e segundo posto de inspeção (I2), um por vez | Mesma política e mesma demanda. Medir a espera por estação, o deslocamento da fila e a retenção pelo grupo |
-| Em que condições o efeito muda? | Demanda de 4, 6 e 8 pedidos/h. Recarga no stand de 0, 30 e 60 min. Informação perfeita na agenda | Variar um fator por vez a partir do caso-base. Preservar as demais etapas do turnaround |
+| Em que condições o efeito muda? | Demanda de 4, 6 e 8 pedidos/h. Recarga no stand de 0, 30 e 60 min. Informação perfeita na agenda, com recarga de 30 e de 0 min | Variar um fator por vez a partir do caso-base. Preservar as demais etapas do turnaround |
 
 ## D4.5 · Medir desempenho e explicar o mecanismo
 
 | Resultado | Cálculo e leitura |
 |---|---|
-| Partidas e atendimento da demanda | Decolagens observadas por hora e por pedido oferecido. Exibir ao lado cancelamentos, recusas e pendências para detectar seleção pela admissão |
+| Partidas e atendimento da demanda | Decolagens observadas por hora e por pedido oferecido. Exibir ao lado cancelamentos, recusas (agenda), desvios (FCFS) e pendências para detectar seleção pela admissão |
 | Atraso e pontualidade | Medir atraso em relação ao horário solicitado de partida. Informar partidas dentro da tolerância sobre decolagens observadas e o tamanho desse denominador |
 | Serviço ao passageiro | Por estação, apresentar espera até início do serviço, conformidade ao limiar da D2, denominador, esperas censuradas e saídas por recusa. Para bagagem, apresentar a espera. Calcular o P95 chegada–início do embarque entre percursos observados, com o número de embarcados e perdidos |
 | Retenção pelo grupo | Por voo, comparar o instante em que o último confirmado fica pronto com o instante em que a aeronave fica pronta para embarque. Relatar a fração de voos retidos e a duração da retenção. Verificar se B2 e I2 reduzem a retenção e se a espera se desloca entre estações |
