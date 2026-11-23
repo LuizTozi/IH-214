@@ -1,0 +1,81 @@
+% Resumo para o AERO2027 (World Summit on Aerospace and Aeronautical Engineering,
+% Amsterdã, 24-26/06/2027). Prazo: 25/12/2026.
+% Reproduz o modelo oficial (aero2027/modelo_oficial_AERO2027.docx):
+%   página única A4, margens normais (2,54 cm), Times New Roman;
+%   título 14 pt negrito centralizado, iniciais maiúsculas;
+%   autores 12 pt (apresentador sublinhado; afiliação por sobrescrito; correspondente com *);
+%   afiliações 11 pt itálico; texto 12 pt, entrelinha 1,5, justificado;
+%   Keywords (máx. 6, 12 pt itálico); References; Biography (até 150 palavras).
+% O modelo pede envio em Word: este .tex serve à redação no Overleaf; a versão final
+% deve ser transposta para o .docx oficial sem alterar os estilos.
+% Regras completas: deliverables/EVENTO_AERO2027.md e AGENTS.md.
+% Trechos \pendente{...} (vermelho) ainda não têm fonte ou resultado. Não inventar números.
+
+\documentclass[12pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{mathptmx}                 % Times
+\usepackage[margin=2.54cm]{geometry}  % margens "normais" do Word
+\usepackage{setspace}
+\usepackage{xcolor}
+\usepackage[normalem]{ulem}           % \uline para o apresentador
+\usepackage{enumitem}
+
+\newcommand{\pendente}[1]{\textcolor{red}{[#1]}}
+\newcommand{\secao}[1]{\par\medskip\noindent{\fontsize{14}{17}\selectfont\bfseries #1}\par}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+
+\begin{document}
+\onehalfspacing
+
+\begin{center}
+{\fontsize{14}{17}\selectfont\bfseries
+Coupling Terminal Station Queues And Stand Retention At Vertiports:\\
+A Paired Simulation Of Admission Policy And Resource Capacity\par}
+\medskip
+{\fontsize{12}{14}\selectfont\bfseries
+\uline{L. H. Tozi}\textsuperscript{1,*}, \pendente{coautores e professor}\textsuperscript{1}\par}
+{\fontsize{11}{13}\selectfont\itshape
+\textsuperscript{1}Instituto Tecnológico de Aeronáutica (ITA), \pendente{endereço}, Brazil.\par
+\textsuperscript{*}\pendente{e-mail do autor correspondente}\par}
+\end{center}
+
+\secao{Abstract}
+% texto justificado (padrão do LaTeX)
+\fontsize{12}{14}\selectfont
+Airside studies of vertiports schedule pads and stands under first-come, first-served rules [1],
+terminal studies size passenger processing stations without the airside [2], and coupled models
+report aggregate passenger delay rather than queues at each station [3]. We ask which intervention
+shortens passenger waiting and aircraft turnaround at a generic vertiport with one TLOF and five
+stands [2]: admitting flights in advance against first-come, first-served, one stand less, or a
+second check-in counter or security post. A paired discrete-event simulation couples the aircraft
+cycle (landing, charging, individual boarding and departure) to check-in, carry-on baggage and
+security queues, and records when the last confirmed passenger is ready and when the aircraft is
+ready to board. Each replication is an 8-h synthetic day shared by all configurations.
+\pendente{Resultado principal 1: efeito sobre partidas/h, com IC 95\%}.
+\pendente{Resultado principal 2: espera no balcão e retenção da aeronave pelo grupo, com IC 95\%}.
+\pendente{Implicação operacional: condição de demanda em que cada intervenção compensa}.
+Inputs come from the literature or are stated scenario assumptions; the results support design
+comparisons, not predictions for a specific site.
+
+
+{\fontsize{12}{14}\selectfont\itshape
+\textbf{Keywords:} Vertiport; Urban Air Mobility; Discrete-Event Simulation; Passenger Processing;
+Admission Policy; Level of Service\par}
+
+\secao{References}
+{\fontsize{12}{14}\selectfont
+\begin{enumerate}[label={[\arabic*]},leftmargin=*,itemsep=0pt]
+\item N. M. Guerreiro, G. E. Hagen, J. M. Maddalon, R. W. Butler, AIAA AVIATION 2020 Forum,
+      doi:10.2514/6.2020-2903, (2020).
+\item E. Feldhoff, AIAA AVIATION 2022 Forum, doi:10.2514/6.2022-3320, (2022).
+\item L. Preis, M. Hornung, Electronics, 11, 1071, (2022).
+\end{enumerate}}
+
+\secao{Biography}
+{\fontsize{12}{14}\selectfont
+L. H. Tozi is a master's student at Instituto Tecnológico de Aeronáutica (ITA), Brazil.
+\pendente{completar até 150 palavras com dados fornecidos pelo autor}\par}
+
+\end{document}
