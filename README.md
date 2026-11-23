@@ -15,3 +15,14 @@ O manuscrito será desenvolvido em LaTeX e organizado por entregáveis. O Vertip
 - `figures/`: figuras finais do manuscrito.
 
 Nenhuma pergunta de pesquisa, hipótese ou resultado está fixado neste estágio.
+
+## Ambiente e execução
+
+Os scripts da D4 usam o ambiente Conda `ih214`, descrito em `environment.yml` (Python 3.12 e SimPy).
+
+```bash
+conda env create -f environment.yml   # cria o ambiente uma vez
+conda activate ih214                  # ativa o ambiente
+cd scripts && python -m unittest      # roda todos os testes
+```
+

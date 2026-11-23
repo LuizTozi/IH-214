@@ -78,7 +78,7 @@ Os números abaixo são **estimativas determinísticas dos autores**, calculadas
 - Script: `scripts/d4_1_conferencia.py`.
 - Resultado: `data/d4/conferencia_d4_1.csv`.
 
-Como as durações são lineares no número de passageiros, o ciclo médio é o ciclo calculado com 2,25 passageiros. A capacidade com vários stands e as ocupações sob fila ainda dependem da extensão a ser verificada na D4.2 e do piloto da D4.3.
+Como as durações são lineares no número de passageiros, o ciclo médio é o ciclo calculado com 2,25 passageiros. As ocupações da tabela são nominais. Na simulação, cerca de 2,3% dos passageiros dos últimos pedidos chegam depois do horizonte. A ocupação realizada do balcão no período de oferta fica, portanto, um pouco abaixo da tabela (conferido na etapa 2 da D4.2). A capacidade com vários stands e as ocupações sob fila ainda dependem da extensão a ser verificada na D4.2 e do piloto da D4.3.
 
 **Ciclo do stand com recarga de 30 min**
 

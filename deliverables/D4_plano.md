@@ -38,6 +38,11 @@ O desenho experimental será redigido após a conclusão de todas as fases da D4
   - Gera os pedidos a 8/h e os afina para 6/h e 4/h.
   - Sorteia, para cada passageiro, ausência, antecedência de chegada e duração da bagagem antes da política.
   - Usa um gerador próprio para cada fonte de acaso.
+- **Etapa 2 concluída em 23/11/2026:** o terminal (`scripts/d4_terminal.py`, testes em `scripts/test_d4_terminal.py`), no ambiente Conda `ih214` (`environment.yml`: Python 3.12 e SimPy 4.1.2).
+  - Balcão, bagagem e inspeção com um ou dois servidores, fila FCFS única e menor índice livre.
+  - Saída por recusa ou desvio na fila (espera censurada), após o serviço em curso e na sala de espera. Quem ainda não chegou não comparece.
+  - Os testes conferem servidores em paralelo, capacidade nunca excedida, as três formas de saída, limite inclusivo, censura no horizonte e determinismo.
+  - Conferência de carga, só na configuração Base: a ocupação do balcão reproduz a estimativa, descontados os passageiros que chegam após o horizonte e o acaso das sementes.
 - **Levantamento de código aberto em 23/11/2026, antes da etapa 2.**
   - **VertiSim** (`eminb61/vertisim`, licença MIT; Onat, ligado a D001).
     - Usa SimPy, com tempo inteiro em milissegundos.
