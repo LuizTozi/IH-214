@@ -26,6 +26,8 @@ Ao revisar uma entrega anterior, registrar a fase de origem, a evidência que mo
 - recusa comunicada na decisão;
 - chegadas entre 15 e 60 min antes da partida programada.
 
+As durações usadas nas estimativas de carga foram conferidas com o simulador da Fase D (`scripts/d4_1_conferencia.py`). Essa conferência não executa o experimento e não compara políticas.
+
 O desenho experimental será redigido após a conclusão de todas as fases da D4.
 
 ## D4.2 · Preparar e verificar as execuções

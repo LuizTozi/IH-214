@@ -71,7 +71,14 @@ A informação perfeita é cruzada com recarga de 30 e de 0 min. Com recarga zer
 
 ### Escolha da faixa de demanda
 
-Os números abaixo são **estimativas determinísticas dos autores**, calculadas com o cadastro. A D4.2 e o piloto da D4.3 devem conferi-las.
+Os números abaixo são **estimativas determinísticas dos autores**, calculadas com o cadastro.
+
+**Conferência de 23/11/2026.** As durações que sustentam essas estimativas foram conferidas com o simulador da Fase D: ocupação do stand, tempo do toque à decolagem, folga até a STD e prontidão no terminal. Elas coincidem exatamente com as fórmulas nas 12 combinações de recarga (0, 30 e 60 min) e de grupo (1 a 4 passageiros).
+
+- Script: `scripts/d4_1_conferencia.py`.
+- Resultado: `data/d4/conferencia_d4_1.csv`.
+
+Como as durações são lineares no número de passageiros, o ciclo médio é o ciclo calculado com 2,25 passageiros. A capacidade com vários stands e as ocupações sob fila ainda dependem da extensão a ser verificada na D4.2 e do piloto da D4.3.
 
 **Ciclo do stand com recarga de 30 min**
 
@@ -110,7 +117,7 @@ Na demanda alta, a configuração S4 fica acima da capacidade estimada. A inspe�
 
 - STD = t + 900 s + recarga declarada (R).
 - Vincular o alvo à recarga mantém constante, em todas as famílias, a folga entre a aeronave pronta e a partida. A pontualidade deixa de ser trivial com recarga de 60 min. Assim, a família de recarga mede o efeito da duração do ciclo sobre a capacidade, sem tornar todo voo atrasado por construção.
-- **Folga estimada pelos autores.** Para toque em t, sem fila no lado ar nem retenção pelo grupo, a decolagem ocorre por volta de t + 560 s + R + 124,6 × (n − 2,25) s, em que n é o número de embarcados. A folga em relação à STD é de cerca de 340 s para o grupo médio e de 122 s para quatro passageiros, mais a tolerância de 60 s. Atrasos maiores vêm de espera no lado ar ou de retenção pelo grupo, que são os mecanismos estudados.
+- **Folga estimada pelos autores e conferida no simulador** (`data/d4/conferencia_d4_1.csv`). Para toque em t, sem fila no lado ar nem retenção pelo grupo, a decolagem ocorre por volta de t + 560 s + R + 124,6 × (n − 2,25) s, em que n é o número de embarcados. A folga em relação à STD é de cerca de 340 s para o grupo médio e de 122 s para quatro passageiros, mais a tolerância de 60 s. Atrasos maiores vêm de espera no lado ar ou de retenção pelo grupo, que são os mecanismos estudados.
 - **Coerência com o manifesto.** Com essa regra, o fechamento do manifesto (STD − 900 s) coincide com t + R, o fim da recarga de uma aeronave que toca em t. O instante relativo entre a prontidão do grupo e a da aeronave fica igual em todas as famílias de recarga.
 - Os 900 s são escolha dos autores.
 
