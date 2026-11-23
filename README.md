@@ -26,3 +26,11 @@ conda activate ih214                  # ativa o ambiente
 cd scripts && python -m unittest      # roda todos os testes
 ```
 
+Experimento da D4: uma linha por célula (48 por réplica), com os dias arquivados.
+
+```bash
+cd scripts && python d4_experimento.py --seeds 1 2 3 --out ../data/d4/resultados.csv --days-dir ../data/d4/dias
+```
+
+O registro da verificação está em `data/d4/verificacao_d4_2.md`.
+

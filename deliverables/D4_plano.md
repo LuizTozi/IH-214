@@ -60,6 +60,10 @@ O desenho experimental será redigido após a conclusão de todas as fases da D4
     - saída posterior ao plano quando a bagagem excede a previsão;
     - decisão independente de pedidos futuros.
   - **Constatação:** com janela de 300 s, um erro de previsão de bagagem se resolve pelo menos 241,6 s antes da saída do stand. Uma decisão posterior que dependa dessa saída já vê o valor correto. Logo, o erro de previsão atrasa o próprio voo, mas dificilmente se propaga a voos decididos depois.
+- **Etapa 5 concluída em 23/11/2026:** o executor do experimento (`scripts/d4_experimento.py`) e os testes de integração (`scripts/test_d4_experimento.py`).
+  - Gera 48 células por réplica, com uma linha por célula, versão do código, semente e identificador do dia arquivado.
+  - Os testes de integração verificam o pareamento, o balanço dos pedidos e os resultados próprios de cada política.
+- **D4.2 concluída em 23/11/2026.** São 60 testes no ambiente `ih214`, e o registro está em [`data/d4/verificacao_d4_2.md`](../data/d4/verificacao_d4_2.md). A próxima fase é a D4.3, o piloto. Antes dela, o autor deve revisar a interpretação da execução agendada registrada na especificação.
 - **Levantamento de código aberto em 23/11/2026, antes da etapa 2.**
   - **VertiSim** (`eminb61/vertisim`, licença MIT; Onat, ligado a D001).
     - Usa SimPy, com tempo inteiro em milissegundos.

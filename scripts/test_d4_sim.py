@@ -108,6 +108,7 @@ class TestAirsideFCFS(unittest.TestCase):
                 self.assertEqual(m["offered"], m["cancelled_empty"] + m["refused"] + m["diverted"]
                                  + m["departed"] + m["pending"])
                 check_resources(self, r, stands)
+                check_boarding_and_passengers(self, r, rows)
 
     def test_deterministic(self):
         rows = family_requests(generate_day(1), 6, 30)
@@ -193,6 +194,28 @@ def check_resources(test, result, stands):
         for (a1, b1), (a2, _) in zip(rows, rows[1:]):
             test.assertGreaterEqual(a2, b1, f"stand {k} overlap")
     test.assertFalse(any(res == "stand" and not 1 <= key <= stands for res, key, _, _ in spans))
+
+
+def check_boarding_and_passengers(test, result, rows):
+    walk_enter = S("51.6")                     # 31,9 + 19,7 s até o início do embarque
+    starts = {}
+    for pid, p in result["passengers"].items():
+        if p["boarding_start_s"] is not None:
+            test.assertGreaterEqual(p["boarding_start_s"], p["ready_s"] + walk_enter)
+            starts.setdefault(p["flight"], []).append(p["boarding_start_s"])
+    for flight_starts in starts.values():
+        flight_starts.sort()
+        for a, b in zip(flight_starts, flight_starts[1:]):
+            test.assertGreaterEqual(b - a, S("124.6"))     # embarque sequencial
+    reservations = sum(len(r["manifest"]) for r in rows)
+    absent = sum(p["arrival_s"] is None for r in rows for p in r["manifest"])
+    states = [p["state"] for p in result["passengers"].values()]
+    boarded = sum(p["boarding_start_s"] is not None for p in result["passengers"].values())
+    lost = sum(st.startswith(("left_", "not_arrived_")) for st in states)
+    test.assertEqual(len(states), reservations - absent)
+    test.assertEqual(result["metrics"]["boarded_passengers"], boarded)
+    test.assertEqual(result["metrics"]["lost_passengers"], lost)
+    test.assertLessEqual(boarded + lost, reservations - absent)   # o resto segue em curso
 
 
 if __name__ == "__main__":
