@@ -38,6 +38,16 @@ O desenho experimental será redigido após a conclusão de todas as fases da D4
   - Gera os pedidos a 8/h e os afina para 6/h e 4/h.
   - Sorteia, para cada passageiro, ausência, antecedência de chegada e duração da bagagem antes da política.
   - Usa um gerador próprio para cada fonte de acaso.
+- **Levantamento de código aberto em 23/11/2026, antes da etapa 2.**
+  - **VertiSim** (`eminb61/vertisim`, licença MIT; Onat, ligado a D001).
+    - Usa SimPy, com tempo inteiro em milissegundos.
+    - Tem `FilterStore` para stands e sala de espera e remove passageiros da sala por predicado ("spill").
+    - Usa `PriorityResource` para a FATO e `Resource` para os carregadores.
+    - A inspeção é só um tempo fixo. O parâmetro de número de servidores existe, mas não é usado. O VertiSim não modela fila nas estações do terminal.
+  - **Agendador de superfície da KAIST** (`hoon7591/Vertiport-Surface-Scheduler`, sem licença, só leitura).
+    - Cobre apenas o lado ar: otimização em Gurobi, horizonte deslizante e regras FCFS.
+  - **Sem licença** (KAIST, Saxena e KRA33): o código não pode ser copiado nem adaptado. Servem só como leitura de ideias, com citação.
+  - **Adaptação adotada:** padrões do VertiSim e da documentação da SimPy, ambos MIT, com atribuição no código. São eles: `Resource(capacity=c)` para estações com um ou dois servidores; espera da vez combinada com o evento de desvio do voo, para a saída da fila; e remoção da sala de espera por predicado.
 
 Adaptar o simulador integrado para configurar os recursos escolhidos e produzir uma linha por cenário, política e réplica. Arquivar configuração, versão do código, semente e identificador do traço oferecido. Gerar pedidos, manifestos e durações antes da decisão de admissão, com valores vinculados aos respectivos pedidos e passageiros. Assim, uma recusa não desloca a sequência de sorteios para o próximo voo.
 
