@@ -26,6 +26,8 @@ from math import ceil
 
 import simpy
 
+from d4_param import BAG_FORECAST, BAG_HIGH, BAG_LOW, COUNTER_DECLARED, SECURITY_DECLARED
+
 STATIONS = ("counter", "baggage", "security")
 SERVICE_S = {"counter": 180, "security": 90}            # PAR-046, PAR-047
 WAIT_LIMIT_S = {"counter": 180, "baggage": None, "security": 180}   # PAR-026
@@ -53,7 +55,8 @@ class Terminal:
         self.servers = dict(servers)
         self.resources = {s: simpy.Resource(env, capacity=c) for s, c in servers.items()}
         self.free = {s: [True] * c for s, c in servers.items()}
-        self.lounge = simpy.FilterStore(env)
+        self.lounges = {}          # voo -> sala de espera do grupo (ordem de prontidão)
+        self.persons = {}
         self.notices = {}          # voo -> evento de aviso (recusa ou desvio)
         self.reasons = {}
         self.visits = []
@@ -63,6 +66,12 @@ class Terminal:
         if flight not in self.notices:
             self.notices[flight] = self.env.event()
         return self.notices[flight]
+
+    def lounge(self, flight):
+        """Sala de espera do voo; o lado ar retira os passageiros por `get()`."""
+        if flight not in self.lounges:
+            self.lounges[flight] = simpy.FilterStore(self.env)
+        return self.lounges[flight]
 
     def cancel_flight(self, flight, reason):
         if reason not in REASONS:
@@ -76,14 +85,11 @@ class Terminal:
         pid = person["id"]
         if pid in self.passengers:
             raise ValueError(f"duplicate passenger {pid}")
+        self.persons[pid] = person
         self.passengers[pid] = {"id": pid, "flight": person["flight"],
                                 "arrival_ms": to_ms(person["arrival_s"]),
                                 "state": "scheduled", "ready_ms": None, "exit_ms": None}
         self.env.process(self._journey(person))
-
-    def board(self, pid):
-        """Evento que retira o passageiro da sala de espera para o embarque."""
-        return self.lounge.get(lambda p: p == pid)
 
     def _leave(self, row, state):
         row["state"], row["exit_ms"] = state, self.env.now
@@ -128,11 +134,72 @@ class Terminal:
                 self._leave(row, f"left_{self.reasons[person['flight']]}")
                 return
         row["state"], row["ready_ms"] = "in_lounge", self.env.now
-        yield self.lounge.put(person["id"])
+        lounge = self.lounge(person["flight"])
+        yield lounge.put(person["id"])
         yield notice
-        if person["id"] in self.lounge.items:
-            yield self.lounge.get(lambda p: p == person["id"])
+        if person["id"] in lounge.items:
+            yield lounge.get(lambda p: p == person["id"])
             self._leave(row, f"left_lounge_{self.reasons[person['flight']]}")
+
+    def forecast_ready(self, perfect=False):
+        """Previsão do instante de prontidão de quem já chegou (D4.1 v2.1).
+
+        Projeta o estado observado das filas sem novas chegadas: balcão e inspeção
+        pelas durações declaradas; bagagem em curso pela média de U(30, 60) s
+        condicionada ao tempo decorrido; bagagem não iniciada por 45 s. Com
+        informação perfeita, a bagagem usa a duração realizada. Quem está na sala
+        de espera já está pronto. Retorna {passageiro: instante_ms}.
+        """
+        now = self.env.now
+        ready = {pid: r["ready_ms"] for pid, r in self.passengers.items()
+                 if r["state"] == "in_lounge"}
+        current = {}
+        for order, visit in enumerate(self.visits):
+            if self.passengers[visit["id"]]["state"] == "in_terminal":
+                current[visit["id"]] = (order, visit)
+
+        def duration(pid, station):
+            if station == "counter":
+                return COUNTER_DECLARED
+            if station == "security":
+                return SECURITY_DECLARED
+            return to_ms(self.persons[pid]["bag_s"]) if perfect else BAG_FORECAST
+
+        def remaining(pid, visit):
+            elapsed = now - visit["start_ms"]
+            if visit["station"] != "baggage":
+                return duration(pid, visit["station"]) - elapsed
+            if perfect:
+                return to_ms(self.persons[pid]["bag_s"]) - elapsed
+            if elapsed < BAG_LOW:
+                return BAG_FORECAST - elapsed
+            return (elapsed + BAG_HIGH) // 2 - elapsed     # média condicionada
+
+        # Estação por estação: quem está em atendimento ocupa um servidor até
+        # terminar; os demais (fila atual + vindos da estação anterior) são
+        # atendidos em ordem de chegada pelo servidor livre mais cedo.
+        coming = []           # (instante disponível na estação, ordem, passageiro)
+        for station in STATIONS:
+            free = [now] * self.servers[station]
+            leaving = []
+            queue = list(coming)
+            for pid, (order, visit) in current.items():
+                if visit["station"] != station:
+                    continue
+                if visit["start_ms"] is None:
+                    queue.append((visit["entry_ms"], order, pid))
+                else:
+                    slot = free.index(min(free))
+                    free[slot] = now + remaining(pid, visit)
+                    leaving.append((free[slot], order, pid))
+            for avail, order, pid in sorted(queue):
+                slot = free.index(min(free))
+                free[slot] = max(avail, free[slot]) + duration(pid, station)
+                leaving.append((free[slot], order, pid))
+            coming = leaving
+        for t, _, pid in coming:
+            ready[pid] = t
+        return ready
 
 
 def passengers_from_family(rows):
@@ -193,5 +260,6 @@ def run_terminal(people, servers, cancels=(), horizon_s=28800):
     passengers = {pid: {"state": r["state"], "ready_s": seen(r["ready_ms"]),
                         "exit_s": seen(r["exit_ms"])}
                   for pid, r in terminal.passengers.items()}
-    return {"visits": visits, "passengers": passengers, "lounge": list(terminal.lounge.items),
+    lounge = [pid for store in terminal.lounges.values() for pid in store.items]
+    return {"visits": visits, "passengers": passengers, "lounge": lounge,
             "summary": summarize(terminal.visits, horizon_ms), "servers": dict(servers)}

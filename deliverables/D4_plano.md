@@ -43,6 +43,11 @@ O desenho experimental será redigido após a conclusão de todas as fases da D4
   - Saída por recusa ou desvio na fila (espera censurada), após o serviço em curso e na sala de espera. Quem ainda não chegou não comparece.
   - Os testes conferem servidores em paralelo, capacidade nunca excedida, as três formas de saída, limite inclusivo, censura no horizonte e determinismo.
   - Conferência de carga, só na configuração Base: a ocupação do balcão reproduz a estimativa, descontados os passageiros que chegam após o horizonte e o acaso das sementes.
+- **Etapa 3 concluída em 23/11/2026:** o lado ar com FCFS (`scripts/d4_sim.py`, `scripts/d4_param.py`, testes em `scripts/test_d4_sim.py`).
+  - TLOF com separação, rota unitária e N stands. Posse e ocupação física são registradas à parte.
+  - A chegada exige TLOF, rota e stand ao mesmo tempo. A aeronave desvia se a chegada não começar até t + 300 s (janela inclusiva), e o terminal é avisado.
+  - Embarque dos confirmados na ordem de prontidão. A espera da aeronave pelo grupo é a retenção.
+  - O terminal ganhou sala de espera por voo e a previsão de prontidão que a agenda usará.
 - **Levantamento de código aberto em 23/11/2026, antes da etapa 2.**
   - **VertiSim** (`eminb61/vertisim`, licença MIT; Onat, ligado a D001).
     - Usa SimPy, com tempo inteiro em milissegundos.
