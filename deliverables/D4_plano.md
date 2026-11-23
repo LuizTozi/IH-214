@@ -1,6 +1,6 @@
 # D4 — Plano de análise dos resultados
 
-A D4 deve explicar como a política de admissão e a quantidade de recursos afetam as partidas e a espera dos passageiros no vertiporto simulado. O produto será uma seção de resultados e discussão em `sections/results.tex`, com comparação à literatura e implicações práticas. As conclusões gerais do artigo ficam para a D5.
+A D4 deve explicar como a política de admissão e a quantidade de recursos do lado ar e do terminal afetam as partidas, a espera em cada estação do terminal e a retenção da aeronave pelo grupo no vertiporto simulado. O produto será uma seção de resultados e discussão em `sections/results.tex`, com comparação à literatura e implicações práticas. As conclusões gerais do artigo ficam para a D5.
 
 ## Fases de trabalho e repercussões nas entregas anteriores
 
@@ -19,7 +19,14 @@ Ao revisar uma entrega anterior, registrar a fase de origem, a evidência que mo
 
 ## D4.1 · Fechar o cenário experimental
 
-**Versão de trabalho salva para revisão em 23/11/2026. A D4.2 aguarda a revisão do Claude pelo autor.** O desenho experimental será redigido após a conclusão de todas as fases da D4. A [especificação preliminar](D4_1_cenarios.md) registra a matriz, as entradas e as regras de decisão. A revisão subsequente da D2 documentou a extensão experimental. A D3 situa o contraste de estacionamento e distingue a hipótese sobre inspeção.
+**Versão 2 em 23/11/2026, após revisão crítica. A D4.2 aguarda a aprovação do autor.** A versão 1 não permitia observar a fila por estação nem a retenção pelo grupo. As esperas no terminal eram iguais em todas as configurações, e o grupo ficava pronto muito antes da aeronave. A [especificação](D4_1_cenarios.md) registra as quatro decisões da revisão:
+
+- lado ar com 1 TLOF e 5 stands (Feldhoff 2022);
+- contrastes de servidor no balcão e na inspeção;
+- recusa comunicada na decisão;
+- chegadas entre 15 e 60 min antes da partida programada.
+
+O desenho experimental será redigido após a conclusão de todas as fases da D4.
 
 ## D4.2 · Preparar e verificar as execuções
 
@@ -35,9 +42,10 @@ Registrar as taxas de demanda e a configuração-base antes das rodadas definiti
 
 | Pergunta | Variação planejada | Comparação |
 |---|---|---|
-| Qual o efeito da admissão antecipada? | Agendamento e FCFS local | Mesmos recursos, pedidos oferecidos, passageiros e durações em cada par |
-| Qual o efeito de ampliar um recurso? | Acrescentar um stand à configuração-base, como primeiro contraste proposto | Mesma política e mesma demanda em cada par. Repetir sob ambas as políticas |
-| Em que condições o efeito muda? | Demanda baixa, intermediária e alta. Recarga no stand de 0, 30 e 60 min | Variar um fator por vez a partir do caso-base. Preservar as demais etapas do turnaround |
+| Qual o efeito da admissão antecipada? | Agendamento e FCFS local | Mesmos recursos, pedidos oferecidos, passageiros e durações em cada par. A recusa altera a carga do terminal |
+| Qual o efeito do estacionamento? | 5 stands (Base) contra 4 stands (S4) | Mesma política e mesma demanda em cada par. Repetir sob ambas as políticas |
+| Qual o efeito de um servidor no terminal? | Segundo balcão (B2) e segundo posto de inspeção (I2), um por vez | Mesma política e mesma demanda. Medir a espera por estação, o deslocamento da fila e a retenção pelo grupo |
+| Em que condições o efeito muda? | Demanda de 4, 6 e 8 pedidos/h. Recarga no stand de 0, 30 e 60 min. Informação perfeita na agenda | Variar um fator por vez a partir do caso-base. Preservar as demais etapas do turnaround |
 
 ## D4.5 · Medir desempenho e explicar o mecanismo
 
@@ -45,7 +53,8 @@ Registrar as taxas de demanda e a configuração-base antes das rodadas definiti
 |---|---|
 | Partidas e atendimento da demanda | Decolagens observadas por hora e por pedido oferecido. Exibir ao lado cancelamentos, recusas e pendências para detectar seleção pela admissão |
 | Atraso e pontualidade | Medir atraso em relação ao horário solicitado de partida. Informar partidas dentro da tolerância sobre decolagens observadas e o tamanho desse denominador |
-| Serviço ao passageiro | Por estação, apresentar espera até início do serviço, conformidade ao limiar da D2, denominador e esperas censuradas. Para bagagem, apresentar a espera. Calcular o P95 chegada–início do embarque entre percursos observados, com o número de embarcados e perdidos |
+| Serviço ao passageiro | Por estação, apresentar espera até início do serviço, conformidade ao limiar da D2, denominador, esperas censuradas e saídas por recusa. Para bagagem, apresentar a espera. Calcular o P95 chegada–início do embarque entre percursos observados, com o número de embarcados e perdidos |
+| Retenção pelo grupo | Por voo, comparar o instante em que o último confirmado fica pronto com o instante em que a aeronave fica pronta para embarque. Relatar a fração de voos retidos e a duração da retenção. Verificar se B2 e I2 reduzem a retenção e se a espera se desloca entre estações |
 | Gargalo | Confrontar ocupação física por recurso, tempo bloqueado e filas com os instantes de prontidão do grupo e da aeronave. Verificar se acrescentar o stand reduz o bloqueio e se a espera se desloca para outro recurso |
 
 Calcular cada diferença dentro da réplica e resumir as diferenças entre réplicas com média e intervalo de confiança de 95%. Declarar o sentido da subtração nas tabelas. Se uma réplica terminar sem decolagens ou embarques, registrar o indicador condicional correspondente como indefinido e informar quantos pares permitem estimá-lo. Preservar essa réplica na análise de partidas/h.
@@ -54,11 +63,11 @@ Calcular cada diferença dentro da réplica e resumir as diferenças entre répl
 
 1. Abrir a seção com uma tabela de cenários, horizonte, demanda oferecida e réplicas. Apresentar os efeitos das duas intervenções com estimativas, unidades e intervalos.
 2. Selecionar uma figura que relacione partidas/h à demanda e uma tabela que mostre, para os mesmos cenários, recusas, pendências e espera no terminal. Usar um traço de eventos para explicar um bloqueio identificado nas réplicas.
-3. Confrontar o mecanismo observado com o bloqueio por estacionamento em D001 e com a alocação de recursos em D026 e D029, usando as fronteiras documentadas na [síntese da D3](../data/d3/sintese_mecanismos.md). Explicar convergências ou divergências e indicar em quais condições uma mudança de política ou infraestrutura teria implicação operacional.
+3. Confrontar o mecanismo observado com o bloqueio por estacionamento em D001, com a alocação de recursos em D026 e D029 e com a comparação entre um e dois balcões de Feldhoff 2022, usando as fronteiras documentadas na [síntese da D3](../data/d3/sintese_mecanismos.md). Explicar convergências ou divergências e indicar em quais condições uma mudança de política ou infraestrutura teria implicação operacional.
 4. Integrar a seção ao manuscrito, recompilar e reproduzir cada tabela e figura a partir dos resultados arquivados. Encerrar quando cada afirmação quantitativa puder ser ligada ao cenário, denominador e incerteza correspondentes.
 
 ## Estrutura da seção e passagem ao piloto
 
-O [roteiro de redação em LaTeX](../sections/results.tex) organiza os dois contrastes em quatro configurações. O primeiro contraste físico proposto acrescenta um stand e mantém um único carregador compartilhado. A hipótese da D3 sobre um posto adicional de inspeção corresponde a outro experimento e exigiria variar esse posto mantendo os stands fixos.
+O [roteiro de redação em LaTeX](../sections/results.tex) organiza os contrastes em quatro configurações sob duas políticas. O contraste de estacionamento compara 5 e 4 stands, cada um com seu carregador. Os contrastes do terminal acrescentam um balcão ou um posto de inspeção com os stands fixos. Esse posto adicional de inspeção corresponde à hipótese da D3.
 
 Ao fechar cada fase da D4, registrar o alcance do que foi verificado e revisar as implicações para a D2 e a D3 antes de iniciar a fase seguinte. A próxima fase é a D4.2.

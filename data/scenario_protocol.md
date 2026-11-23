@@ -317,4 +317,4 @@ sobre diferenças entre políticas requer cenários e réplicas apropriados.
 
 ## Propostas da D4.1 em revisão
 
-As definições antes pendentes de horizonte, formação de grupo, precedência das estações e janela têm propostas registradas na [especificação da D4.1](../deliverables/D4_1_cenarios.md) para as réplicas experimentais. O cadastro PAR-050 a PAR-058 identifica as novas entradas. O caso de verificação unitário continua sendo a referência para os eventos individuais.
+As definições antes pendentes de horizonte, formação de grupo, precedência das estações e janela têm propostas registradas na [especificação da D4.1](../deliverables/D4_1_cenarios.md) para as réplicas experimentais. O cadastro PAR-050 a PAR-062 identifica as novas entradas da versão 2. O caso de verificação unitário continua sendo a referência para os eventos individuais.

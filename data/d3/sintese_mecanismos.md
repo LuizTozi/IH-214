@@ -17,4 +17,18 @@ O modelo e os traços da D2 são sintéticos e foram estipulados pelos autores. 
 
 ## Repercussão da D4.1 · 23/11/2026
 
-O primeiro contraste físico varia o estacionamento e conserva um carregador. D001 fundamenta a possibilidade de bloqueio de chegada por falta de posição. O atendimento de dois stands por um carregador é hipótese do modelo. A hipótese de ampliar a inspeção requer desenho próprio. A revisão ajusta o alcance da aplicação da teoria ao experimento.
+A versão 1 da D4.1 não observava a lacuna desta síntese. As filas do terminal eram iguais em todas as configurações, e o grupo ficava pronto antes da aeronave sempre que havia recarga. A versão 2 alinha o experimento à lacuna com quatro escolhas:
+
+- **Contrastes de servidor no terminal:** um segundo balcão e um segundo posto de inspeção, avaliados um por vez.
+- **Recusa comunicada na decisão:** a política passa a alterar a carga das estações.
+- **Chegadas entre 15 e 60 min antes da partida programada:** janela de Feldhoff S4283220962. A forma uniforme é suposta.
+- **Escala de 1 TLOF e 5 stands:** topologia da mesma fonte.
+
+Transferências e seus limites:
+
+- **D001** fundamenta o bloqueio de chegada por falta de posição no contraste de 5 contra 4 stands.
+- **Feldhoff** compara um e dois balcões sem lado ar e atribui a espera baixa na inspeção ao atraso no balcão (p. 10). A D4 testa essas comparações com o acoplamento ao stand.
+- **Topologia de 5 stands:** veio de uma análise com turnaround de 300 s (Ref. [8] da fonte, LIT-009). Transfere-se a topologia, não a conclusão sobre eficiência.
+- **Recursos por stand:** o carregador e o gate próprios de cada stand são hipótese do modelo.
+
+O deslocamento da espera entre estações e a retenção do stand pelo grupo continuam hipóteses de teste.
