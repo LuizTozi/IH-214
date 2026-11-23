@@ -333,3 +333,7 @@ aos 651,6 s, entrada no TLOF aos 674,4 s, decolagem aos 724,4 s e liberação ao
 Os intervalos são respectivamente 22,8 s (PAR-044), 50 s (PAR-045) e 3 s
 (PAR-048). A contagem de partidas aumenta na decolagem. Um marco fora do
 horizonte recebe valor nulo na medição e conserva o horário previsto no plano.
+
+## Revisão decorrente da D4.1 · 23/11/2026
+
+A [especificação experimental](D4_1_cenarios.md) estende o caso verificado para até dois stands com gate, rota, TLOF e carregador compartilhados. Distingue duração prevista e realizada, instante de decisão e comunicação individual da recusa. O dia terminante, os pedidos oferecidos e os manifestos definem a população comum. A verificação da extensão pertence à D4.2.

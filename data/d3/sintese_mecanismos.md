@@ -14,3 +14,7 @@
 Há evidência anterior tanto de gargalos físicos quanto de efeitos de políticas sob recursos fixos; D029 é uma comparação direta de FCFS com sequenciamento alternativo. Há também evidência anterior de ligação entre operações de pad/gate e atraso de passageiros (D036). A contribuição investigável da D2 é combinar **os dois contrastes definidos no protocolo** com a observação local das filas de passageiros, o instante de prontidão do grupo, a retenção do stand e as partidas, mantendo população e condições de comparação explícitas. Essa formulação descreve um recorte analítico, não reivindica exclusividade ou superioridade empírica.
 
 O modelo e os traços da D2 são sintéticos e foram estipulados pelos autores. O desenho dos experimentos posteriores deve emparelhar pedidos, duração de serviço, manifesto, horizonte e configuração entre políticas; variar um recurso por vez para o contraste de atendimento simultâneo; registrar recusas, pendências e o denominador efetivamente observado. O sinal de cada efeito, inclusive um possível deslocamento da espera da inspeção para o gate, é hipótese de teste.
+
+## Repercussão da D4.1 · 23/11/2026
+
+O primeiro contraste físico varia o estacionamento e conserva um carregador. D001 fundamenta a possibilidade de bloqueio de chegada por falta de posição. O atendimento de dois stands por um carregador é hipótese do modelo. A hipótese de ampliar a inspeção requer desenho próprio. A revisão ajusta o alcance da aplicação da teoria ao experimento.

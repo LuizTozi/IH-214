@@ -1,0 +1,52 @@
+% Estrutura de trabalho da D4. Integrar em main.tex após a análise das réplicas.
+\section{D4 — Resultados e discussão}
+\label{sec:resultados}
+
+\subsection{Cenários e unidade de comparação}
+
+A comparação terá como unidade um dia operacional sintético, observado por uma janela comum de $H$ horas. Para cada réplica, as quatro configurações da Tabela~\ref{tab:d4-desenho} receberão os mesmos pedidos de aeronave, horários solicitados de partida, manifestos e durações de serviço. A unidade de inferência será a réplica. Voos e passageiros de uma mesma réplica compartilham filas e recursos.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Desenho proposto para distinguir o efeito da política de admissão do efeito de uma posição adicional de estacionamento.}
+\label{tab:d4-desenho}
+\begin{tabular}{@{}lcc@{}}
+\toprule
+Alocação dos pedidos & Um stand & Dois stands \\
+\midrule
+Por ordem de solicitação (FCFS local) & F1 & F2 \\
+Admissão antecipada por janela e recursos & A1 & A2 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+O contraste de infraestrutura manterá um TLOF, uma rota bidirecional compartilhada, um carregador e os mesmos postos do terminal. Propõe-se que o carregador possa atender uma aeronave por vez em qualquer stand. A aeronave que aguarda recarga continuará ocupando sua posição. Essa hipótese permite atribuir a diferença entre as colunas ao estacionamento adicional.
+% Na versão com resultados, identificar configurações arquivadas, H, estado inicial,
+% perfil e taxas de pedidos/h, recarga-base, número de pares e precisão alcançada.
+
+\subsection{Admissão, partidas e demanda atendida}
+
+Para cada quantidade de stands, a diferença pareada será a vazão da admissão antecipada menos a do FCFS local. A vazão contará decolagens observadas na janela, divididas por $H$. A figura de vazão por demanda terá as mesmas configurações da tabela de atendimento dos pedidos. Essa tabela apresentará pedidos oferecidos, cancelados por grupo vazio, recusados, decolados e pendentes de decolagem no fechamento. A pontualidade usará como denominador as decolagens observadas e como referência o horário solicitado de cada partida.
+% Figura: pedidos/h no eixo horizontal, partidas/h no vertical, política e stands na legenda.
+% Tabela: contabilizar cada pedido uma vez, inclusive se decolou e ainda ocupa o TLOF.
+% Informar atraso em minutos, tolerância e número de decolagens com atraso observável.
+
+\subsection{Estacionamento, recarga e retenção da aeronave}
+
+Dentro de cada política, o contraste será a vazão com dois stands menos a vazão com um stand. Para explicar a diferença, o traço de eventos identificará quando faltou posição para uma chegada e por quanto tempo uma aeronave pronta permaneceu no stand aguardando a rota ou o TLOF. As ocupações serão expressas em posição-hora ocupada por posição-hora disponível. Para cada contraste, a tabela de efeitos trará a média das diferenças entre configurações dentro da réplica e seu intervalo de confiança de 95\%.
+% Selecionar um voo identificável e mostrar os instantes de pedido, acesso ao
+% stand, fim da recarga, prontidão do grupo, saída do stand e decolagem.
+
+\subsection{Espera no terminal e sincronização do embarque}
+
+Para balcão, bagagem e inspeção, a espera começa na entrada na fila e termina no início do atendimento. A tabela por estação reunirá espera média, visitas com início observado e visitas ainda em fila ao fechamento. Para balcão e inspeção, apresentará também a fração das visitas observadas com espera de até 180~s. O P95 do tempo entre chegada ao terminal e início do embarque será apresentado ao lado das contagens de reservas, perdas de voo e inícios de embarque observados. Essa leitura permite identificar mudanças na composição dos passageiros atendidos quando a política recusa um pedido.
+% Examinar o intervalo entre a prontidão do último confirmado e a da aeronave.
+% Registrar como indefinida a medida sem denominador e informar os pares válidos.
+
+\subsection{Sensibilidade, diálogo com a literatura e implicações operacionais}
+
+A análise repetirá os contrastes sob demanda baixa, intermediária e alta e sob recargas de 0, 30 e 60~min, variando um fator por vez em relação ao caso-base. Uma variante fornecerá à agenda a duração individual realizada da bagagem para avaliar a sensibilidade à informação disponível na admissão.
+
+A discussão confrontará o bloqueio registrado nas chegadas com o mecanismo de falta de estacionamento de \citet{onat2026buffer}. A ocupação do TLOF e dos stands permitirá examinar os gargalos identificados por \citet{guerreiro2020}. A comparação com \citet{halderGandhi2025} considerará que ali a intervenção reordena partidas em rede. Para o lado do passageiro, a espera por estação e a espera após a inspeção detalharão a relação entre disponibilidade da aeronave e atraso agregado estudada por \citet{preisHornung2022}.
+% Encerrar indicando sob quais configurações a intervenção alterou partidas,
+% cobertura da demanda e espera, com os limites da inferência no cenário sintético.

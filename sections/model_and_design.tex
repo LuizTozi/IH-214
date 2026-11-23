@@ -46,4 +46,3 @@ em que $O_j$ contém somente visitas cujo início do atendimento foi observado e
 \subsection{Implementação e verificação}
 
 A implementação usa simulação determinística de eventos discretos em Python. A Fase A verifica exclusão mútua e separação no TLOF; a B acrescenta rota e stand; a C decompõe turnaround e recarga; a D acrescenta manifesto, três estações obrigatórias, embarque e métricas de serviço. Casos mínimos testam pedidos simultâneos, bloqueio de rota ou stand, duração de recarga nula e positiva, espera exatamente no limite e grupo incompleto. A verificação pergunta se eventos e invariantes correspondem à especificação; não estima demanda real nem valida tempos empíricos.
-

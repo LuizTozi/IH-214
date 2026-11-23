@@ -314,3 +314,7 @@ observados. A utilização divide a ocupação física pelo horizonte. A razão 
 pontualidade pode ser calculada dividindo as partidas dentro da tolerância
 pelas decolagens observadas. O exemplo verifica a implementação. Inferência
 sobre diferenças entre políticas requer cenários e réplicas apropriados.
+
+## Propostas da D4.1 em revisão
+
+As definições antes pendentes de horizonte, formação de grupo, precedência das estações e janela têm propostas registradas na [especificação da D4.1](../deliverables/D4_1_cenarios.md) para as réplicas experimentais. O cadastro PAR-050 a PAR-058 identifica as novas entradas. O caso de verificação unitário continua sendo a referência para os eventos individuais.
