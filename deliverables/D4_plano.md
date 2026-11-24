@@ -83,6 +83,12 @@ Rodar os testes das fases A–D e verificar manualmente um caso com disputa de r
 
 Registrar as taxas de demanda e a configuração-base antes das rodadas definitivas. Fazer um piloto para estimar a dispersão das diferenças pareadas nos quatro indicadores principais da [especificação](D4_1_cenarios.md): decolagens/h nos contrastes de política e de stands, espera média no balcão em B2 e espera média na inspeção em I2. Dimensionar as réplicas pelo indicador que exigir mais réplicas. Definir a margem de precisão operacionalmente relevante e dimensionar as réplicas independentes para um intervalo de confiança de 95% com essa semilargura. Documentar o número escolhido e a precisão efetivamente obtida.
 
+**Plano congelado em 24/11/2026, antes da execução.** O protocolo, as sementes do piloto, as
+semilarguras-alvo e a separação entre piloto e rodadas definitivas estão em
+[`data/d4/plano_piloto_d4_3.md`](../data/d4/plano_piloto_d4_3.md). A instrução de continuidade
+preserva para o piloto a interpretação da execução agendada verificada na D4.2; essa escolha
+continua declarada como decisão do modelo, não como validação empírica.
+
 ## D4.4 · Executar os contrastes pareados
 
 | Pergunta | Variação planejada | Comparação |
