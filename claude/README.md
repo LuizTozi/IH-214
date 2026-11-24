@@ -2,7 +2,11 @@
 
 Este diretório é a interface assíncrona entre Claude e Codex. O Git é a fonte de verdade: toda entrega deve ser registrada em arquivos versionados e em um commit pequeno, descritivo e revisável.
 
-## Contexto do projeto
+## Tarefa atual
+
+Leia [contexto.md](contexto.md) para retomar o trabalho e revisar o experimento D4 e o resumo AERO2027. As orientações da D2 abaixo registram o contexto da Tarefa 01.
+
+## Contexto histórico da D2
 
 O artigo estuda teoria de filas em vertiportos de passageiros, conectando operações eVTOL e nível de serviço do passageiro. Não redigir seções do artigo nesta etapa. O objetivo vigente é completar a Deliverable 2: especificar dados, estados, regras e cenários antes de implementar a simulação.
 
