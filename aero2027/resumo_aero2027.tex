@@ -44,20 +44,22 @@ A Paired Simulation Of Admission Policy And Resource Capacity\par}
 \secao{Abstract}
 % texto justificado (padrão do LaTeX)
 \fontsize{12}{14}\selectfont
-Airside studies of vertiports schedule pads and stands under first-come, first-served rules [1],
-terminal studies size passenger processing stations without the airside [2], and coupled models
-report aggregate passenger delay rather than queues at each station [3]. We ask which intervention
-shortens passenger waiting and aircraft turnaround at a generic vertiport with one TLOF and five
-stands [2]: admitting flights in advance against first-come, first-served, one stand less, or a
-second check-in counter or security post. A paired discrete-event simulation couples the aircraft
-cycle (landing, charging, individual boarding and departure) to check-in, carry-on baggage and
-security queues, and records when the last confirmed passenger is ready and when the aircraft is
-ready to board. Each replication is an 8-h synthetic day shared by all configurations.
-\pendente{Resultado principal 1: efeito sobre partidas/h, com IC 95\%}.
-\pendente{Resultado principal 2: espera no balcão e retenção da aeronave pelo grupo, com IC 95\%}.
-\pendente{Implicação operacional: condição de demanda em que cada intervenção compensa}.
-Inputs come from the literature or are stated scenario assumptions; the results support design
-comparisons, not predictions for a specific site.
+Vertiport operators must decide whether scarce capacity should add a stand or a passenger-processing
+server, and whether flights should be admitted in advance or first-come, first-served (FCFS).
+Airside studies schedule pads and stands [1], terminal studies size passenger stations without the
+airside [2], and coupled models report aggregate passenger delay rather than queues at each station
+[3]. We compare these decisions in a paired discrete-event simulation of a generic vertiport with
+one TLOF and five stands. The model couples landing, charging, individual boarding and departure to
+check-in, carry-on baggage and security queues. Thirty independent replications use 8-h synthetic
+days shared by all configurations. At 6 requests/h and 30-min charging, advance admission yielded
+0.129 fewer departures/h than FCFS (95\% CI: 0.079--0.179 fewer). A fifth stand increased throughput
+by 0.504 departures/h under FCFS (0.453--0.555) and 0.492 under advance admission (0.440--0.544).
+A second check-in counter reduced mean check-in waiting by 141.5~s under FCFS (124.7--158.4) and
+126.4~s under advance admission (107.9--144.9), whereas a second security post had no queue to
+remove in the reference configuration. Under this synthetic demand, the stand was the throughput
+intervention and the counter was the terminal-service intervention; advance admission did not
+outperform FCFS with the tested minimum-time commitments and forecasts. Inputs come from the
+literature or are stated assumptions, so the results compare designs rather than predict a site.
 
 
 {\fontsize{12}{14}\selectfont\itshape

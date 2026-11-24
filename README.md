@@ -37,6 +37,6 @@ O piloto de precisão da D4.3 está em `data/d4/resultado_piloto_d4_3.md`; ele f
 independentes para a D4.4, sem combinar as sementes do piloto com o experimento definitivo.
 As rodadas definitivas da D4.4 estão em `data/d4/resultados_d4_4.csv`, com os dias arquivados em
 `data/d4/dias_d4_4/`. A análise pareada da D4.5 está em `data/d4/sintese_d4_5.md`, com tabelas
-reproduzíveis de células e contrastes no mesmo diretório. A integração ao manuscrito pertence à
-D4.6.
+reproduzíveis de células e contrastes no mesmo diretório. A D4.6 está integrada a
+`sections/results.tex`; o próximo bloco do manuscrito é a D5.
 

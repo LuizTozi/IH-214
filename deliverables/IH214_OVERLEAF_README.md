@@ -2,13 +2,13 @@
 
 Envie este ZIP como novo projeto no Overleaf. O arquivo principal é `main.tex`; a bibliografia usa BibTeX e `plainnat`. O PDF local foi compilado com pdfLaTeX, BibTeX e duas passagens adicionais de pdfLaTeX.
 
-Esta versão contém somente os blocos D2 e D3. A D2 reúne desenho operacional e resultados de verificação sintética em `sections/model_and_design.tex` e `sections/verification_results.tex`. A D3 contém a base teórica em `sections/theoretical_basis.tex`. Introdução, discussão, conclusão, resumo e palavras-chave serão incorporados apenas quando suas etapas forem trabalhadas.
+Esta versão contém os blocos D2 a D4. A D2 reúne desenho operacional e resultados de verificação sintética em `sections/model_and_design.tex` e `sections/verification_results.tex`. A D3 contém a base teórica em `sections/theoretical_basis.tex`. A D4 apresenta os experimentos pareados, seus denominadores e limites em `sections/results.tex`, com a figura vetorial em `figures/fig_d4_vazao_demanda.pdf`. Introdução, conclusão, resumo e palavras-chave do manuscrito serão incorporados quando a D5 for trabalhada.
 
-Ao obter um novo resultado da D2 ou da D3, atualize a respectiva seção, as fontes de dados ou referências correspondentes e recompile o PDF e o ZIP. Os traços da D2 são sintéticos. O piloto de precisão da D4.3, as rodadas definitivas da D4.4 e a análise pareada da D4.5 foram concluídos, mas os resultados ainda não foram integrados ao manuscrito; esta versão do pacote não os apresenta.
+Ao alterar uma seção, atualize as fontes de dados ou referências correspondentes e recompile o PDF e o ZIP. Os traços da D2 e os experimentos da D4 são sintéticos. O piloto da D4.3 não foi combinado às 30 réplicas definitivas. As tabelas reproduzíveis de célula e contraste acompanham o pacote em `data/d4/`.
 
 Os CSVs, o JSON e a matriz de extração em `data/` acompanham o pacote para rastrear entradas do modelo e afirmações da literatura. Eles não são carregados automaticamente pelo manuscrito.
 
-O manuscrito reúne a verificação da D2 e a discussão teórica da D3 sobre estacionamento e inspeção. A especificação da D4.1, versão 2.1, acompanha o projeto como material para revisão em `deliverables/D4_1_cenarios.md`.
+O manuscrito reúne a verificação da D2, a discussão teórica da D3 e os resultados da D4 sobre política de admissão, estacionamento, balcão e inspeção. A especificação D4.1 v2.1 acompanha o projeto em `deliverables/D4_1_cenarios.md`.
 
 ## Resumo para o AERO2027
 
@@ -24,5 +24,5 @@ Para compilar o resumo no Overleaf, vá em *Menu → Main document* e escolha `a
 - texto em 12 pt, entrelinha 1,5, justificado;
 - até 6 palavras-chave, referências e biografia de até 150 palavras.
 
-O evento pede o envio final em Word: transponha o texto para o `.docx` oficial sem alterar os estilos. Os trechos em vermelho (`\pendente{...}`) aguardam os resultados da D4 ou dados do autor. As regras de escrita estão em `AGENTS.md` e em `deliverables/EVENTO_AERO2027.md`, no repositório.
+O evento pede o envio final em Word: transponha o texto para o `.docx` oficial sem alterar os estilos. Os resultados da D4 já foram inseridos. Os trechos em vermelho (`\pendente{...}`) aguardam somente coautores, endereço, e-mail e biografia fornecidos pelo autor. As regras de escrita estão em `AGENTS.md` e em `deliverables/EVENTO_AERO2027.md`, no repositório.
 

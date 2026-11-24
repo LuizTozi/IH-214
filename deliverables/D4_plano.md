@@ -138,6 +138,12 @@ Calcular cada diferença dentro da réplica e resumir as diferenças entre répl
 
 ## D4.6 · Redigir e conferir a entrega
 
+**D4.6 concluída em 24/11/2026.** `sections/results.tex` foi substituído pelo relato das rodadas
+executadas, com a figura de vazão por demanda, tabelas de balanço e efeitos, denominadores,
+sensibilidades e limites. A seção foi incluída em `main.tex`. O resumo AERO2027 recebeu os
+resultados arquivados; permanecem pendentes apenas dados humanos de autoria, afiliação e
+biografia. Manuscrito e resumo compilam sem avisos e o pacote do Overleaf foi atualizado.
+
 1. Abrir a seção com uma tabela de cenários, horizonte, demanda oferecida e réplicas. Apresentar os efeitos das duas intervenções com estimativas, unidades e intervalos.
 2. Selecionar uma figura que relacione partidas/h à demanda e uma tabela que mostre, para os mesmos cenários, recusas, pendências e espera no terminal. Usar um traço de eventos para explicar um bloqueio identificado nas réplicas.
 3. Confrontar o mecanismo observado com o bloqueio por estacionamento em D001, com a alocação de recursos em D026 e D029 e com a comparação entre um e dois balcões de Feldhoff 2022, usando as fronteiras documentadas na [síntese da D3](../data/d3/sintese_mecanismos.md). Explicar convergências ou divergências e indicar em quais condições uma mudança de política ou infraestrutura teria implicação operacional.
@@ -147,4 +153,4 @@ Calcular cada diferença dentro da réplica e resumir as diferenças entre répl
 
 O [roteiro de redação em LaTeX](../sections/results.tex) organiza os contrastes em quatro configurações sob duas políticas. O contraste de estacionamento compara 5 e 4 stands, cada um com seu carregador. Os contrastes do terminal acrescentam um balcão ou um posto de inspeção com os stands fixos. Esse posto adicional de inspeção corresponde à hipótese da D3.
 
-Ao fechar cada fase da D4, registrar o alcance do que foi verificado e revisar as implicações para a D2 e a D3 antes de iniciar a fase seguinte. A próxima fase é a D4.6.
+Ao fechar cada fase da D4, registrar o alcance do que foi verificado e revisar as implicações para a D2 e a D3 antes de iniciar a fase seguinte. A D4 está concluída; a próxima entrega do manuscrito é a D5.
