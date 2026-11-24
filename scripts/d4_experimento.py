@@ -5,7 +5,7 @@ Cada réplica é um dia gerado por d4_dia a partir da semente; todas as células
 réplica usam o mesmo dia (pareamento). 48 execuções por réplica.
 
 Uso: python d4_experimento.py --seeds 1 2 3 --out data/d4/resultados.csv \\
-         [--days-dir data/d4/dias]
+         [--days-dir data/d4/dias] [--families referencia demanda_alta]
 """
 
 import argparse
@@ -40,8 +40,14 @@ CONFIGS = {
 }
 
 
-def cells():
+def cells(families=None):
+    selected = FAMILIES if families is None else families
+    unknown = set(selected) - set(FAMILIES)
+    if unknown:
+        raise ValueError(f"unknown families: {sorted(unknown)}")
     for family, (rate, charge, perfect) in FAMILIES.items():
+        if family not in selected:
+            continue
         for config in CONFIGS:
             for policy in (("agenda",) if perfect else ("fcfs", "agenda")):
                 yield family, config, policy
@@ -68,7 +74,7 @@ def flatten(result):
     return row
 
 
-def run(seeds, out, days_dir=None):
+def run(seeds, out, days_dir=None, families=None):
     version = code_version()
     rows = []
     for seed in seeds:
@@ -76,7 +82,7 @@ def run(seeds, out, days_dir=None):
         ident = day_id(day)
         if days_dir is not None:
             save_day(day, Path(days_dir) / f"dia_{seed:04d}.json")
-        for family, config, policy in cells():
+        for family, config, policy in cells(families):
             rate, charge, perfect = FAMILIES[family]
             stands, servers = CONFIGS[config]
             result = run_cell(family_requests(day, rate, charge), servers, stands, policy, perfect)
@@ -101,6 +107,9 @@ if __name__ == "__main__":
     parser.add_argument("--seeds", type=int, nargs="+", required=True)
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--days-dir", type=Path)
+    parser.add_argument("--families", nargs="+", choices=FAMILIES)
     args = parser.parse_args()
-    rows = run(args.seeds, args.out, args.days_dir)
-    print(f"{args.out}: {len(rows)} linhas ({len(args.seeds)} réplicas × 48 células)")
+    rows = run(args.seeds, args.out, args.days_dir, args.families)
+    per_replication = len(list(cells(args.families)))
+    print(f"{args.out}: {len(rows)} linhas "
+          f"({len(args.seeds)} réplicas × {per_replication} células)")
