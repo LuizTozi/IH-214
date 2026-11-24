@@ -118,6 +118,14 @@ interpretação pertencem à D4.5.
 
 ## D4.5 · Medir desempenho e explicar o mecanismo
 
+**D4.5 concluída em 24/11/2026.** O analisador versionado em `scripts/d4_analise.py` produziu
+1.632 resumos de célula e 82 contrastes, todos com 30 réplicas válidas. As tabelas de máquina
+estão em `data/d4/resumo_celulas_d4_5.csv` e `data/d4/contrastes_d4_5.csv`; a leitura com
+sentidos, intervalos, populações e limites está em
+[`data/d4/sintese_d4_5.md`](../data/d4/sintese_d4_5.md). A análise mantém as médias
+condicionais ao lado de seus denominadores e de recusas, desvios e pendências. Os 70 testes passam.
+Esses arquivos são a fonte quantitativa para a redação da D4.6 e do resumo AERO2027.
+
 | Resultado | Cálculo e leitura |
 |---|---|
 | Partidas e atendimento da demanda | Decolagens observadas por hora e por pedido oferecido. Exibir ao lado cancelamentos, recusas (agenda), desvios (FCFS) e pendências para detectar seleção pela admissão |
@@ -139,4 +147,4 @@ Calcular cada diferença dentro da réplica e resumir as diferenças entre répl
 
 O [roteiro de redação em LaTeX](../sections/results.tex) organiza os contrastes em quatro configurações sob duas políticas. O contraste de estacionamento compara 5 e 4 stands, cada um com seu carregador. Os contrastes do terminal acrescentam um balcão ou um posto de inspeção com os stands fixos. Esse posto adicional de inspeção corresponde à hipótese da D3.
 
-Ao fechar cada fase da D4, registrar o alcance do que foi verificado e revisar as implicações para a D2 e a D3 antes de iniciar a fase seguinte. A próxima fase é a D4.4.
+Ao fechar cada fase da D4, registrar o alcance do que foi verificado e revisar as implicações para a D2 e a D3 antes de iniciar a fase seguinte. A próxima fase é a D4.6.
