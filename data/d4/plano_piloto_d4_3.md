@@ -44,6 +44,11 @@ abaixo, que cobrem os quatro tipos de contraste principal nas políticas em que 
 Essas margens são escolhas operacionais dos autores para este cenário sintético; não são valores
 empíricos nem são atribuídas às fontes da D3.
 
+O congelamento anterior aos dados, a separação entre análises de desenho e resultados e a
+verificação explícita de validade seguem o checklist procedural de Kassis et al. (2026), registrado
+em `references/references.bib` como `kassis2026skills`. O dimensionamento quantitativo continua
+baseado em Law (2023), como definido no protocolo do projeto.
+
 Para cada contraste, o desvio-padrão amostral das diferenças pareadas no piloto será `s`. O número
 planejado será
 

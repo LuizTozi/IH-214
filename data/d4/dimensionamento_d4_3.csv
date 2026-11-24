@@ -1,0 +1,8 @@
+contrast,label,unit,valid_pairs,pilot_replications,mean_difference,sd_difference,pilot_halfwidth_95,target_halfwidth,required_replications
+politica_base,"agenda - FCFS, Base",decolagens/h,30,30,-0.09166666666666666,0.09811440659561263,0.036636521527181144,0.25,2
+stands_fcfs,"Base - S4, FCFS",decolagens/h,30,30,0.49583333333333335,0.16242814503296704,0.06065166613754458,0.25,2
+stands_agenda,"Base - S4, agenda",decolagens/h,30,30,0.5083333333333333,0.1639140509289976,0.06120651251776743,0.25,2
+balcao_fcfs,"B2 - Base, FCFS",s,30,30,-136.08512880822093,47.01452377246919,17.555511693399566,30.0,11
+balcao_agenda,"B2 - Base, agenda",s,30,30,-123.94413848129496,41.9842218604241,15.677166089695929,30.0,9
+inspecao_fcfs,"I2 - Base, FCFS",s,30,30,0.0,0.0,0.0,30.0,2
+inspecao_agenda,"I2 - Base, agenda",s,30,30,0.0,0.0,0.0,30.0,2

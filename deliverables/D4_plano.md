@@ -89,6 +89,15 @@ semilarguras-alvo e a separação entre piloto e rodadas definitivas estão em
 preserva para o piloto a interpretação da execução agendada verificada na D4.2; essa escolha
 continua declarada como decisão do modelo, não como validação empírica.
 
+**D4.3 concluída em 24/11/2026.** As 30 réplicas do piloto e os dias oferecidos estão arquivados
+em `data/d4/`. Todos os sete contrastes tiveram 30 pares válidos. O maior requisito calculado foi
+11 réplicas, para a espera no balcão sob FCFS; prevaleceu o mínimo predefinido de 30. A inspeção
+teve diferença nula entre I2 e Base nas 30 réplicas, coerente com a hipótese registrada de ausência
+de fila nessa estação sob o cenário de referência. Essa constatação serve para avaliar o desenho e
+não será combinada às rodadas definitivas. O relatório é
+[`data/d4/resultado_piloto_d4_3.md`](../data/d4/resultado_piloto_d4_3.md). A D4.4 usará 30
+réplicas independentes, sementes 20001 a 20030.
+
 ## D4.4 · Executar os contrastes pareados
 
 | Pergunta | Variação planejada | Comparação |
@@ -121,4 +130,4 @@ Calcular cada diferença dentro da réplica e resumir as diferenças entre répl
 
 O [roteiro de redação em LaTeX](../sections/results.tex) organiza os contrastes em quatro configurações sob duas políticas. O contraste de estacionamento compara 5 e 4 stands, cada um com seu carregador. Os contrastes do terminal acrescentam um balcão ou um posto de inspeção com os stands fixos. Esse posto adicional de inspeção corresponde à hipótese da D3.
 
-Ao fechar cada fase da D4, registrar o alcance do que foi verificado e revisar as implicações para a D2 e a D3 antes de iniciar a fase seguinte. A próxima fase é a D4.2.
+Ao fechar cada fase da D4, registrar o alcance do que foi verificado e revisar as implicações para a D2 e a D3 antes de iniciar a fase seguinte. A próxima fase é a D4.4.
