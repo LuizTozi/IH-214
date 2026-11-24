@@ -223,11 +223,134 @@ def write_csv(rows, path):
         writer.writerows(rows)
 
 
+def write_report(cells, contrasts, path, source):
+    cell_index = {(row["family"], row["config"], row["policy"], row["metric"]): row
+                  for row in cells}
+    contrast_index = {(row["family"], row["contrast"], row["metric"]): row
+                      for row in contrasts}
+
+    def effect(family, name, metric):
+        row = contrast_index[(family, name, metric)]
+        return f"{row['mean']:.3f} [{row['ci_low']:.3f}; {row['ci_high']:.3f}]"
+
+    def value(family, config, policy, metric):
+        row = cell_index[(family, config, policy, metric)]
+        return f"{row['mean']:.3f} [{row['ci_low']:.3f}; {row['ci_high']:.3f}]"
+
+    version = contrasts[0]["analysis_version"]
+    lines = [
+        "# D4.5 — Síntese reproduzível dos contrastes",
+        "",
+        f"Fonte: `{source}`. Analisador: `{version}`. Cada estimativa usa 30 réplicas",
+        "independentes; as diferenças são calculadas dentro da réplica e resumidas por média e",
+        "intervalo t bilateral de 95%.",
+        "",
+        "## Contrastes principais na família de referência",
+        "",
+        "| Contraste (sentido) | Política | Média [IC 95%] | Unidade |",
+        "|---|---|---:|---|",
+        f"| Agenda − FCFS, Base | — | {effect('referencia', 'policy_Base', 'departures_per_h')} | decolagens/h |",
+        f"| Base − S4 | FCFS | {effect('referencia', 'stands_fcfs', 'departures_per_h')} | decolagens/h |",
+        f"| Base − S4 | Agenda | {effect('referencia', 'stands_agenda', 'departures_per_h')} | decolagens/h |",
+        f"| B2 − Base | FCFS | {effect('referencia', 'counter_fcfs', 'counter_mean_wait_s')} | s |",
+        f"| B2 − Base | Agenda | {effect('referencia', 'counter_agenda', 'counter_mean_wait_s')} | s |",
+        f"| I2 − Base | FCFS | {effect('referencia', 'security_fcfs', 'security_mean_wait_s')} | s |",
+        f"| I2 − Base | Agenda | {effect('referencia', 'security_agenda', 'security_mean_wait_s')} | s |",
+        "",
+        "## Populações e mecanismos na configuração-base",
+        "",
+        "| Indicador por réplica | FCFS: média [IC 95%] | Agenda: média [IC 95%] |",
+        "|---|---:|---:|",
+    ]
+    for label, metric in (
+        ("Pedidos oferecidos", "offered"),
+        ("Recusados", "refused"),
+        ("Desviados", "diverted"),
+        ("Decolados", "departed"),
+        ("Pendentes no horizonte", "pending"),
+        ("Cobertura dos pedidos oferecidos", "coverage_offered"),
+        ("Espera média no balcão (s)", "counter_mean_wait_s"),
+        ("Fração de voos transportando passageiros retida pelo grupo", "retained_fraction"),
+        ("Retenção média pelo grupo (s)", "mean_await_s"),
+        ("Bloqueio médio do stand após prontidão para partir (s)", "mean_stand_blocked_s"),
+        ("Ocupação física dos stands", "utilization_stands"),
+    ):
+        lines.append(
+            f"| {label} | {value('referencia', 'Base', 'fcfs', metric)} | "
+            f"{value('referencia', 'Base', 'agenda', metric)} |"
+        )
+
+    lines.extend([
+        "",
+        "Os denominadores das médias condicionais estão em `resumo_celulas_d4_5.csv`. Na Base de",
+        "referência, a espera no balcão usa 2.529 atendimentos sob FCFS e 2.433 sob agenda; a",
+        "retenção usa 987 e 957 voos decolados transportando passageiros, respectivamente.",
+        "",
+        "## Sensibilidade do contraste de política na Base",
+        "",
+        "| Família | Agenda − FCFS, decolagens/h: média [IC 95%] |",
+        "|---|---:|",
+    ])
+    for family, label in (
+        ("demanda_baixa", "4 pedidos/h"),
+        ("referencia", "6 pedidos/h, recarga 30 min"),
+        ("demanda_alta", "8 pedidos/h"),
+        ("sem_recarga", "6 pedidos/h, sem recarga"),
+        ("recarga_longa", "6 pedidos/h, recarga 60 min"),
+    ):
+        lines.append(f"| {label} | {effect(family, 'policy_Base', 'departures_per_h')} |")
+
+    lines.extend([
+        "",
+        "## Informação perfeita na agenda",
+        "",
+        "| Família e configuração | Perfeita − declarada, decolagens/h: média [IC 95%] |",
+        "|---|---:|",
+    ])
+    for family, label in (("info_perfeita", "Recarga 30 min"),
+                          ("info_perfeita_sem_recarga", "Sem recarga")):
+        for config in CONFIGS:
+            lines.append(
+                f"| {label}, {config} | "
+                f"{effect(family, f'information_{config}', 'departures_per_h')} |"
+            )
+
+    lines.extend([
+        "",
+        "## Leitura delimitada pelos dados",
+        "",
+        "- Na família de referência, a agenda recusou pedidos antes da entrada completa no terminal,",
+        "  mas não aumentou a vazão: sua média ficou 0,129 decolagem/h abaixo do FCFS. O resultado",
+        "  coincide com maior bloqueio do stand após a prontidão para partir, pois a saída planejada",
+        "  funciona como horário mínimo na regra verificada da agenda.",
+        "- O quinto stand aumentou a vazão em aproximadamente 0,5 decolagem/h nas duas políticas e",
+        "  reduziu recusas ou desvios. Esse efeito pertence à topologia sintética e às durações",
+        "  adotadas; não estima a capacidade de um local real.",
+        "- O segundo balcão reduziu a espera média no balcão em mais de 120 s. Parte da espera foi",
+        "  deslocada para a inspeção (cerca de 8 s nas células B2), enquanto a Base tinha espera nula",
+        "  nessa estação. Acrescentar um segundo posto de inspeção à Base não alterou a espera porque",
+        "  não havia fila de inspeção a remover.",
+        "- Com recarga de 30 min, a informação perfeita recuperou cerca de 0,09 decolagem/h na Base;",
+        "  sem recarga, o intervalo incluiu zero. A comparação é de desenho informacional e não uma",
+        "  previsão do valor econômico de dados operacionais.",
+        "",
+        "Os resultados são de um cenário sintético com chegadas uniformes supostas, recursos vazios",
+        "na abertura e horizonte terminante de 8 h. Médias de espera descrevem somente visitas com",
+        "início de atendimento observado e devem ser lidas junto às recusas, aos desvios, à censura e",
+        "aos denominadores arquivados.",
+        "",
+    ])
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text("\n".join(lines), encoding="utf-8")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--input", type=Path, required=True)
     parser.add_argument("--cells-out", type=Path, required=True)
     parser.add_argument("--contrasts-out", type=Path, required=True)
+    parser.add_argument("--report", type=Path, required=True)
     args = parser.parse_args()
     rows = read_rows(args.input)
     version = analysis_version()
@@ -235,6 +358,7 @@ def main():
     contrasts = contrast_summaries(rows, version)
     write_csv(cells, args.cells_out)
     write_csv(contrasts, args.contrasts_out)
+    write_report(cells, contrasts, args.report, args.input)
     print(f"{args.cells_out}: {len(cells)} resumos; "
           f"{args.contrasts_out}: {len(contrasts)} contrastes")
 
