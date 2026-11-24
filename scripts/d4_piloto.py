@@ -98,8 +98,14 @@ def write_csv(rows, path):
 
 
 def write_report(rows, path, source):
-    chosen = max(PILOT_REPLICATIONS, *(row["required_replications"] for row in rows))
-    limiting = [row["label"] for row in rows if row["required_replications"] == chosen]
+    max_required = max(row["required_replications"] for row in rows)
+    chosen = max(PILOT_REPLICATIONS, max_required)
+    if PILOT_REPLICATIONS > max_required:
+        limiting = (f"mínimo predefinido de {PILOT_REPLICATIONS} réplicas; o maior requisito "
+                    f"estimado foi {max_required}")
+    else:
+        limiting = "; ".join(row["label"] for row in rows
+                              if row["required_replications"] == max_required)
     lines = [
         "# D4.3 — Resultado do piloto de precisão",
         "",
@@ -122,7 +128,7 @@ def write_report(rows, path, source):
         "",
         f"Número fixado para a D4.4: **{chosen} réplicas independentes**.",
         "",
-        "Indicador(es) limitante(s): " + "; ".join(limiting) + ".",
+        "Critério limitante: " + limiting + ".",
         "",
         "O cálculo usa `ceil((t_0.975,29 × s / h)^2)`, com diferenças dentro da réplica.",
         "A escolha é o maior requisito entre os contrastes e o mínimo de 30 réplicas.",

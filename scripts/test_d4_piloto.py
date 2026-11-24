@@ -65,6 +65,16 @@ class TestPilot(unittest.TestCase):
             self.assertIn("required_replications", csv_path.read_text(encoding="utf-8"))
             self.assertIn("Número fixado para a D4.4", report_path.read_text(encoding="utf-8"))
 
+    def test_report_names_minimum_when_it_governs(self):
+        summaries = summarize(self.fixture())
+        for item in summaries:
+            item["required_replications"] = 2
+        with tempfile.TemporaryDirectory() as folder:
+            report_path = Path(folder) / "report.md"
+            write_report(summaries, report_path, "pilot.csv")
+            report = report_path.read_text(encoding="utf-8")
+            self.assertIn("mínimo predefinido de 30 réplicas", report)
+
 
 if __name__ == "__main__":
     unittest.main()
