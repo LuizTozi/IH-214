@@ -100,6 +100,15 @@ réplicas independentes, sementes 20001 a 20030.
 
 ## D4.4 · Executar os contrastes pareados
 
+**D4.4 concluída em 24/11/2026.** Foram executadas 30 réplicas independentes (sementes 20001 a
+20030), 48 células por réplica e 1.440 linhas no total. O arquivo
+`data/d4/resultados_d4_4.csv` registra a versão de código `954995e`; os 30 dias oferecidos estão
+em `data/d4/dias_d4_4/`. A conferência pós-execução encontrou 1.440 chaves de célula distintas,
+zero erros no balanço de pedidos, nenhuma recusa sob FCFS, nenhum desvio sob agenda, ocupações
+entre zero e um e nenhuma média primária ausente. Os 69 testes, incluindo os do analisador da
+D4.5, continuam passando. Esses controles verificam integridade; as estimativas e sua
+interpretação pertencem à D4.5.
+
 | Pergunta | Variação planejada | Comparação |
 |---|---|---|
 | Qual o efeito da admissão antecipada? | Agendamento e FCFS local | Mesmos recursos, pedidos oferecidos, passageiros e durações em cada par. A recusa altera a carga do terminal |

@@ -35,4 +35,6 @@ cd scripts && python d4_experimento.py --seeds 1 2 3 --out ../data/d4/resultados
 O registro da verificação está em `data/d4/verificacao_d4_2.md`.
 O piloto de precisão da D4.3 está em `data/d4/resultado_piloto_d4_3.md`; ele fixou 30 réplicas
 independentes para a D4.4, sem combinar as sementes do piloto com o experimento definitivo.
+As rodadas definitivas da D4.4 estão em `data/d4/resultados_d4_4.csv`, com os dias arquivados em
+`data/d4/dias_d4_4/`. A análise pareada e a redação pertencem à D4.5 e à D4.6.
 

@@ -1,0 +1,1663 @@
+{
+ "seed": 20020,
+ "generator_version": "d4_dia 1.0 (D4.1 v2.1)",
+ "params": {
+  "horizon_s": {
+   "value": 28800,
+   "source": "PAR-050"
+  },
+  "first_request_s": {
+   "value": 2700,
+   "source": "PAR-051 (oferta a partir de 2700 s)"
+  },
+  "base_rate_per_h": {
+   "value": 8,
+   "source": "PAR-051 (fluxo comum a 8/h, afinado)"
+  },
+  "reserved_seats": {
+   "value": [
+    1,
+    4
+   ],
+   "source": "PAR-052 (uniforme discreta)"
+  },
+  "absence_probability": {
+   "value": 0.1,
+   "source": "PAR-053"
+  },
+  "arrival_lead_s": {
+   "value": [
+    900,
+    3600
+   ],
+   "source": "PAR-054 (Feldhoff 2022; forma uniforme SUPOSTA)"
+  },
+  "bag_service_s": {
+   "value": [
+    30,
+    60
+   ],
+   "source": "PAR-028"
+  },
+  "std_offset_s": {
+   "value": 900,
+   "source": "PAR-056 (STD = t + 900 s + recarga)"
+  },
+  "manifest_close_s": {
+   "value": -900,
+   "source": "PAR-059 (relativo à STD)"
+  }
+ },
+ "requests": [
+  {
+   "id": "R0001",
+   "request_s": 2951.717,
+   "mark": 0.3531865847085708,
+   "reservations": [
+    {
+     "id": "R0001-P1",
+     "absent": false,
+     "lead_s": 1023.007,
+     "bag_s": 54.223
+    },
+    {
+     "id": "R0001-P2",
+     "absent": false,
+     "lead_s": 2651.936,
+     "bag_s": 45.869
+    }
+   ]
+  },
+  {
+   "id": "R0002",
+   "request_s": 3550.939,
+   "mark": 0.671397129028436,
+   "reservations": [
+    {
+     "id": "R0002-P1",
+     "absent": false,
+     "lead_s": 2535.577,
+     "bag_s": 44.569
+    },
+    {
+     "id": "R0002-P2",
+     "absent": false,
+     "lead_s": 2588.383,
+     "bag_s": 54.961
+    },
+    {
+     "id": "R0002-P3",
+     "absent": false,
+     "lead_s": 1427.469,
+     "bag_s": 46.186
+    }
+   ]
+  },
+  {
+   "id": "R0003",
+   "request_s": 4204.205,
+   "mark": 0.3410979335718447,
+   "reservations": [
+    {
+     "id": "R0003-P1",
+     "absent": false,
+     "lead_s": 1050.035,
+     "bag_s": 48.297
+    },
+    {
+     "id": "R0003-P2",
+     "absent": false,
+     "lead_s": 1968.925,
+     "bag_s": 35.327
+    }
+   ]
+  },
+  {
+   "id": "R0004",
+   "request_s": 4220.443,
+   "mark": 0.41329308704612056,
+   "reservations": [
+    {
+     "id": "R0004-P1",
+     "absent": false,
+     "lead_s": 2170.121,
+     "bag_s": 46.554
+    }
+   ]
+  },
+  {
+   "id": "R0005",
+   "request_s": 4240.445,
+   "mark": 0.04400001046750268,
+   "reservations": [
+    {
+     "id": "R0005-P1",
+     "absent": false,
+     "lead_s": 1841.697,
+     "bag_s": 36.117
+    }
+   ]
+  },
+  {
+   "id": "R0006",
+   "request_s": 4308.584,
+   "mark": 0.9157895729520679,
+   "reservations": [
+    {
+     "id": "R0006-P1",
+     "absent": false,
+     "lead_s": 1191.805,
+     "bag_s": 30.242
+    },
+    {
+     "id": "R0006-P2",
+     "absent": true,
+     "lead_s": 2911.897,
+     "bag_s": 30.254
+    },
+    {
+     "id": "R0006-P3",
+     "absent": false,
+     "lead_s": 1315.234,
+     "bag_s": 45.033
+    },
+    {
+     "id": "R0006-P4",
+     "absent": false,
+     "lead_s": 1427.669,
+     "bag_s": 32.877
+    }
+   ]
+  },
+  {
+   "id": "R0007",
+   "request_s": 4582.038,
+   "mark": 0.447213286216797,
+   "reservations": [
+    {
+     "id": "R0007-P1",
+     "absent": false,
+     "lead_s": 1759.539,
+     "bag_s": 34.346
+    }
+   ]
+  },
+  {
+   "id": "R0008",
+   "request_s": 4591.995,
+   "mark": 0.8801237979848882,
+   "reservations": [
+    {
+     "id": "R0008-P1",
+     "absent": false,
+     "lead_s": 2562.671,
+     "bag_s": 39.64
+    }
+   ]
+  },
+  {
+   "id": "R0009",
+   "request_s": 4670.154,
+   "mark": 0.0829874446742529,
+   "reservations": [
+    {
+     "id": "R0009-P1",
+     "absent": false,
+     "lead_s": 981.813,
+     "bag_s": 38.378
+    },
+    {
+     "id": "R0009-P2",
+     "absent": true,
+     "lead_s": 3153.353,
+     "bag_s": 57.251
+    }
+   ]
+  },
+  {
+   "id": "R0010",
+   "request_s": 5152.671,
+   "mark": 0.7375507853455835,
+   "reservations": [
+    {
+     "id": "R0010-P1",
+     "absent": false,
+     "lead_s": 3231.339,
+     "bag_s": 43.244
+    }
+   ]
+  },
+  {
+   "id": "R0011",
+   "request_s": 6304.207,
+   "mark": 0.4621882404062124,
+   "reservations": [
+    {
+     "id": "R0011-P1",
+     "absent": false,
+     "lead_s": 1159.532,
+     "bag_s": 32.97
+    },
+    {
+     "id": "R0011-P2",
+     "absent": false,
+     "lead_s": 2032.724,
+     "bag_s": 32.811
+    }
+   ]
+  },
+  {
+   "id": "R0012",
+   "request_s": 6322.056,
+   "mark": 0.10965719818462949,
+   "reservations": [
+    {
+     "id": "R0012-P1",
+     "absent": true,
+     "lead_s": 3069.497,
+     "bag_s": 30.659
+    },
+    {
+     "id": "R0012-P2",
+     "absent": false,
+     "lead_s": 2292.224,
+     "bag_s": 57.995
+    },
+    {
+     "id": "R0012-P3",
+     "absent": false,
+     "lead_s": 2592.433,
+     "bag_s": 53.755
+    }
+   ]
+  },
+  {
+   "id": "R0013",
+   "request_s": 6396.542,
+   "mark": 0.044196266763455894,
+   "reservations": [
+    {
+     "id": "R0013-P1",
+     "absent": false,
+     "lead_s": 2098.542,
+     "bag_s": 56.081
+    },
+    {
+     "id": "R0013-P2",
+     "absent": false,
+     "lead_s": 3176.116,
+     "bag_s": 59.385
+    },
+    {
+     "id": "R0013-P3",
+     "absent": false,
+     "lead_s": 3325.571,
+     "bag_s": 31.478
+    },
+    {
+     "id": "R0013-P4",
+     "absent": false,
+     "lead_s": 2352.036,
+     "bag_s": 30.79
+    }
+   ]
+  },
+  {
+   "id": "R0014",
+   "request_s": 6645.882,
+   "mark": 0.09033482814507776,
+   "reservations": [
+    {
+     "id": "R0014-P1",
+     "absent": false,
+     "lead_s": 1215.882,
+     "bag_s": 48.141
+    },
+    {
+     "id": "R0014-P2",
+     "absent": false,
+     "lead_s": 2013.25,
+     "bag_s": 58.447
+    },
+    {
+     "id": "R0014-P3",
+     "absent": false,
+     "lead_s": 1674.979,
+     "bag_s": 41.744
+    }
+   ]
+  },
+  {
+   "id": "R0015",
+   "request_s": 6869.594,
+   "mark": 0.10930799188562634,
+   "reservations": [
+    {
+     "id": "R0015-P1",
+     "absent": false,
+     "lead_s": 3592.462,
+     "bag_s": 55.282
+    },
+    {
+     "id": "R0015-P2",
+     "absent": false,
+     "lead_s": 3337.632,
+     "bag_s": 55.41
+    },
+    {
+     "id": "R0015-P3",
+     "absent": false,
+     "lead_s": 1844.447,
+     "bag_s": 34.931
+    },
+    {
+     "id": "R0015-P4",
+     "absent": false,
+     "lead_s": 1889.209,
+     "bag_s": 57.188
+    }
+   ]
+  },
+  {
+   "id": "R0016",
+   "request_s": 8223.164,
+   "mark": 0.6547488345862826,
+   "reservations": [
+    {
+     "id": "R0016-P1",
+     "absent": false,
+     "lead_s": 1893.563,
+     "bag_s": 51.426
+    }
+   ]
+  },
+  {
+   "id": "R0017",
+   "request_s": 8677.996,
+   "mark": 0.47469141232604894,
+   "reservations": [
+    {
+     "id": "R0017-P1",
+     "absent": true,
+     "lead_s": 2338.843,
+     "bag_s": 43.494
+    },
+    {
+     "id": "R0017-P2",
+     "absent": false,
+     "lead_s": 1254.95,
+     "bag_s": 55.287
+    },
+    {
+     "id": "R0017-P3",
+     "absent": false,
+     "lead_s": 3098.322,
+     "bag_s": 44.539
+    },
+    {
+     "id": "R0017-P4",
+     "absent": false,
+     "lead_s": 1524.435,
+     "bag_s": 50.266
+    }
+   ]
+  },
+  {
+   "id": "R0018",
+   "request_s": 8698.532,
+   "mark": 0.7968841288933909,
+   "reservations": [
+    {
+     "id": "R0018-P1",
+     "absent": false,
+     "lead_s": 1201.633,
+     "bag_s": 33.623
+    },
+    {
+     "id": "R0018-P2",
+     "absent": false,
+     "lead_s": 1200.967,
+     "bag_s": 50.652
+    },
+    {
+     "id": "R0018-P3",
+     "absent": false,
+     "lead_s": 1387.482,
+     "bag_s": 50.832
+    }
+   ]
+  },
+  {
+   "id": "R0019",
+   "request_s": 8865.665,
+   "mark": 0.6721484036894373,
+   "reservations": [
+    {
+     "id": "R0019-P1",
+     "absent": true,
+     "lead_s": 3179.564,
+     "bag_s": 53.961
+    },
+    {
+     "id": "R0019-P2",
+     "absent": false,
+     "lead_s": 2345.693,
+     "bag_s": 36.959
+    },
+    {
+     "id": "R0019-P3",
+     "absent": false,
+     "lead_s": 995.12,
+     "bag_s": 47.524
+    },
+    {
+     "id": "R0019-P4",
+     "absent": false,
+     "lead_s": 2207.921,
+     "bag_s": 53.247
+    }
+   ]
+  },
+  {
+   "id": "R0020",
+   "request_s": 9251.636,
+   "mark": 0.5949698808152458,
+   "reservations": [
+    {
+     "id": "R0020-P1",
+     "absent": false,
+     "lead_s": 1482.666,
+     "bag_s": 33.67
+    },
+    {
+     "id": "R0020-P2",
+     "absent": false,
+     "lead_s": 3389.141,
+     "bag_s": 55.811
+    },
+    {
+     "id": "R0020-P3",
+     "absent": false,
+     "lead_s": 3045.923,
+     "bag_s": 41.816
+    },
+    {
+     "id": "R0020-P4",
+     "absent": false,
+     "lead_s": 1291.457,
+     "bag_s": 43.702
+    }
+   ]
+  },
+  {
+   "id": "R0021",
+   "request_s": 9260.72,
+   "mark": 0.7468874978530428,
+   "reservations": [
+    {
+     "id": "R0021-P1",
+     "absent": true,
+     "lead_s": 1889.182,
+     "bag_s": 46.826
+    }
+   ]
+  },
+  {
+   "id": "R0022",
+   "request_s": 9540.128,
+   "mark": 0.09805580634085465,
+   "reservations": [
+    {
+     "id": "R0022-P1",
+     "absent": false,
+     "lead_s": 2857.932,
+     "bag_s": 55.181
+    }
+   ]
+  },
+  {
+   "id": "R0023",
+   "request_s": 9779.986,
+   "mark": 0.854966335959689,
+   "reservations": [
+    {
+     "id": "R0023-P1",
+     "absent": false,
+     "lead_s": 2527.608,
+     "bag_s": 41.879
+    }
+   ]
+  },
+  {
+   "id": "R0024",
+   "request_s": 10921.388,
+   "mark": 0.10985225340488014,
+   "reservations": [
+    {
+     "id": "R0024-P1",
+     "absent": false,
+     "lead_s": 3415.017,
+     "bag_s": 35.383
+    },
+    {
+     "id": "R0024-P2",
+     "absent": false,
+     "lead_s": 2624.782,
+     "bag_s": 47.323
+    },
+    {
+     "id": "R0024-P3",
+     "absent": false,
+     "lead_s": 2073.529,
+     "bag_s": 36.452
+    }
+   ]
+  },
+  {
+   "id": "R0025",
+   "request_s": 11072.031,
+   "mark": 0.21080780058246085,
+   "reservations": [
+    {
+     "id": "R0025-P1",
+     "absent": false,
+     "lead_s": 1123.754,
+     "bag_s": 44.843
+    },
+    {
+     "id": "R0025-P2",
+     "absent": false,
+     "lead_s": 2766.449,
+     "bag_s": 49.111
+    },
+    {
+     "id": "R0025-P3",
+     "absent": false,
+     "lead_s": 2081.012,
+     "bag_s": 59.488
+    }
+   ]
+  },
+  {
+   "id": "R0026",
+   "request_s": 11202.707,
+   "mark": 0.05491598402352038,
+   "reservations": [
+    {
+     "id": "R0026-P1",
+     "absent": false,
+     "lead_s": 2932.498,
+     "bag_s": 45.896
+    }
+   ]
+  },
+  {
+   "id": "R0027",
+   "request_s": 11319.927,
+   "mark": 0.8852602875524925,
+   "reservations": [
+    {
+     "id": "R0027-P1",
+     "absent": false,
+     "lead_s": 1840.267,
+     "bag_s": 41.085
+    },
+    {
+     "id": "R0027-P2",
+     "absent": false,
+     "lead_s": 1132.162,
+     "bag_s": 43.704
+    }
+   ]
+  },
+  {
+   "id": "R0028",
+   "request_s": 11374.343,
+   "mark": 0.9177200121161018,
+   "reservations": [
+    {
+     "id": "R0028-P1",
+     "absent": true,
+     "lead_s": 2747.279,
+     "bag_s": 30.782
+    },
+    {
+     "id": "R0028-P2",
+     "absent": false,
+     "lead_s": 2319.786,
+     "bag_s": 49.279
+    },
+    {
+     "id": "R0028-P3",
+     "absent": false,
+     "lead_s": 3417.405,
+     "bag_s": 34.28
+    }
+   ]
+  },
+  {
+   "id": "R0029",
+   "request_s": 11884.011,
+   "mark": 0.6642126875646919,
+   "reservations": [
+    {
+     "id": "R0029-P1",
+     "absent": false,
+     "lead_s": 1775.6,
+     "bag_s": 54.589
+    },
+    {
+     "id": "R0029-P2",
+     "absent": false,
+     "lead_s": 1450.821,
+     "bag_s": 44.859
+    }
+   ]
+  },
+  {
+   "id": "R0030",
+   "request_s": 11922.999,
+   "mark": 0.40414826011791494,
+   "reservations": [
+    {
+     "id": "R0030-P1",
+     "absent": false,
+     "lead_s": 1380.578,
+     "bag_s": 53.764
+    }
+   ]
+  },
+  {
+   "id": "R0031",
+   "request_s": 12097.191,
+   "mark": 0.8335300837488147,
+   "reservations": [
+    {
+     "id": "R0031-P1",
+     "absent": false,
+     "lead_s": 1423.173,
+     "bag_s": 33.278
+    },
+    {
+     "id": "R0031-P2",
+     "absent": false,
+     "lead_s": 3284.609,
+     "bag_s": 39.032
+    },
+    {
+     "id": "R0031-P3",
+     "absent": false,
+     "lead_s": 2157.176,
+     "bag_s": 54.107
+    },
+    {
+     "id": "R0031-P4",
+     "absent": false,
+     "lead_s": 1606.209,
+     "bag_s": 58.831
+    }
+   ]
+  },
+  {
+   "id": "R0032",
+   "request_s": 12456.553,
+   "mark": 0.2382270637833276,
+   "reservations": [
+    {
+     "id": "R0032-P1",
+     "absent": false,
+     "lead_s": 3430.251,
+     "bag_s": 33.726
+    },
+    {
+     "id": "R0032-P2",
+     "absent": false,
+     "lead_s": 2830.436,
+     "bag_s": 32.738
+    }
+   ]
+  },
+  {
+   "id": "R0033",
+   "request_s": 12771.182,
+   "mark": 0.16890582218899497,
+   "reservations": [
+    {
+     "id": "R0033-P1",
+     "absent": false,
+     "lead_s": 1388.711,
+     "bag_s": 54.9
+    },
+    {
+     "id": "R0033-P2",
+     "absent": false,
+     "lead_s": 1475.542,
+     "bag_s": 35.245
+    },
+    {
+     "id": "R0033-P3",
+     "absent": false,
+     "lead_s": 2089.668,
+     "bag_s": 44.643
+    },
+    {
+     "id": "R0033-P4",
+     "absent": false,
+     "lead_s": 2203.744,
+     "bag_s": 36.559
+    }
+   ]
+  },
+  {
+   "id": "R0034",
+   "request_s": 13502.247,
+   "mark": 0.5620508019795926,
+   "reservations": [
+    {
+     "id": "R0034-P1",
+     "absent": false,
+     "lead_s": 1525.131,
+     "bag_s": 47.062
+    },
+    {
+     "id": "R0034-P2",
+     "absent": false,
+     "lead_s": 1002.554,
+     "bag_s": 38.141
+    },
+    {
+     "id": "R0034-P3",
+     "absent": false,
+     "lead_s": 2177.803,
+     "bag_s": 56.343
+    },
+    {
+     "id": "R0034-P4",
+     "absent": false,
+     "lead_s": 953.249,
+     "bag_s": 42.594
+    }
+   ]
+  },
+  {
+   "id": "R0035",
+   "request_s": 13628.544,
+   "mark": 0.9624719333986802,
+   "reservations": [
+    {
+     "id": "R0035-P1",
+     "absent": false,
+     "lead_s": 1249.812,
+     "bag_s": 34.009
+    },
+    {
+     "id": "R0035-P2",
+     "absent": false,
+     "lead_s": 3043.734,
+     "bag_s": 48.56
+    },
+    {
+     "id": "R0035-P3",
+     "absent": false,
+     "lead_s": 3284.81,
+     "bag_s": 56.136
+    }
+   ]
+  },
+  {
+   "id": "R0036",
+   "request_s": 13764.625,
+   "mark": 0.45028402753864083,
+   "reservations": [
+    {
+     "id": "R0036-P1",
+     "absent": false,
+     "lead_s": 3402.409,
+     "bag_s": 43.982
+    }
+   ]
+  },
+  {
+   "id": "R0037",
+   "request_s": 13905.631,
+   "mark": 0.07971688233424823,
+   "reservations": [
+    {
+     "id": "R0037-P1",
+     "absent": false,
+     "lead_s": 2408.649,
+     "bag_s": 57.471
+    },
+    {
+     "id": "R0037-P2",
+     "absent": false,
+     "lead_s": 1823.369,
+     "bag_s": 45.842
+    },
+    {
+     "id": "R0037-P3",
+     "absent": false,
+     "lead_s": 1207.651,
+     "bag_s": 55.849
+    }
+   ]
+  },
+  {
+   "id": "R0038",
+   "request_s": 14123.404,
+   "mark": 0.44071607387546996,
+   "reservations": [
+    {
+     "id": "R0038-P1",
+     "absent": false,
+     "lead_s": 3500.141,
+     "bag_s": 54.19
+    },
+    {
+     "id": "R0038-P2",
+     "absent": false,
+     "lead_s": 905.872,
+     "bag_s": 55.6
+    }
+   ]
+  },
+  {
+   "id": "R0039",
+   "request_s": 14280.865,
+   "mark": 0.4559620138725239,
+   "reservations": [
+    {
+     "id": "R0039-P1",
+     "absent": false,
+     "lead_s": 946.038,
+     "bag_s": 43.478
+    },
+    {
+     "id": "R0039-P2",
+     "absent": false,
+     "lead_s": 1027.76,
+     "bag_s": 38.934
+    },
+    {
+     "id": "R0039-P3",
+     "absent": false,
+     "lead_s": 1843.303,
+     "bag_s": 58.262
+    },
+    {
+     "id": "R0039-P4",
+     "absent": false,
+     "lead_s": 1121.139,
+     "bag_s": 38.951
+    }
+   ]
+  },
+  {
+   "id": "R0040",
+   "request_s": 14413.039,
+   "mark": 0.5341409796973942,
+   "reservations": [
+    {
+     "id": "R0040-P1",
+     "absent": false,
+     "lead_s": 3094.374,
+     "bag_s": 52.807
+    },
+    {
+     "id": "R0040-P2",
+     "absent": false,
+     "lead_s": 1364.621,
+     "bag_s": 38.5
+    },
+    {
+     "id": "R0040-P3",
+     "absent": false,
+     "lead_s": 1380.72,
+     "bag_s": 30.986
+    }
+   ]
+  },
+  {
+   "id": "R0041",
+   "request_s": 14779.129,
+   "mark": 0.873189677014183,
+   "reservations": [
+    {
+     "id": "R0041-P1",
+     "absent": false,
+     "lead_s": 2265.249,
+     "bag_s": 50.697
+    },
+    {
+     "id": "R0041-P2",
+     "absent": false,
+     "lead_s": 3247.512,
+     "bag_s": 47.584
+    },
+    {
+     "id": "R0041-P3",
+     "absent": false,
+     "lead_s": 2729.211,
+     "bag_s": 56.619
+    }
+   ]
+  },
+  {
+   "id": "R0042",
+   "request_s": 14794.14,
+   "mark": 0.8850820959187168,
+   "reservations": [
+    {
+     "id": "R0042-P1",
+     "absent": false,
+     "lead_s": 2355.135,
+     "bag_s": 30.52
+    },
+    {
+     "id": "R0042-P2",
+     "absent": false,
+     "lead_s": 2080.147,
+     "bag_s": 55.119
+    }
+   ]
+  },
+  {
+   "id": "R0043",
+   "request_s": 15718.855,
+   "mark": 0.7858985462711181,
+   "reservations": [
+    {
+     "id": "R0043-P1",
+     "absent": false,
+     "lead_s": 1771.12,
+     "bag_s": 51.217
+    },
+    {
+     "id": "R0043-P2",
+     "absent": true,
+     "lead_s": 1092.379,
+     "bag_s": 50.405
+    },
+    {
+     "id": "R0043-P3",
+     "absent": true,
+     "lead_s": 2029.79,
+     "bag_s": 37.419
+    }
+   ]
+  },
+  {
+   "id": "R0044",
+   "request_s": 15770.596,
+   "mark": 0.411637755872738,
+   "reservations": [
+    {
+     "id": "R0044-P1",
+     "absent": false,
+     "lead_s": 3337.751,
+     "bag_s": 32.665
+    },
+    {
+     "id": "R0044-P2",
+     "absent": false,
+     "lead_s": 2223.72,
+     "bag_s": 31.8
+    },
+    {
+     "id": "R0044-P3",
+     "absent": false,
+     "lead_s": 3578.059,
+     "bag_s": 59.871
+    },
+    {
+     "id": "R0044-P4",
+     "absent": false,
+     "lead_s": 1216.335,
+     "bag_s": 43.877
+    }
+   ]
+  },
+  {
+   "id": "R0045",
+   "request_s": 15989.047,
+   "mark": 0.5463378708918405,
+   "reservations": [
+    {
+     "id": "R0045-P1",
+     "absent": false,
+     "lead_s": 1680.51,
+     "bag_s": 41.394
+    }
+   ]
+  },
+  {
+   "id": "R0046",
+   "request_s": 16951.017,
+   "mark": 0.40633257841268144,
+   "reservations": [
+    {
+     "id": "R0046-P1",
+     "absent": false,
+     "lead_s": 3017.979,
+     "bag_s": 38.426
+    }
+   ]
+  },
+  {
+   "id": "R0047",
+   "request_s": 17472.63,
+   "mark": 0.9765157647451272,
+   "reservations": [
+    {
+     "id": "R0047-P1",
+     "absent": true,
+     "lead_s": 1099.76,
+     "bag_s": 36.644
+    },
+    {
+     "id": "R0047-P2",
+     "absent": false,
+     "lead_s": 2151.449,
+     "bag_s": 42.465
+    },
+    {
+     "id": "R0047-P3",
+     "absent": false,
+     "lead_s": 2151.644,
+     "bag_s": 44.484
+    },
+    {
+     "id": "R0047-P4",
+     "absent": false,
+     "lead_s": 1724.278,
+     "bag_s": 58.047
+    }
+   ]
+  },
+  {
+   "id": "R0048",
+   "request_s": 17711.839,
+   "mark": 0.625035300337995,
+   "reservations": [
+    {
+     "id": "R0048-P1",
+     "absent": false,
+     "lead_s": 3029.97,
+     "bag_s": 38.221
+    },
+    {
+     "id": "R0048-P2",
+     "absent": false,
+     "lead_s": 1163.925,
+     "bag_s": 52.565
+    }
+   ]
+  },
+  {
+   "id": "R0049",
+   "request_s": 18426.561,
+   "mark": 0.3401176433395311,
+   "reservations": [
+    {
+     "id": "R0049-P1",
+     "absent": false,
+     "lead_s": 910.119,
+     "bag_s": 49.902
+    }
+   ]
+  },
+  {
+   "id": "R0050",
+   "request_s": 19571.146,
+   "mark": 0.10062057632169974,
+   "reservations": [
+    {
+     "id": "R0050-P1",
+     "absent": false,
+     "lead_s": 1181.302,
+     "bag_s": 57.495
+    }
+   ]
+  },
+  {
+   "id": "R0051",
+   "request_s": 20357.36,
+   "mark": 0.8684886066973182,
+   "reservations": [
+    {
+     "id": "R0051-P1",
+     "absent": false,
+     "lead_s": 1973.805,
+     "bag_s": 47.2
+    },
+    {
+     "id": "R0051-P2",
+     "absent": false,
+     "lead_s": 1559.839,
+     "bag_s": 59.175
+    },
+    {
+     "id": "R0051-P3",
+     "absent": false,
+     "lead_s": 2996.323,
+     "bag_s": 37.016
+    },
+    {
+     "id": "R0051-P4",
+     "absent": false,
+     "lead_s": 2103.56,
+     "bag_s": 45.536
+    }
+   ]
+  },
+  {
+   "id": "R0052",
+   "request_s": 21218.539,
+   "mark": 0.488222758332968,
+   "reservations": [
+    {
+     "id": "R0052-P1",
+     "absent": true,
+     "lead_s": 2517.714,
+     "bag_s": 47.274
+    },
+    {
+     "id": "R0052-P2",
+     "absent": false,
+     "lead_s": 2817.646,
+     "bag_s": 31.969
+    },
+    {
+     "id": "R0052-P3",
+     "absent": false,
+     "lead_s": 2976.499,
+     "bag_s": 46.434
+    }
+   ]
+  },
+  {
+   "id": "R0053",
+   "request_s": 21634.027,
+   "mark": 0.8055381730511182,
+   "reservations": [
+    {
+     "id": "R0053-P1",
+     "absent": false,
+     "lead_s": 2201.197,
+     "bag_s": 35.407
+    },
+    {
+     "id": "R0053-P2",
+     "absent": false,
+     "lead_s": 1986.321,
+     "bag_s": 57.405
+    },
+    {
+     "id": "R0053-P3",
+     "absent": false,
+     "lead_s": 1059.699,
+     "bag_s": 49.646
+    },
+    {
+     "id": "R0053-P4",
+     "absent": false,
+     "lead_s": 3418.715,
+     "bag_s": 30.888
+    }
+   ]
+  },
+  {
+   "id": "R0054",
+   "request_s": 21677.806,
+   "mark": 0.007816471193654806,
+   "reservations": [
+    {
+     "id": "R0054-P1",
+     "absent": false,
+     "lead_s": 1283.839,
+     "bag_s": 59.679
+    },
+    {
+     "id": "R0054-P2",
+     "absent": false,
+     "lead_s": 2831.514,
+     "bag_s": 33.138
+    },
+    {
+     "id": "R0054-P3",
+     "absent": true,
+     "lead_s": 1614.559,
+     "bag_s": 46.568
+    },
+    {
+     "id": "R0054-P4",
+     "absent": false,
+     "lead_s": 1765.494,
+     "bag_s": 41.423
+    }
+   ]
+  },
+  {
+   "id": "R0055",
+   "request_s": 22092.177,
+   "mark": 0.2971532988494652,
+   "reservations": [
+    {
+     "id": "R0055-P1",
+     "absent": false,
+     "lead_s": 2980.087,
+     "bag_s": 55.08
+    },
+    {
+     "id": "R0055-P2",
+     "absent": false,
+     "lead_s": 1739.055,
+     "bag_s": 32.889
+    },
+    {
+     "id": "R0055-P3",
+     "absent": true,
+     "lead_s": 1646.195,
+     "bag_s": 50.31
+    }
+   ]
+  },
+  {
+   "id": "R0056",
+   "request_s": 22154.434,
+   "mark": 0.3341950107441589,
+   "reservations": [
+    {
+     "id": "R0056-P1",
+     "absent": false,
+     "lead_s": 3266.826,
+     "bag_s": 43.785
+    },
+    {
+     "id": "R0056-P2",
+     "absent": false,
+     "lead_s": 2389.014,
+     "bag_s": 55.266
+    },
+    {
+     "id": "R0056-P3",
+     "absent": false,
+     "lead_s": 2012.68,
+     "bag_s": 51.575
+    },
+    {
+     "id": "R0056-P4",
+     "absent": false,
+     "lead_s": 902.434,
+     "bag_s": 41.005
+    }
+   ]
+  },
+  {
+   "id": "R0057",
+   "request_s": 22501.938,
+   "mark": 0.4403479628285899,
+   "reservations": [
+    {
+     "id": "R0057-P1",
+     "absent": false,
+     "lead_s": 2468.813,
+     "bag_s": 49.595
+    },
+    {
+     "id": "R0057-P2",
+     "absent": false,
+     "lead_s": 1300.065,
+     "bag_s": 59.816
+    },
+    {
+     "id": "R0057-P3",
+     "absent": false,
+     "lead_s": 3457.107,
+     "bag_s": 54.531
+    }
+   ]
+  },
+  {
+   "id": "R0058",
+   "request_s": 23261.171,
+   "mark": 0.206475808876725,
+   "reservations": [
+    {
+     "id": "R0058-P1",
+     "absent": false,
+     "lead_s": 1814.397,
+     "bag_s": 55.551
+    },
+    {
+     "id": "R0058-P2",
+     "absent": false,
+     "lead_s": 1602.889,
+     "bag_s": 45.418
+    },
+    {
+     "id": "R0058-P3",
+     "absent": false,
+     "lead_s": 1974.324,
+     "bag_s": 49.259
+    }
+   ]
+  },
+  {
+   "id": "R0059",
+   "request_s": 23331.405,
+   "mark": 0.7033470881671107,
+   "reservations": [
+    {
+     "id": "R0059-P1",
+     "absent": false,
+     "lead_s": 933.984,
+     "bag_s": 47.755
+    },
+    {
+     "id": "R0059-P2",
+     "absent": false,
+     "lead_s": 3243.422,
+     "bag_s": 41.261
+    }
+   ]
+  },
+  {
+   "id": "R0060",
+   "request_s": 24179.769,
+   "mark": 0.26509714407897733,
+   "reservations": [
+    {
+     "id": "R0060-P1",
+     "absent": false,
+     "lead_s": 3383.795,
+     "bag_s": 31.859
+    },
+    {
+     "id": "R0060-P2",
+     "absent": false,
+     "lead_s": 1563.949,
+     "bag_s": 52.935
+    },
+    {
+     "id": "R0060-P3",
+     "absent": false,
+     "lead_s": 3285.598,
+     "bag_s": 46.309
+    },
+    {
+     "id": "R0060-P4",
+     "absent": false,
+     "lead_s": 2817.188,
+     "bag_s": 36.077
+    }
+   ]
+  },
+  {
+   "id": "R0061",
+   "request_s": 24812.655,
+   "mark": 0.5454419319757393,
+   "reservations": [
+    {
+     "id": "R0061-P1",
+     "absent": false,
+     "lead_s": 2918.164,
+     "bag_s": 46.683
+    }
+   ]
+  },
+  {
+   "id": "R0062",
+   "request_s": 24972.93,
+   "mark": 0.0091868953101788,
+   "reservations": [
+    {
+     "id": "R0062-P1",
+     "absent": false,
+     "lead_s": 2348.282,
+     "bag_s": 41.17
+    }
+   ]
+  },
+  {
+   "id": "R0063",
+   "request_s": 24998.258,
+   "mark": 0.4343603872551458,
+   "reservations": [
+    {
+     "id": "R0063-P1",
+     "absent": false,
+     "lead_s": 3111.086,
+     "bag_s": 59.466
+    },
+    {
+     "id": "R0063-P2",
+     "absent": false,
+     "lead_s": 1503.716,
+     "bag_s": 31.997
+    },
+    {
+     "id": "R0063-P3",
+     "absent": true,
+     "lead_s": 965.225,
+     "bag_s": 38.789
+    },
+    {
+     "id": "R0063-P4",
+     "absent": false,
+     "lead_s": 3237.64,
+     "bag_s": 55.3
+    }
+   ]
+  },
+  {
+   "id": "R0064",
+   "request_s": 26065.103,
+   "mark": 0.4982670582200517,
+   "reservations": [
+    {
+     "id": "R0064-P1",
+     "absent": false,
+     "lead_s": 1404.25,
+     "bag_s": 31.108
+    },
+    {
+     "id": "R0064-P2",
+     "absent": false,
+     "lead_s": 2325.681,
+     "bag_s": 41.047
+    },
+    {
+     "id": "R0064-P3",
+     "absent": false,
+     "lead_s": 1997.955,
+     "bag_s": 48.125
+    },
+    {
+     "id": "R0064-P4",
+     "absent": false,
+     "lead_s": 2339.928,
+     "bag_s": 39.326
+    }
+   ]
+  },
+  {
+   "id": "R0065",
+   "request_s": 26365.598,
+   "mark": 0.9343564315720321,
+   "reservations": [
+    {
+     "id": "R0065-P1",
+     "absent": false,
+     "lead_s": 2577.687,
+     "bag_s": 48.176
+    }
+   ]
+  },
+  {
+   "id": "R0066",
+   "request_s": 26546.8,
+   "mark": 0.7265306943804898,
+   "reservations": [
+    {
+     "id": "R0066-P1",
+     "absent": false,
+     "lead_s": 2202.741,
+     "bag_s": 57.536
+    },
+    {
+     "id": "R0066-P2",
+     "absent": false,
+     "lead_s": 2598.755,
+     "bag_s": 43.614
+    },
+    {
+     "id": "R0066-P3",
+     "absent": false,
+     "lead_s": 1499.274,
+     "bag_s": 39.063
+    }
+   ]
+  },
+  {
+   "id": "R0067",
+   "request_s": 26730.526,
+   "mark": 0.5643927189780146,
+   "reservations": [
+    {
+     "id": "R0067-P1",
+     "absent": false,
+     "lead_s": 2995.288,
+     "bag_s": 37.528
+    }
+   ]
+  },
+  {
+   "id": "R0068",
+   "request_s": 27058.526,
+   "mark": 0.7544632279243149,
+   "reservations": [
+    {
+     "id": "R0068-P1",
+     "absent": false,
+     "lead_s": 2021.541,
+     "bag_s": 37.567
+    },
+    {
+     "id": "R0068-P2",
+     "absent": false,
+     "lead_s": 3034.61,
+     "bag_s": 44.302
+    }
+   ]
+  },
+  {
+   "id": "R0069",
+   "request_s": 27721.751,
+   "mark": 0.05859271702669633,
+   "reservations": [
+    {
+     "id": "R0069-P1",
+     "absent": false,
+     "lead_s": 3448.747,
+     "bag_s": 44.124
+    },
+    {
+     "id": "R0069-P2",
+     "absent": false,
+     "lead_s": 3472.935,
+     "bag_s": 57.595
+    },
+    {
+     "id": "R0069-P3",
+     "absent": false,
+     "lead_s": 2314.66,
+     "bag_s": 38.407
+    }
+   ]
+  },
+  {
+   "id": "R0070",
+   "request_s": 28033.414,
+   "mark": 0.21326212326168636,
+   "reservations": [
+    {
+     "id": "R0070-P1",
+     "absent": false,
+     "lead_s": 2497.516,
+     "bag_s": 45.31
+    }
+   ]
+  },
+  {
+   "id": "R0071",
+   "request_s": 28091.106,
+   "mark": 0.34875019462398416,
+   "reservations": [
+    {
+     "id": "R0071-P1",
+     "absent": false,
+     "lead_s": 985.933,
+     "bag_s": 30.362
+    }
+   ]
+  },
+  {
+   "id": "R0072",
+   "request_s": 28163.527,
+   "mark": 0.31756795836146645,
+   "reservations": [
+    {
+     "id": "R0072-P1",
+     "absent": true,
+     "lead_s": 1332.459,
+     "bag_s": 44.803
+    },
+    {
+     "id": "R0072-P2",
+     "absent": false,
+     "lead_s": 2538.81,
+     "bag_s": 36.12
+    }
+   ]
+  },
+  {
+   "id": "R0073",
+   "request_s": 28327.959,
+   "mark": 0.775220399849958,
+   "reservations": [
+    {
+     "id": "R0073-P1",
+     "absent": true,
+     "lead_s": 1379.688,
+     "bag_s": 30.289
+    },
+    {
+     "id": "R0073-P2",
+     "absent": false,
+     "lead_s": 920.809,
+     "bag_s": 50.126
+    }
+   ]
+  },
+  {
+   "id": "R0074",
+   "request_s": 28737.512,
+   "mark": 0.6757881254511867,
+   "reservations": [
+    {
+     "id": "R0074-P1",
+     "absent": false,
+     "lead_s": 1916.605,
+     "bag_s": 30.059
+    },
+    {
+     "id": "R0074-P2",
+     "absent": true,
+     "lead_s": 1843.388,
+     "bag_s": 57.524
+    }
+   ]
+  }
+ ]
+}
