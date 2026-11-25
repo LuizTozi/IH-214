@@ -2,7 +2,7 @@
 política × réplica, com versão do código, semente e identificador do dia oferecido.
 
 Cada réplica é um dia gerado por d4_dia a partir da semente; todas as células da
-réplica usam o mesmo dia (pareamento). 42 execuções por réplica (D4.1 v2.3).
+réplica usam o mesmo dia (pareamento). 66 execuções por réplica (D4.1 v2.4).
 
 Uso: python d4_experimento.py --seeds 1 2 3 --out data/d4/resultados.csv \\
          [--days-dir data/d4/dias] [--families referencia demanda_alta]
@@ -13,6 +13,7 @@ import csv
 import hashlib
 import json
 import subprocess
+from dataclasses import dataclass
 from pathlib import Path
 
 from d4_dia import GENERATOR_VERSION, family_requests, generate_day, save_day
@@ -20,18 +21,28 @@ from d4_sim import run_cell
 
 ROOT = Path(__file__).resolve().parent.parent
 
-# família: (pedidos/h, recarga em min, informação perfeita, serviço variável)
-# servico_variavel (D4.1 v2.3): referência com balcão e inspeção exponenciais nas
-# mesmas médias, limite superior clássico de variabilidade (SUPOSTO, PAR-063).
+@dataclass(frozen=True)
+class Family:
+    rate: int = 6
+    charge: int = 30
+    absence: float = 0.0
+    arrival: str = "fc_morning"
+    window_s: int = 300
+    std_offset_s: int = 900
+
+
 FAMILIES = {
-    "referencia": (6, 30, False, False),
-    "demanda_baixa": (4, 30, False, False),
-    "demanda_alta": (8, 30, False, False),
-    "sem_recarga": (6, 0, False, False),
-    "recarga_longa": (6, 60, False, False),
-    "servico_variavel": (6, 30, False, True),
-    "info_perfeita": (6, 30, True, False),
-    "info_perfeita_sem_recarga": (6, 0, True, False),
+    "referencia": Family(),
+    "demanda_baixa": Family(rate=4),
+    "demanda_alta": Family(rate=8),
+    "sem_recarga": Family(charge=0),
+    "recarga_longa": Family(charge=60),
+    "ausencia_15": Family(absence=0.15),
+    "chegada_lcc_tarde": Family(arrival="lcc_afternoon"),
+    "janela_150": Family(window_s=150),
+    "janela_600": Family(window_s=600),
+    "partida_600": Family(std_offset_s=600),
+    "partida_1200": Family(std_offset_s=1200),
 }
 ONE = {"counter": 1, "baggage": 1, "security": 1}
 # configuração: (stands, servidores por estação)
@@ -50,11 +61,11 @@ def cells(families=None):
     unknown = set(selected) - set(FAMILIES)
     if unknown:
         raise ValueError(f"unknown families: {sorted(unknown)}")
-    for family, (rate, charge, perfect, _variable) in FAMILIES.items():
+    for family in FAMILIES:
         if family not in selected:
             continue
         for config in CONFIGS:
-            for policy in (("agenda",) if perfect else ("fcfs", "agenda")):
+            for policy in ("fcfs", "agenda"):
                 yield family, config, policy
 
 
@@ -88,13 +99,15 @@ def run(seeds, out, days_dir=None, families=None):
         if days_dir is not None:
             save_day(day, Path(days_dir) / f"dia_{seed:04d}.json")
         for family, config, policy in cells(families):
-            rate, charge, perfect, variable = FAMILIES[family]
+            spec = FAMILIES[family]
             stands, servers = CONFIGS[config]
-            result = run_cell(family_requests(day, rate, charge, variable), servers, stands,
-                              policy, perfect)
+            requests = family_requests(day, spec.rate, spec.charge, absence=spec.absence,
+                                       arrival=spec.arrival, std_offset_s=spec.std_offset_s)
+            result = run_cell(requests, servers, stands, policy, window_s=spec.window_s)
             rows.append({"seed": seed, "day_id": ident, "family": family, "config": config,
-                         "policy": policy, "perfect": perfect, "rate_per_h": rate,
-                         "charge_min": charge, "n_stands": stands,
+                         "policy": policy, "perfect": False, "rate_per_h": spec.rate,
+                         "absence": spec.absence, "arrival": spec.arrival, "window_s": spec.window_s,
+                         "std_offset_s": spec.std_offset_s, "charge_min": spec.charge, "n_stands": stands,
                          "counters": servers["counter"], "security_posts": servers["security"],
                          "code_version": version, "generator_version": GENERATOR_VERSION,
                          **flatten(result)})

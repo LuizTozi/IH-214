@@ -17,9 +17,9 @@ from d4_sim import run_cell
 
 
 def run(day, config):
-    rate, charge, _, _ = FAMILIES["referencia"]
+    spec = FAMILIES["referencia"]
     stands, servers = CONFIGS[config]
-    return run_cell(family_requests(day, rate, charge), servers, stands, "fcfs")
+    return run_cell(family_requests(day, spec.rate, spec.charge), servers, stands, "fcfs")
 
 
 def stand_rows(result, start, end):
@@ -71,7 +71,7 @@ def main():
             lines.append(f"Toque em {f['touchdown_s']} s no stand {f['stand']}; decolagem em "
                          f"{f['liftoff_s']} s, com {f['boarded']} passageiro(s).")
         lines.append("")
-    lines.append("Mecanismo: com 4 stands, os ciclos de cerca de 38 min (recarga de 30 min) mantêm "
+    lines.append("Mecanismo: com 4 stands, os ciclos com recarga de 30 min mantêm "
                  "todas as posições ocupadas durante a janela de 300 s; o quinto stand absorve o "
                  "pedido. É o bloqueio de chegada por estacionamento cheio discutido por Onat et "
                  "al. (D001), aqui medido no cenário sintético.")

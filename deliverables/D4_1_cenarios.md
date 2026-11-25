@@ -1,3 +1,20 @@
+# Especificação vigente · D4.1 v2.4
+
+O inventário aprovado em `8fafba5` define as substituições abaixo. As versões anteriores, seus pilotos e seus traços constituem o histórico metodológico. Os dias definitivos usam as sementes 20001–20030. Cada dia alimenta onze famílias × três configurações × duas políticas. O número de 30 dias foi fixado pelo pesquisador para esta revisão. A precisão será medida nos novos pares.
+
+| Componente | Implementação e procedência |
+|---|---|
+| Inspeção | Um posto de ocupação única reamostra com reposição os 2.389 tempos próprios de Janssen. A previsão declarada usa a média em ms. |
+| Reservas | Os passageiros observados em grupos de 1–4 foram 791, 1172, 209 e 147. A distribuição por pedido é proporcional a 791, 586, 209/3 e 147/4. São grupos equivalentes estimados a partir dos passageiros. |
+| Balcão | Exponencial em todas as famílias, média de 164 s, taxa 1/164 por segundo. Marintseva, tabela 1. |
+| Chegada | Quantil da Weibull condicionado a 1 ≤ x ≤ xmax, depois antecedência = 900 + 2700(x−1)/(xmax−1) segundos. Postorino, equação 4 e figura 4. Escala/forma/xmax de 3,7/6,5/9 (manhã convencional) ou 5,5/13,4/14 (tarde baixo custo). |
+| TLOF | Ocupação física de chegada 37,7 s, de partida 45 s. A separação de 30 s após cada liberação vale na agenda e na execução. Preis e Hornung, estudos Electronics e Applied Sciences. |
+| Leiaute | PAR-041/042 guardam as distâncias de desenho de 15 e 60 m. PAR-043/044 guardam os tempos derivados. PAR-018 registra FATO de 1,5 D ou dimensão do manual, a maior. O raio de referência de 11,4 m informado no inventário cabe em 15 m. O comprimento da rota de 60 m é uma escolha espacial. Essa conferência isolada não certifica o leiaute. |
+
+A referência tem 6 pedidos/h, recarga de 30 min, presença integral, perfil convencional, janela inclusiva de 300 s e deslocamento da STD de 900 s mais recarga. As dez sensibilidades alteram um fator de cada vez: demanda 4 ou 8/h, recarga 0 ou 60 min, ausência independente de 15% (Smith et al. apud Vojtek et al.), perfil de baixo custo, janela de 150 ou 600 s e deslocamento de 600 ou 1.200 s. A informação perfeita e a antiga família de serviço variável saem da matriz. Cada reserva guarda quatro uniformes para ausência, antecedência, balcão e inspeção e uma duração de bagagem comum. A comparação stand/balcão usa Base−S4 para vazão e B2−Base para espera, sob cada política. O contraste agenda−FCFS na Base continua identificado como principal no plano estatístico. As demais famílias são exploratórias.
+
+## Histórico até a versão 2.3
+
 # D4.1 — Especificação do experimento integrado, versão 2.2
 
 Versão 2.2 em 25/11/2026, após a revisão das rodadas (`claude/outputs/D4_REVISAO_CLAUDE.md`). Versão 2.1 em 23/11/2026. A redação do desenho experimental do artigo ocorrerá após a conclusão integral da D4. A unidade de comparação é uma janela operacional sintética. A pergunta é quanto mudam as decolagens por hora, a cobertura da demanda oferecida, a espera **em cada estação do terminal** e a retenção da aeronave pelo grupo quando se altera a admissão, a quantidade de stands ou a quantidade de servidores do balcão. O piloto avaliará a precisão e a adequação da faixa de carga.

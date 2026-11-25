@@ -1,4 +1,4 @@
-"""Resume as rodadas definitivas D4.4 e calcula contrastes pareados da D4.5 (D4.1 v2.2).
+"""Resume as rodadas definitivas D4.4 e calcula contrastes pareados da D4.5 (D4.1 v2.4).
 
 Saídas:
 - resumo longo das células, com IC t de 95% entre réplicas e denominadores;
@@ -20,12 +20,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 REFERENCE = "referencia"
-REGULAR_FAMILIES = ("referencia", "demanda_baixa", "demanda_alta", "sem_recarga",
-                    "recarga_longa", "servico_variavel")
-PERFECT_CONTROLS = {
-    "info_perfeita": "referencia",
-    "info_perfeita_sem_recarga": "sem_recarga",
-}
+from d4_experimento import FAMILIES
+
 CONFIGS = ("Base", "S4", "B2")
 POLICIES = ("fcfs", "agenda")
 
@@ -209,7 +205,7 @@ def contrast_summaries(rows, version):
             **stats,
         })
 
-    for family in REGULAR_FAMILIES:
+    for family in FAMILIES:
         for config in CONFIGS:
             add("policy", family, f"policy_{config}", "agenda - FCFS", "departures_per_h",
                 (family, config, "agenda"), (family, config, "fcfs"),
@@ -235,13 +231,13 @@ def contrast_summaries(rows, version):
                 "arrival_to_board_mean_s", (family, "B2", policy),
                 (family, "Base", policy), "exploratory")
 
-    for perfect, control in PERFECT_CONTROLS.items():
-        for config in CONFIGS:
-            for metric in ("departures_per_h", "refused", "mean_await_s",
-                           "mean_stand_blocked_s"):
-                add("information", perfect, f"information_{config}",
-                    "perfect - declared", metric, (perfect, config, "agenda"),
-                    (control, config, "agenda"), "exploratory")
+    for family in FAMILIES:
+        if family == REFERENCE:
+            continue
+        for policy in POLICIES:
+            for metric in ("departures_per_h", "counter_mean_wait_s", "security_mean_wait_s"):
+                add("sensitivity", family, f"base_{policy}", "family - reference", metric,
+                    (family, "Base", policy), (REFERENCE, "Base", policy), "exploratory")
     return output
 
 
@@ -285,7 +281,7 @@ def write_report(cells, contrasts, path, source):
 
     version = contrasts[0]["analysis_version"]
     lines = [
-        "# D4.5 — Síntese reproduzível dos contrastes (D4.1 v2.2)",
+        "# D4.5 — Síntese reproduzível dos contrastes (D4.1 v2.4)",
         "",
         f"Fonte: `{source}`. Analisador: `{version}`. Cada estimativa usa as réplicas",
         "independentes válidas; as diferenças são calculadas dentro da réplica e resumidas por",
@@ -386,55 +382,25 @@ def write_report(cells, contrasts, path, source):
         ("demanda_alta", "8 pedidos/h"),
         ("sem_recarga", "6 pedidos/h, sem recarga"),
         ("recarga_longa", "6 pedidos/h, recarga 60 min"),
-        ("servico_variavel", "6 pedidos/h, serviço exponencial (suposto)"),
+        ("ausencia_15", "15% de ausência"),
+        ("chegada_lcc_tarde", "Chegada LCC da tarde"),
+        ("janela_150", "Janela de 150 s"),
+        ("janela_600", "Janela de 600 s"),
+        ("partida_600", "Partida deslocada 600 s"),
+        ("partida_1200", "Partida deslocada 1.200 s"),
     ):
         lines.append(f"| {label} | {effect(family, 'policy_Base', 'departures_per_h')} |")
 
-    lines.extend([
-        "",
-        "## Recursos sob serviço exponencial nas mesmas médias (exploratória, PAR-063)",
-        "",
-        "| Contraste | Determinístico (referência) | Exponencial |",
-        "|---|---:|---:|",
-    ])
-    for label, name, metric, digits in (
-        ("Base − S4, FCFS (decolagens com passageiros/h)", "stands_fcfs", "departures_per_h", 3),
-        ("Base − S4, agenda", "stands_agenda", "departures_per_h", 3),
-        ("B2 − Base, FCFS (espera no balcão, s)", "counter_fcfs", "counter_mean_wait_s", 1),
-        ("B2 − Base, agenda", "counter_agenda", "counter_mean_wait_s", 1),
-        ("B2 − Base, FCFS (conformidade do balcão)", "counter_los_fcfs",
-         "counter_within_limit_fraction", 3),
-        ("B2 − Base, FCFS (espera após a inspeção, s)", "lounge_fcfs", "post_security_mean_s", 1),
-    ):
-        lines.append(f"| {label} | {effect(REFERENCE, name, metric, digits)} | "
-                     f"{effect('servico_variavel', name, metric, digits)} |")
-    lines.append(f"| Espera média na inspeção, Base FCFS (s) | "
-                 f"{value(REFERENCE, 'Base', 'fcfs', 'security_mean_wait_s', 1)} | "
-                 f"{value('servico_variavel', 'Base', 'fcfs', 'security_mean_wait_s', 1)} |")
-
-    lines.extend([
-        "",
-        "## Informação perfeita na agenda (exploratória)",
-        "",
-        "| Família e configuração | Perfeita − declarada, decolagens com passageiros/h | Recusas por réplica |",
-        "|---|---:|---:|",
-    ])
-    for family, label in (("info_perfeita", "Recarga 30 min"),
-                          ("info_perfeita_sem_recarga", "Sem recarga")):
-        for config in CONFIGS:
-            lines.append(
-                f"| {label}, {config} | "
-                f"{effect(family, f'information_{config}', 'departures_per_h')} | "
-                f"{effect(family, f'information_{config}', 'refused', 2)} |"
-            )
-    lines.extend([
-        "",
-        "Os resultados são de um cenário sintético com chegadas uniformes supostas, serviços",
-        "determinísticos no balcão e na inspeção, recursos vazios na abertura e horizonte",
-        "terminante de 8 h. Médias de espera descrevem somente visitas com início observado e",
-        "devem ser lidas junto às recusas, aos desvios, à censura e aos denominadores.",
-        "",
-    ])
+    lines += ["", "## Quinto stand e segundo balcão em cada família",
+              "", "| Família | Stand FCFS (voos/h) | Stand agenda (voos/h) | Balcão FCFS (s) | Balcão agenda (s) |",
+              "|---|---:|---:|---:|---:|"]
+    for family in FAMILIES:
+        effects = [effect(family, f"stands_{p}", "departures_per_h") for p in POLICIES]
+        effects += [effect(family, f"counter_{p}", "counter_mean_wait_s", 1) for p in POLICIES]
+        lines.append("| " + " | ".join([family, *effects]) + " |")
+    lines += ["", "As esperas incluem apenas visitas cujo atendimento começou antes do horizonte.",
+              "Os contrastes family - reference do CSV comparam as sensibilidades à Base da referência",
+              "por semente e política. Intervalos exploratórios são individuais, sem ajuste de multiplicidade.", ""]
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines), encoding="utf-8")
