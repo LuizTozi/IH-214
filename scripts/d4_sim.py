@@ -4,13 +4,13 @@ Recursos: um TLOF (com separação após cada saída), uma rota bidirecional uni
 N stands, cada um com carregador e gate próprios (SUPOSTO, PAR-057).
 
 - Chegada: exige TLOF, rota e stand livres ao mesmo tempo. Ocupa o TLOF por 37,7 s
-  (depois 3 s de separação) e a rota até a entrada no stand (60,5 s após o toque).
+  (depois 30 s de separação) e a rota até a entrada no stand (60,5 s após o toque).
 - No stand: rebocador, desembarque, saída pelo gate, recarga declarada; depois,
   embarque individual e sequencial dos confirmados, na ordem em que ficam prontos
   na sala de espera (a espera da aeronave por eles é a retenção pelo grupo);
   por fim, prender o rebocador.
-- Partida: exige rota e TLOF; o stand é liberado na saída. Decolagem 22,8 + 50 s
-  após a saída do stand; depois, 3 s de separação.
+- Partida: exige rota e TLOF; o stand é liberado na saída. Decolagem 22,8 + 45 s
+  após a saída do stand; depois, 30 s de separação.
 
 Alocação: um controlador concede, entre as solicitações elegíveis, a de menor
 chave (FCFS: instante da solicitação; agenda: instante planejado), com empate pelo
@@ -41,7 +41,7 @@ POLICIES = ("fcfs", "agenda")
 
 
 class Airside:
-    def __init__(self, env, terminal, n_stands, policy, perfect=False):
+    def __init__(self, env, terminal, n_stands, policy, perfect=False, window_ms=WINDOW):
         if policy not in POLICIES:
             raise ValueError(f"policy must be one of {POLICIES}")
         if perfect and policy != "agenda":
@@ -52,6 +52,7 @@ class Airside:
         self.policy, self.perfect = policy, perfect
         self.tlof_holder, self.tlof_free_at, self.route_holder = None, 0, None
         self.stands = [None] * n_stands
+        self.window_ms = window_ms
         self.pending, self.seq = [], 0
         self.flights, self.rows, self.boarding = {}, {}, {}
         self.intervals = []        # [recurso, chave, início_ms, fim_ms ou None]
@@ -146,11 +147,11 @@ class Airside:
         if f["close_ms"] <= self.env.now and not f["present"]:
             f["state"] = "cancelled_empty"         # grupo vazio antes da alocação
             return
-        if 0 < f["close_ms"] - self.env.now <= WINDOW:
+        if 0 < f["close_ms"] - self.env.now <= self.window_ms:
             raise ValueError(f"{fid}: manifest closes inside the touchdown window (not specified)")
         if self.policy == "fcfs":
             req = self._request("arr", fid, key=self.env.now)
-            self.env.process(self._divert_after(req, self.env.now + WINDOW))
+            self.env.process(self._divert_after(req, self.env.now + self.window_ms))
         else:
             import d4_agenda
             plan = d4_agenda.decide(self, fid)
@@ -237,13 +238,13 @@ class Airside:
         self._release_tlof(tlof)
 
 
-def run_cell(rows, servers, n_stands, policy, perfect=False, horizon_s=28800):
+def run_cell(rows, servers, n_stands, policy, perfect=False, horizon_s=28800, *, window_s=WINDOW // 1000):
     """Executa uma célula com os pedidos de uma família (d4_dia.family_requests)."""
     env = simpy.Environment()
     terminal = Terminal(env, servers)
     for person in sorted(passengers_from_family(rows), key=lambda p: (p["arrival_s"], p["id"])):
         terminal.admit(person)
-    airside = Airside(env, terminal, n_stands, policy, perfect)
+    airside = Airside(env, terminal, n_stands, policy, perfect, to_ms(window_s))
     for row in sorted(rows, key=lambda r: (r["request_s"], r["id"])):
         airside.start(row)
     horizon = to_ms(horizon_s)
@@ -275,7 +276,7 @@ def collect(airside, terminal, horizon, servers, n_stands, policy, perfect):
             "stand_blocked_s": (to_s(f["stand_exit_ms"] - f["ready_depart_ms"])
                                 if seen(f["stand_exit_ms"]) is not None else None),
             "outside_window": (f["touchdown_ms"] is not None
-                               and f["touchdown_ms"] > f["request_ms"] + WINDOW),
+                               and f["touchdown_ms"] > f["request_ms"] + airside.window_ms),
             "punctual": (seen(f["liftoff_ms"]) is not None
                          and f["liftoff_ms"] <= f["std_ms"] + TOLERANCE),
         }

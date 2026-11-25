@@ -29,7 +29,7 @@ import simpy
 from d4_param import BAG_FORECAST, BAG_HIGH, BAG_LOW, COUNTER_DECLARED, SECURITY_DECLARED
 
 STATIONS = ("counter", "baggage", "security")
-SERVICE_S = {"counter": 180, "security": 90}            # PAR-046, PAR-047
+DECLARED_MS = {"counter": COUNTER_DECLARED, "security": SECURITY_DECLARED}            # PAR-046, PAR-047
 WAIT_LIMIT_S = {"counter": 180, "baggage": None, "security": 180}   # PAR-026
 REASONS = ("refusal", "diversion")
 
@@ -111,7 +111,7 @@ class Terminal:
             elif person.get(f"{station}_s") is not None:   # família de serviço variável
                 service = to_ms(person[f"{station}_s"])
             else:
-                service = to_ms(SERVICE_S[station])
+                service = DECLARED_MS[station]
             visit = {"id": person["id"], "flight": person["flight"], "station": station,
                      "entry_ms": self.env.now, "start_ms": None, "end_ms": None,
                      "server": None, "exit_ms": None, "exit_reason": None}

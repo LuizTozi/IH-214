@@ -20,7 +20,9 @@ import random
 from decimal import ROUND_HALF_EVEN, Decimal
 from pathlib import Path
 
-GENERATOR_VERSION = "d4_dia 1.1 (D4.1 v2.3)"
+from d4_param import ARRIVAL_PROFILES, COUNTER_MEAN_S, GROUP_WEIGHTS, SECURITY_TIMES_S
+
+GENERATOR_VERSION = "d4_dia 1.2 (D4.1 v2.4)"
 MS = Decimal("0.001")
 
 # Valores e procedência conforme data/parameter_registry.csv.
@@ -28,10 +30,10 @@ PARAMS = {
     "horizon_s": {"value": 28800, "source": "PAR-050"},
     "first_request_s": {"value": 2700, "source": "PAR-051 (oferta a partir de 2700 s)"},
     "base_rate_per_h": {"value": 8, "source": "PAR-051 (fluxo comum a 8/h, afinado)"},
-    "reserved_seats": {"value": [1, 4], "source": "PAR-052 (uniforme discreta)"},
-    "absence_probability": {"value": 0.10, "source": "PAR-053"},
+    "reserved_seats": {"value": [1, 4], "source": "PAR-052 (Janssen: contagem por tamanho / tamanho, até quatro)"},
+    "absence_probability": {"value": 0.0, "source": "PAR-053"},
     "arrival_lead_s": {"value": [900, 3600],
-                       "source": "PAR-054 (Feldhoff 2022; forma uniforme SUPOSTA)"},
+                       "source": "PAR-054 (Postorino 2019; intervalo de Feldhoff 2022)"},
     "bag_service_s": {"value": [30, 60], "source": "PAR-028"},
     "std_offset_s": {"value": 900, "source": "PAR-056 (STD = t + 900 s + recarga)"},
     "manifest_close_s": {"value": -900, "source": "PAR-059 (relativo à STD)"},
@@ -62,10 +64,7 @@ def generate_day(seed):
     if type(seed) is not int or seed < 0:
         raise ValueError("seed must be a nonnegative integer")
     rng = streams(seed)
-    seats_low, seats_high = PARAMS["reserved_seats"]["value"]
-    lead_low, lead_high = PARAMS["arrival_lead_s"]["value"]
     bag_low, bag_high = PARAMS["bag_service_s"]["value"]
-    p_absent = PARAMS["absence_probability"]["value"]
     mean_gap = 3600 / BASE_RATE
 
     requests = []
@@ -76,11 +75,11 @@ def generate_day(seed):
         if t >= HORIZON_S:
             break
         key = f"R{len(requests) + 1:04d}"
-        n = seats_low + int(rng["seats"].random() * (seats_high - seats_low + 1))
+        n = rng["seats"].choices(tuple(GROUP_WEIGHTS), weights=GROUP_WEIGHTS.values())[0]
         reservations = [{
             "id": f"{key}-P{k}",
-            "absent": rng["absence"].random() < p_absent,
-            "lead_s": uniform_ms(rng["lead"], lead_low, lead_high),
+            "absence_u": rng["absence"].random(),
+            "lead_u": rng["lead"].random(),
             "bag_s": uniform_ms(rng["bag"], bag_low, bag_high),
             "counter_u": rng["counter_service"].random(),
             "security_u": rng["security_service"].random(),
@@ -91,18 +90,24 @@ def generate_day(seed):
             "requests": requests}
 
 
-def exponential_ms(mean_s, u):
-    """Duração exponencial com a média dada, pela inversa da distribuição (SUPOSTA, PAR-063)."""
-    return ms(-math.log(1.0 - u) * mean_s)
+def arrival_lead(u, profile):
+    scale, shape, xmax = ARRIVAL_PROFILES[profile]
+    # CDF condicionada a [1, xmax], seguida de compressão linear.
+    # A conversão ESD = (x + 1)/4 h cancela na mudança de escala.
+    low = -math.expm1(-(1 / scale) ** shape)
+    high = -math.expm1(-(xmax / scale) ** shape)
+    x = scale * (-math.log1p(-(low + u * (high - low)))) ** (1 / shape)
+    start, end = PARAMS["arrival_lead_s"]["value"]
+    return ms(start + (end - start) * (x - 1) / (xmax - 1))
 
 
-def family_requests(day, rate_per_h, charge_min, variable_service=False):
-    """Pedidos de uma família: afinamento por marca e horários relativos à STD.
-
-    Com variable_service, balcão e inspeção usam durações exponenciais com as médias
-    declaradas (180 s e 90 s), sorteadas por passageiro antes da política (PAR-063).
-    Sem ele, as durações são as constantes de PAR-046 e PAR-047.
-    """
+def family_requests(day, rate_per_h, charge_min, *, absence=0.0, arrival="fc_morning",
+                    std_offset_s=900):
+    """Resolve as marcas do mesmo dia para uma família antes da admissão."""
+    if day["generator_version"] != GENERATOR_VERSION:
+        raise ValueError("Historical generator: replay the archived series with commit 8fafba5")
+    if not 0 <= absence <= 1 or arrival not in ARRIVAL_PROFILES:
+        raise ValueError("invalid absence probability or arrival profile")
     if not 0 < rate_per_h <= BASE_RATE:
         raise ValueError(f"rate must be in (0, {BASE_RATE}] requests/h")
     if charge_min not in CHARGES_MIN:
@@ -112,7 +117,7 @@ def family_requests(day, rate_per_h, charge_min, variable_service=False):
     for r in day["requests"]:
         if Decimal(repr(r["mark"])) >= keep:
             continue
-        std = r["request_s"] + PARAMS["std_offset_s"]["value"] + 60 * charge_min
+        std = r["request_s"] + std_offset_s + 60 * charge_min
         rows.append({
             "id": r["id"],
             "request_s": r["request_s"],
@@ -120,12 +125,10 @@ def family_requests(day, rate_per_h, charge_min, variable_service=False):
             "manifest_close_s": std + PARAMS["manifest_close_s"]["value"],
             "declared_charge_min": charge_min,
             "manifest": [{"id": p["id"],
-                          "arrival_s": None if p["absent"] else std - p["lead_s"],
+                          "arrival_s": None if p["absence_u"] < absence else std - arrival_lead(p["lead_u"], arrival),
                           "bag_service_s": p["bag_s"],
-                          "counter_service_s": (exponential_ms(180, p["counter_u"])
-                                                if variable_service else None),
-                          "security_service_s": (exponential_ms(90, p["security_u"])
-                                                 if variable_service else None)}
+                          "counter_service_s": ms(-COUNTER_MEAN_S * math.log1p(-p["counter_u"])),
+                          "security_service_s": SECURITY_TIMES_S[int(p["security_u"] * len(SECURITY_TIMES_S))]}
                          for p in r["reservations"]],
         })
     return rows
@@ -144,8 +147,13 @@ def load_day(path):
         r["request_s"] = Decimal(r["request_s"])
         r["mark"] = float(r["mark"])
         for p in r["reservations"]:
-            p["lead_s"], p["bag_s"] = Decimal(p["lead_s"]), Decimal(p["bag_s"])
-            p["counter_u"], p["security_u"] = float(p["counter_u"]), float(p["security_u"])
+            p["bag_s"] = Decimal(p["bag_s"])
+            if "lead_s" in p:
+                p["lead_s"] = Decimal(p["lead_s"])
+            else:
+                p["absence_u"], p["lead_u"] = float(p["absence_u"]), float(p["lead_u"])
+            if "counter_u" in p:
+                p["counter_u"], p["security_u"] = float(p["counter_u"]), float(p["security_u"])
     day["params"]["absence_probability"]["value"] = float(
         day["params"]["absence_probability"]["value"])
     return day

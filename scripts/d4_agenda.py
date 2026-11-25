@@ -6,7 +6,7 @@ atualizada de cada voo, e procura o primeiro toque viável em [t, t + 300 s]
 viável, recusa. Nenhuma decisão consulta pedidos ou chegadas futuras.
 
 Uso dos recursos por um voo com toque em τ e saída do stand em x (d4_param):
-TLOF [τ, τ + 40,7) e [x, x + 75,8); rota [τ, τ + 60,5) e [x, x + 22,8);
+TLOF [τ, τ + 67,7) e [x, x + 97,8); rota [τ, τ + 60,5) e [x, x + 22,8);
 stand [τ, x). Intervalos semiabertos; a separação está incluída no TLOF.
 
 Previsão da prontidão do grupo:
@@ -18,7 +18,7 @@ Previsão da prontidão do grupo:
 """
 
 from d4_param import (ARR_ROUTE, ARR_TLOF, ATTACH, BAG_FORECAST, COUNTER_DECLARED,
-                      DEP_ROUTE, DEP_TLOF, PER_PAX, SECURITY_DECLARED, STAND_INBOUND, WINDOW)
+                      DEP_ROUTE, DEP_TLOF, PER_PAX, SECURITY_DECLARED, STAND_INBOUND, SEP)
 from d4_terminal import to_ms
 
 GRID_MS = 1_000      # passo de busca complementar aos candidatos exatos
@@ -86,8 +86,8 @@ def calendar(airside, now, ready_now):
     waiting = {k: [] for k in cal["stand"]}
     for fid, f in airside.flights.items():
         if f["liftoff_ms"] is not None:
-            if f["liftoff_ms"] + 3_000 > now:
-                cal["tlof"].append((f["liftoff_ms"], f["liftoff_ms"] + 3_000))
+            if f["liftoff_ms"] + SEP > now:
+                cal["tlof"].append((f["liftoff_ms"], f["liftoff_ms"] + SEP))
             continue
         if f["state"] == "admitted":
             waiting[f["planned_stand"]].append(fid)
@@ -131,9 +131,9 @@ def decide(airside, fid):
     span = exit_for(now) - now
     ends = [b for spans in (cal["tlof"], cal["route"]) for _, b in spans]
     ends += [b for spans in cal["stand"].values() for _, b in spans]
-    candidates = {now + i * GRID_MS for i in range(WINDOW // GRID_MS + 1)}
+    candidates = {now + i * GRID_MS for i in range(airside.window_ms // GRID_MS + 1)}
     candidates |= {e - offset for e in ends for offset in (0, span)}
-    for tau in sorted(c for c in candidates if now <= c <= now + WINDOW):
+    for tau in sorted(c for c in candidates if now <= c <= now + airside.window_ms):
         x = exit_for(tau)
         use = usage(tau, x)
         if overlaps(use["tlof"], cal["tlof"]) or overlaps(use["route"], cal["route"]):
