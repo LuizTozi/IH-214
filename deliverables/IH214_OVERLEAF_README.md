@@ -8,7 +8,7 @@ Ao alterar uma seção, atualize as fontes de dados ou referências corresponden
 
 Os CSVs, o JSON e a matriz de extração em `data/` acompanham o pacote para rastrear entradas do modelo e afirmações da literatura. Eles não são carregados automaticamente pelo manuscrito.
 
-O manuscrito reúne a verificação da D2, a discussão teórica da D3 e os resultados da D4 sobre política de admissão, estacionamento, balcão e inspeção. A especificação D4.1 v2.1 acompanha o projeto em `deliverables/D4_1_cenarios.md`.
+O manuscrito reúne a verificação da D2, a discussão teórica da D3 e os resultados da D4 sobre política de admissão, estacionamento e balcão. A especificação D4.1 v2.2 acompanha o projeto em `deliverables/D4_1_cenarios.md`; o traço de eventos da D4.6 está em `data/d4/traco_d4_6.md`.
 
 ## Resumo para o AERO2027
 
@@ -21,8 +21,10 @@ Para compilar o resumo no Overleaf, vá em *Menu → Main document* e escolha `a
 
 - Times New Roman, página única A4, margens de 2,54 cm;
 - título em 14 pt, negrito e centralizado; autores em 12 pt; afiliações em 11 pt, itálico;
-- texto em 12 pt, entrelinha 1,5, justificado;
-- até 6 palavras-chave, referências e biografia de até 150 palavras.
+- texto em 12 pt, entrelinha 1,5 (simulada como no Word), justificado;
+- até 6 palavras-chave, referências e biografia. O modelo permite 150 palavras de biografia, mas, com entrelinha 1,5, cabem cerca de 60 sem passar de uma página.
+
+O arquivo `.docx` do modelo está em tamanho Carta e espaçamento simples, embora o texto de instrução peça A4 e 1,5. Convém confirmar com os organizadores.
 
 O evento pede o envio final em Word: transponha o texto para o `.docx` oficial sem alterar os estilos. Os resultados da D4 já foram inseridos. Os trechos em vermelho (`\pendente{...}`) aguardam somente coautores, endereço, e-mail e biografia fornecidos pelo autor. As regras de escrita estão em `AGENTS.md` e em `deliverables/EVENTO_AERO2027.md`, no repositório.
 

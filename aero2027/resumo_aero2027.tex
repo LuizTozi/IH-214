@@ -10,74 +10,73 @@
 % deve ser transposta para o .docx oficial sem alterar os estilos.
 % Regras completas: deliverables/EVENTO_AERO2027.md e AGENTS.md.
 % Trechos \pendente{...} (vermelho) ainda não têm fonte ou resultado. Não inventar números.
+% Espaçamento: as entrelinhas simulam o "1.5 lines" do Word para Times (1,5 x 1,15 x corpo):
+% 14 pt -> 24,15 pt; 12 pt -> 20,7 pt; 11 pt -> 18,98 pt. O texto do modelo pede A4 e 1,5,
+% mas o arquivo .docx do modelo está em Carta e espaçamento simples (ver
+% claude/outputs/D4_REVISAO_CLAUDE.md, R2); confirmar com os organizadores.
+% Números: data/d4/contrastes_d4_5.csv e resumo_celulas_d4_5.csv (D4.1 v2.2, código 1262bb2).
 
 \documentclass[12pt,a4paper]{article}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{mathptmx}                 % Times
 \usepackage[margin=2.54cm]{geometry}  % margens "normais" do Word
-\usepackage{setspace}
 \usepackage{xcolor}
 \usepackage[normalem]{ulem}           % \uline para o apresentador
 \usepackage{enumitem}
 
 \newcommand{\pendente}[1]{\textcolor{red}{[#1]}}
-\newcommand{\secao}[1]{\par\medskip\noindent{\fontsize{14}{17}\selectfont\bfseries #1}\par}
+\newcommand{\secao}[1]{\par\noindent{\fontsize{14}{24.15}\selectfont\bfseries #1}\par}
 \pagestyle{empty}
 \setlength{\parindent}{0pt}
 
 \begin{document}
-\onehalfspacing
 
 \begin{center}
-{\fontsize{14}{17}\selectfont\bfseries
+{\fontsize{14}{24.15}\selectfont\bfseries
 Coupling Terminal Station Queues And Stand Retention At Vertiports:\\
 A Paired Simulation Of Admission Policy And Resource Capacity\par}
 \medskip
-{\fontsize{12}{14}\selectfont\bfseries
+{\fontsize{12}{20.7}\selectfont\bfseries
 \uline{L. H. Tozi}\textsuperscript{1,*}, \pendente{coautores e professor}\textsuperscript{1}\par}
-{\fontsize{11}{13}\selectfont\itshape
+{\fontsize{11}{18.98}\selectfont\itshape
 \textsuperscript{1}Instituto Tecnológico de Aeronáutica (ITA), \pendente{endereço}, Brazil.\par
 \textsuperscript{*}\pendente{e-mail do autor correspondente}\par}
 \end{center}
 
 \secao{Abstract}
 % texto justificado (padrão do LaTeX)
-\fontsize{12}{14}\selectfont
-Vertiport operators must decide whether scarce capacity should add a stand or a passenger-processing
-server, and whether flights should be admitted in advance or first-come, first-served (FCFS).
-Airside studies schedule pads and stands [1], terminal studies size passenger stations without the
-airside [2], and coupled models report aggregate passenger delay rather than queues at each station
-[3]. We compare these decisions in a paired discrete-event simulation of a generic vertiport with
-one TLOF and five stands. The model couples landing, charging, individual boarding and departure to
-check-in, carry-on baggage and security queues. Thirty independent replications use 8-h synthetic
-days shared by all configurations. At 6 requests/h and 30-min charging, advance admission yielded
-0.129 fewer departures/h than FCFS (95\% CI: 0.079--0.179 fewer). A fifth stand increased throughput
-by 0.504 departures/h under FCFS (0.453--0.555) and 0.492 under advance admission (0.440--0.544).
-A second check-in counter reduced mean check-in waiting by 141.5~s under FCFS (124.7--158.4) and
-126.4~s under advance admission (107.9--144.9), whereas a second security post had no queue to
-remove in the reference configuration. Under this synthetic demand, the stand was the throughput
-intervention and the counter was the terminal-service intervention; advance admission did not
-outperform FCFS with the tested minimum-time commitments and forecasts. Inputs come from the
-literature or are stated assumptions, so the results compare designs rather than predict a site.
+\fontsize{12}{20.7}\selectfont
+Vertiport operators must decide whether scarce capacity should add a stand or a check-in counter,
+and whether flights should be admitted in advance or first-come, first-served (FCFS). Airside
+studies schedule pads and stands [1], terminal studies size passenger stations without the airside
+[2], and coupled models report aggregate passenger delay rather than queues at each station [3].
+We compare these decisions in a paired discrete-event simulation of a generic vertiport with one
+TLOF and five stands, coupling charging and individual boarding to check-in, baggage and security
+queues over thirty 8-h synthetic days. At 6 requests/h with 30-min charging, a fifth stand added
+0.487 passenger departures/h under FCFS (95\% CI: 0.439--0.536) and 0.492 under advance admission
+(0.440--0.544). A second counter cut mean check-in waiting by 141.5~s under FCFS (124.7--158.4)
+and raised compliance with the IATA 180-s limit from 68\% to 99\%, but added 124.7~s
+(107.9--141.5) of lounge waiting before boarding. Advance admission stayed within 0.033
+departures/h of FCFS (0.001--0.066 fewer). The results compare designs under stated synthetic
+inputs rather than predict a site.
 
-
-{\fontsize{12}{14}\selectfont\itshape
+{\fontsize{12}{20.7}\selectfont\itshape
 \textbf{Keywords:} Vertiport; Urban Air Mobility; Discrete-Event Simulation; Passenger Processing;
 Admission Policy; Level of Service\par}
 
 \secao{References}
-{\fontsize{12}{14}\selectfont
+{\fontsize{12}{20.7}\selectfont
 \begin{enumerate}[label={[\arabic*]},leftmargin=*,itemsep=0pt]
 \item N. M. Guerreiro, G. E. Hagen, J. M. Maddalon, R. W. Butler, AIAA AVIATION 2020 Forum,
       doi:10.2514/6.2020-2903, (2020).
 \item E. Feldhoff, AIAA AVIATION 2022 Forum, doi:10.2514/6.2022-3320, (2022).
-\item L. Preis, M. Hornung, Electronics, 11, 1071, (2022).
+\item L. Preis, M. Hornung, Electronics, \textbf{11}, 1071, (2022).
 \end{enumerate}}
 
 \secao{Biography}
-{\fontsize{12}{14}\selectfont
+{\fontsize{12}{20.7}\selectfont
 L. H. Tozi is a master's student at Instituto Tecnológico de Aeronáutica (ITA), Brazil.
-\pendente{completar até 150 palavras com dados fornecidos pelo autor}\par}
+\pendente{completar com dados do autor; cabem cerca de 60 palavras no total sem passar de uma página com espaçamento 1,5}\par}
 
 \end{document}

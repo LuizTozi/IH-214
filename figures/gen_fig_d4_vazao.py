@@ -59,7 +59,7 @@ def main():
                     marker=style["marker"], linestyle=style["linestyle"], linewidth=1.8,
                     markersize=5, capsize=3, zorder=3)
     ax.set_xlabel("Taxa nominal de pedidos no período de oferta (pedidos/h)")
-    ax.set_ylabel("Decolagens observadas (h$^{-1}$)")
+    ax.set_ylabel("Decolagens com passageiros (h$^{-1}$)")
     ax.set_xticks([4, 6, 8])
     ax.grid(axis="y", alpha=0.25, linestyle="--", linewidth=0.6)
     ax.legend(frameon=False, loc="upper left")

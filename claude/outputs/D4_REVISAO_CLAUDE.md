@@ -1,5 +1,28 @@
 # Revisão da D4, do resumo AERO2027 e da coerência com D2 e D3 (Claude), 25/11/2026
 
+> **Situação após as correções (25/11/2026, commits `1262bb2` a este).** O autor decidiu e o Claude aplicou:
+> - **A1:** saída planejada como prioridade e calendário atualizado (LIT-008 §5.2.1.2, p. 82). Novo contraste agenda − FCFS: −0,033 [−0,066; −0,001] decolagem com passageiros/h.
+> - **A2 e A12:** I2 retirada do experimento e da hipótese da D3.
+> - **A3:** rótulos `primary` só na referência.
+> - **A4 e A8:** redação corrigida.
+> - **A6:** síntese gerada dos dados.
+> - **A7 e D2-1:** vazão só com passageiros, vazias à parte.
+> - **A9:** conformidade de LoS relatada.
+> - **A10 e D2-2:** P95 chegada–embarque substituído pela VAR-045, que mostrou o deslocamento de cerca de 125 s de espera para a sala de embarque.
+> - **A11:** tabela por demanda, traço `data/d4/traco_d4_6.md` e confronto com D029.
+> - **A13:** a informação perfeita deixou de ter efeito, e a expectativa da D4.1 não se confirmou.
+> - **R1:** entrelinha equivalente ao Word; a biografia cabe em cerca de 60 palavras.
+> - **R4:** volume em negrito.
+> - **D2-3 e D3-1:** registrados.
+>
+> Pendentes:
+> - **R2:** página e espaçamento do modelo, a confirmar com os organizadores.
+> - **R5:** dados do autor.
+> - **D3-3:** Feldhoff p. 10, a conferir no PDF.
+> - **A5:** precisão-alvo, a registrar pelo autor.
+>
+> O texto abaixo descreve o estado de `bb00635`.
+
 **Objeto.** Estado do repositório no commit `bb00635`, que é igual a `origin/main`. Os cinco pontos vêm de `claude/contexto.md`; o autor pediu também a revisão da D2 e da D3. Trabalhei em modo de revisão: nenhum arquivo do projeto foi alterado além deste parecer. As variantes contrafactuais rodaram em cópia temporária e importaram o código do repositório sem modificá-lo. O código delas está no Apêndice.
 
 **Gravidade**
