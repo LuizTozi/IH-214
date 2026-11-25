@@ -1,9 +1,13 @@
-"""Resume as rodadas definitivas D4.4 e calcula contrastes pareados da D4.5.
+"""Resume as rodadas definitivas D4.4 e calcula contrastes pareados da D4.5 (D4.1 v2.2).
 
 Saídas:
-- resumo longo das 48 células, com IC t de 95% entre réplicas e denominadores;
+- resumo longo das células, com IC t de 95% entre réplicas e denominadores;
 - contrastes de política e recursos em cada família não perfeita;
-- contrastes da informação perfeita contra sua família-controle.
+- contrastes da informação perfeita contra sua família-controle;
+- síntese em Markdown cujos números vêm todos das tabelas acima.
+
+Classificação (D4.1, "Contrastes principais e exploratórios"): só a família de
+referência tem contrastes principais; famílias de sensibilidade são exploratórias.
 """
 
 import argparse
@@ -15,13 +19,14 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parent.parent
+REFERENCE = "referencia"
 REGULAR_FAMILIES = ("referencia", "demanda_baixa", "demanda_alta", "sem_recarga",
                     "recarga_longa")
 PERFECT_CONTROLS = {
     "info_perfeita": "referencia",
     "info_perfeita_sem_recarga": "sem_recarga",
 }
-CONFIGS = ("Base", "S4", "B2", "I2")
+CONFIGS = ("Base", "S4", "B2")
 POLICIES = ("fcfs", "agenda")
 
 # Quantis t bilaterais de 95%, graus de liberdade 1--30.
@@ -30,21 +35,25 @@ T_975 = (None, 12.706, 4.303, 3.182, 2.776, 2.571, 2.447, 2.365, 2.306, 2.262,
          2.086, 2.080, 2.074, 2.069, 2.064, 2.060, 2.056, 2.052, 2.048, 2.045,
          2.042)
 
+# métrica: denominador da média condicional dentro da réplica (None = contagem ou taxa)
 CELL_METRICS = {
     "offered": None,
     "cancelled_empty": None,
     "refused": None,
     "diverted": None,
     "departed": None,
+    "departed_empty": None,
     "pending": None,
-    "departures_per_h": None,
-    "coverage_offered": "offered",
+    "departures_per_h": None,          # VAR-016: só voos com passageiros
+    "liftoffs_per_h": None,            # todas as decolagens, inclusive vazias
+    "coverage_offered": "offered",     # voos com passageiros / pedidos oferecidos
     "punctual_fraction": "departed",
     "mean_lateness_s": "departed",
     "retained_fraction": "carrying_departed",
     "mean_await_s": "carrying_departed",
     "mean_stand_blocked_s": "departed",
-    "terminal_to_board_p95_s": "boarded_passengers",
+    "post_security_mean_s": "boarded_passengers",
+    "post_security_p95_s": "boarded_passengers",
     "utilization_tlof": None,
     "utilization_route": None,
     "utilization_stands": None,
@@ -81,21 +90,25 @@ def read_rows(path):
         return list(csv.DictReader(handle))
 
 
+def carrying(row):
+    return float(row["departed"]) - float(row["departed_empty"])
+
+
+def ratio(numerator, denominator):
+    return numerator / denominator if denominator else None
+
+
 def numeric(row, metric):
     if metric == "coverage_offered":
-        return float(row["departed"]) / float(row["offered"])
+        return carrying(row) / float(row["offered"])
     if metric == "punctual_fraction":
-        denominator = float(row["departed"])
-        return float(row["punctual"]) / denominator if denominator else None
+        return ratio(float(row["punctual"]), float(row["departed"]))
     if metric == "retained_fraction":
-        denominator = float(row["departed"]) - float(row["departed_empty"])
-        return float(row["retained_flights"]) / denominator if denominator else None
+        return ratio(float(row["retained_flights"]), carrying(row))
     if metric == "counter_within_limit_fraction":
-        denominator = float(row["counter_complete"])
-        return float(row["counter_within_limit"]) / denominator if denominator else None
+        return ratio(float(row["counter_within_limit"]), float(row["counter_complete"]))
     if metric == "security_within_limit_fraction":
-        denominator = float(row["security_complete"])
-        return float(row["security_within_limit"]) / denominator if denominator else None
+        return ratio(float(row["security_within_limit"]), float(row["security_complete"]))
     raw = row[metric]
     return None if raw == "" else float(raw)
 
@@ -123,7 +136,7 @@ def denominator(row, name):
     if name is None:
         return None
     if name == "carrying_departed":
-        return int(row["departed"]) - int(row["departed_empty"])
+        return int(carrying(row))
     return int(row[name])
 
 
@@ -172,12 +185,16 @@ def contrast(indexed, seeds, family_a, config_a, policy_a, family_b, config_b, p
     return ci(differences)
 
 
+def classification(family, primary):
+    return "primary" if family == REFERENCE and primary else "exploratory"
+
+
 def contrast_summaries(rows, version):
     indexed = index_rows(rows)
     seeds = sorted({int(row["seed"]) for row in rows})
     output = []
 
-    def add(scope, family, name, direction, metric, a, b, classification):
+    def add(scope, family, name, direction, metric, a, b, label):
         stats = contrast(indexed, seeds, *a, *b, metric)
         output.append({
             "analysis_version": version,
@@ -186,7 +203,7 @@ def contrast_summaries(rows, version):
             "contrast": name,
             "direction": direction,
             "metric": metric,
-            "classification": classification,
+            "classification": label,
             **stats,
         })
 
@@ -194,15 +211,17 @@ def contrast_summaries(rows, version):
         for config in CONFIGS:
             add("policy", family, f"policy_{config}", "agenda - FCFS", "departures_per_h",
                 (family, config, "agenda"), (family, config, "fcfs"),
-                "primary" if config == "Base" else "exploratory")
+                classification(family, config == "Base"))
         for policy in POLICIES:
             add("stands", family, f"stands_{policy}", "Base - S4", "departures_per_h",
-                (family, "Base", policy), (family, "S4", policy), "primary")
+                (family, "Base", policy), (family, "S4", policy),
+                classification(family, True))
             add("counter", family, f"counter_{policy}", "B2 - Base", "counter_mean_wait_s",
-                (family, "B2", policy), (family, "Base", policy), "primary")
-            add("security", family, f"security_{policy}", "I2 - Base",
-                "security_mean_wait_s", (family, "I2", policy),
-                (family, "Base", policy), "primary")
+                (family, "B2", policy), (family, "Base", policy),
+                classification(family, True))
+            add("counter_los", family, f"counter_los_{policy}", "B2 - Base",
+                "counter_within_limit_fraction", (family, "B2", policy),
+                (family, "Base", policy), "exploratory")
 
     for perfect, control in PERFECT_CONTROLS.items():
         for config in CONFIGS:
@@ -223,77 +242,121 @@ def write_csv(rows, path):
         writer.writerows(rows)
 
 
+def fmt(value, digits):
+    return "—" if value is None else f"{value:.{digits}f}"
+
+
 def write_report(cells, contrasts, path, source):
     cell_index = {(row["family"], row["config"], row["policy"], row["metric"]): row
                   for row in cells}
     contrast_index = {(row["family"], row["contrast"], row["metric"]): row
                       for row in contrasts}
 
-    def effect(family, name, metric):
+    def effect(family, name, metric, digits=3):
         row = contrast_index[(family, name, metric)]
-        return f"{row['mean']:.3f} [{row['ci_low']:.3f}; {row['ci_high']:.3f}]"
+        if row["sd"] in (None, "") or float(row["sd"]) == 0:
+            return f"{fmt(float(row['mean']), digits)} (sem variação entre réplicas)"
+        return (f"{fmt(float(row['mean']), digits)} "
+                f"[{fmt(float(row['ci_low']), digits)}; {fmt(float(row['ci_high']), digits)}]")
 
-    def value(family, config, policy, metric):
+    def value(family, config, policy, metric, digits=3):
         row = cell_index[(family, config, policy, metric)]
-        return f"{row['mean']:.3f} [{row['ci_low']:.3f}; {row['ci_high']:.3f}]"
+        if row["mean"] in (None, ""):
+            return "—"
+        if row["ci_low"] in (None, ""):
+            return fmt(float(row["mean"]), digits)
+        return (f"{fmt(float(row['mean']), digits)} "
+                f"[{fmt(float(row['ci_low']), digits)}; {fmt(float(row['ci_high']), digits)}]")
+
+    def total(family, config, policy, metric):
+        return int(cell_index[(family, config, policy, metric)]["denominator_total"])
 
     version = contrasts[0]["analysis_version"]
     lines = [
-        "# D4.5 — Síntese reproduzível dos contrastes",
+        "# D4.5 — Síntese reproduzível dos contrastes (D4.1 v2.2)",
         "",
-        f"Fonte: `{source}`. Analisador: `{version}`. Cada estimativa usa 30 réplicas",
-        "independentes; as diferenças são calculadas dentro da réplica e resumidas por média e",
-        "intervalo t bilateral de 95%.",
+        f"Fonte: `{source}`. Analisador: `{version}`. Cada estimativa usa as réplicas",
+        "independentes válidas; as diferenças são calculadas dentro da réplica e resumidas por",
+        "média e intervalo t bilateral de 95%. Proporções são médias das razões por réplica.",
+        "Todos os números desta síntese vêm de `resumo_celulas_d4_5.csv` e",
+        "`contrastes_d4_5.csv`.",
         "",
         "## Contrastes principais na família de referência",
         "",
         "| Contraste (sentido) | Política | Média [IC 95%] | Unidade |",
         "|---|---|---:|---|",
-        f"| Agenda − FCFS, Base | — | {effect('referencia', 'policy_Base', 'departures_per_h')} | decolagens/h |",
-        f"| Base − S4 | FCFS | {effect('referencia', 'stands_fcfs', 'departures_per_h')} | decolagens/h |",
-        f"| Base − S4 | Agenda | {effect('referencia', 'stands_agenda', 'departures_per_h')} | decolagens/h |",
-        f"| B2 − Base | FCFS | {effect('referencia', 'counter_fcfs', 'counter_mean_wait_s')} | s |",
-        f"| B2 − Base | Agenda | {effect('referencia', 'counter_agenda', 'counter_mean_wait_s')} | s |",
-        f"| I2 − Base | FCFS | {effect('referencia', 'security_fcfs', 'security_mean_wait_s')} | s |",
-        f"| I2 − Base | Agenda | {effect('referencia', 'security_agenda', 'security_mean_wait_s')} | s |",
+        f"| Agenda − FCFS, Base | — | {effect(REFERENCE, 'policy_Base', 'departures_per_h')} | decolagens com passageiros/h |",
+        f"| Base − S4 | FCFS | {effect(REFERENCE, 'stands_fcfs', 'departures_per_h')} | decolagens com passageiros/h |",
+        f"| Base − S4 | Agenda | {effect(REFERENCE, 'stands_agenda', 'departures_per_h')} | decolagens com passageiros/h |",
+        f"| B2 − Base | FCFS | {effect(REFERENCE, 'counter_fcfs', 'counter_mean_wait_s', 1)} | s |",
+        f"| B2 − Base | Agenda | {effect(REFERENCE, 'counter_agenda', 'counter_mean_wait_s', 1)} | s |",
         "",
-        "## Populações e mecanismos na configuração-base",
+        "## Balanço e mecanismos por demanda na configuração-base",
         "",
-        "| Indicador por réplica | FCFS: média [IC 95%] | Agenda: média [IC 95%] |",
-        "|---|---:|---:|",
+        "| Indicador por réplica | Política | 4 pedidos/h | 6 pedidos/h | 8 pedidos/h |",
+        "|---|---|---:|---:|---:|",
     ]
-    for label, metric in (
-        ("Pedidos oferecidos", "offered"),
-        ("Recusados", "refused"),
-        ("Desviados", "diverted"),
-        ("Decolados", "departed"),
-        ("Pendentes no horizonte", "pending"),
-        ("Cobertura dos pedidos oferecidos", "coverage_offered"),
-        ("Espera média no balcão (s)", "counter_mean_wait_s"),
-        ("Fração de voos transportando passageiros retida pelo grupo", "retained_fraction"),
-        ("Retenção média pelo grupo (s)", "mean_await_s"),
-        ("Bloqueio médio do stand após prontidão para partir (s)", "mean_stand_blocked_s"),
-        ("Ocupação física dos stands", "utilization_stands"),
+    demand = ("demanda_baixa", REFERENCE, "demanda_alta")
+    for label, metric, digits in (
+        ("Pedidos oferecidos", "offered", 2),
+        ("Recusados", "refused", 2),
+        ("Desviados", "diverted", 2),
+        ("Decolados com passageiros (vazios à parte)", "departures_per_h", 3),
+        ("Decolagens vazias", "departed_empty", 2),
+        ("Pendentes no horizonte", "pending", 2),
+        ("Cobertura dos oferecidos", "coverage_offered", 3),
+        ("Espera média no balcão (s)", "counter_mean_wait_s", 1),
+        ("Conformidade ao limite do balcão (180 s)", "counter_within_limit_fraction", 3),
+        ("Fração retida pelo grupo", "retained_fraction", 3),
+        ("Espera após a inspeção, média (s)", "post_security_mean_s", 1),
+        ("Bloqueio do stand após prontidão (s)", "mean_stand_blocked_s", 1),
     ):
-        lines.append(
-            f"| {label} | {value('referencia', 'Base', 'fcfs', metric)} | "
-            f"{value('referencia', 'Base', 'agenda', metric)} |"
-        )
+        for policy in POLICIES:
+            cols = " | ".join(value(f, "Base", policy, metric, digits) for f in demand)
+            lines.append(f"| {label} | {policy.upper() if policy == 'fcfs' else 'Agenda'} | {cols} |")
 
     lines.extend([
         "",
-        "Os denominadores das médias condicionais estão em `resumo_celulas_d4_5.csv`. Na Base de",
-        "referência, a espera no balcão usa 2.529 atendimentos sob FCFS e 2.433 sob agenda; a",
-        "retenção usa 987 e 957 voos decolados transportando passageiros, respectivamente.",
+        "A linha de decolados com passageiros está em decolagens/h (VAR-016).",
         "",
-        "## Sensibilidade do contraste de política na Base",
+        "## Terminal: Base e B2 na referência",
         "",
-        "| Família | Agenda − FCFS, decolagens/h: média [IC 95%] |",
+        "| Indicador por réplica | Base FCFS | B2 FCFS | Base agenda | B2 agenda |",
+        "|---|---:|---:|---:|---:|",
+    ])
+    for label, metric, digits in (
+        ("Espera média no balcão (s)", "counter_mean_wait_s", 1),
+        ("P95 da espera no balcão (s)", "counter_p95_wait_s", 1),
+        ("Conformidade ao limite do balcão", "counter_within_limit_fraction", 3),
+        ("Espera média na bagagem (s)", "baggage_mean_wait_s", 1),
+        ("Espera média na inspeção (s)", "security_mean_wait_s", 1),
+        ("Espera após a inspeção, média (s)", "post_security_mean_s", 1),
+        ("Espera após a inspeção, P95 (s)", "post_security_p95_s", 1),
+        ("Fração retida pelo grupo", "retained_fraction", 3),
+    ):
+        cols = " | ".join(value(REFERENCE, c, p, metric, digits)
+                          for p in POLICIES for c in ("Base", "B2"))
+        lines.append(f"| {label} | {cols} |")
+    lines.extend([
+        "",
+        "Denominadores totais (30 réplicas): espera no balcão "
+        + ", ".join(f"{c} {p.upper() if p == 'fcfs' else 'agenda'} "
+                    f"{total(REFERENCE, c, p, 'counter_mean_wait_s'):,}".replace(",", ".")
+                    for p in POLICIES for c in ("Base", "B2"))
+        + "; voos com passageiros "
+        + ", ".join(f"{c} {p.upper() if p == 'fcfs' else 'agenda'} "
+                    f"{total(REFERENCE, c, p, 'retained_fraction'):,}".replace(",", ".")
+                    for p in POLICIES for c in ("Base", "B2"))
+        + ".",
+        "",
+        "## Sensibilidade do contraste de política na Base (exploratória)",
+        "",
+        "| Família | Agenda − FCFS, decolagens com passageiros/h: média [IC 95%] |",
         "|---|---:|",
     ])
     for family, label in (
         ("demanda_baixa", "4 pedidos/h"),
-        ("referencia", "6 pedidos/h, recarga 30 min"),
+        (REFERENCE, "6 pedidos/h, recarga 30 min (principal)"),
         ("demanda_alta", "8 pedidos/h"),
         ("sem_recarga", "6 pedidos/h, sem recarga"),
         ("recarga_longa", "6 pedidos/h, recarga 60 min"),
@@ -302,42 +365,25 @@ def write_report(cells, contrasts, path, source):
 
     lines.extend([
         "",
-        "## Informação perfeita na agenda",
+        "## Informação perfeita na agenda (exploratória)",
         "",
-        "| Família e configuração | Perfeita − declarada, decolagens/h: média [IC 95%] |",
-        "|---|---:|",
+        "| Família e configuração | Perfeita − declarada, decolagens com passageiros/h | Recusas por réplica |",
+        "|---|---:|---:|",
     ])
     for family, label in (("info_perfeita", "Recarga 30 min"),
                           ("info_perfeita_sem_recarga", "Sem recarga")):
         for config in CONFIGS:
             lines.append(
                 f"| {label}, {config} | "
-                f"{effect(family, f'information_{config}', 'departures_per_h')} |"
+                f"{effect(family, f'information_{config}', 'departures_per_h')} | "
+                f"{effect(family, f'information_{config}', 'refused', 2)} |"
             )
-
     lines.extend([
         "",
-        "## Leitura delimitada pelos dados",
-        "",
-        "- Na família de referência, a agenda recusou pedidos antes da entrada completa no terminal,",
-        "  mas não aumentou a vazão: sua média ficou 0,129 decolagem/h abaixo do FCFS. O resultado",
-        "  coincide com maior bloqueio do stand após a prontidão para partir, pois a saída planejada",
-        "  funciona como horário mínimo na regra verificada da agenda.",
-        "- O quinto stand aumentou a vazão em aproximadamente 0,5 decolagem/h nas duas políticas e",
-        "  reduziu recusas ou desvios. Esse efeito pertence à topologia sintética e às durações",
-        "  adotadas; não estima a capacidade de um local real.",
-        "- O segundo balcão reduziu a espera média no balcão em mais de 120 s. Parte da espera foi",
-        "  deslocada para a inspeção (cerca de 8 s nas células B2), enquanto a Base tinha espera nula",
-        "  nessa estação. Acrescentar um segundo posto de inspeção à Base não alterou a espera porque",
-        "  não havia fila de inspeção a remover.",
-        "- Com recarga de 30 min, a informação perfeita recuperou cerca de 0,09 decolagem/h na Base;",
-        "  sem recarga, o intervalo incluiu zero. A comparação é de desenho informacional e não uma",
-        "  previsão do valor econômico de dados operacionais.",
-        "",
-        "Os resultados são de um cenário sintético com chegadas uniformes supostas, recursos vazios",
-        "na abertura e horizonte terminante de 8 h. Médias de espera descrevem somente visitas com",
-        "início de atendimento observado e devem ser lidas junto às recusas, aos desvios, à censura e",
-        "aos denominadores arquivados.",
+        "Os resultados são de um cenário sintético com chegadas uniformes supostas, serviços",
+        "determinísticos no balcão e na inspeção, recursos vazios na abertura e horizonte",
+        "terminante de 8 h. Médias de espera descrevem somente visitas com início observado e",
+        "devem ser lidas junto às recusas, aos desvios, à censura e aos denominadores.",
         "",
     ])
     path = Path(path)

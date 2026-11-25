@@ -2,7 +2,7 @@
 política × réplica, com versão do código, semente e identificador do dia oferecido.
 
 Cada réplica é um dia gerado por d4_dia a partir da semente; todas as células da
-réplica usam o mesmo dia (pareamento). 48 execuções por réplica.
+réplica usam o mesmo dia (pareamento). 36 execuções por réplica (D4.1 v2.2).
 
 Uso: python d4_experimento.py --seeds 1 2 3 --out data/d4/resultados.csv \\
          [--days-dir data/d4/dias] [--families referencia demanda_alta]
@@ -32,11 +32,13 @@ FAMILIES = {
 }
 ONE = {"counter": 1, "baggage": 1, "security": 1}
 # configuração: (stands, servidores por estação)
+# I2 (segundo posto de inspeção) saiu na D4.1 v2.2: com balcão determinístico de 180 s
+# e inspeção de 90 s, nunca há fila na inspeção com um balcão, e I2 reproduzia a Base
+# em todas as colunas (D4.4 v1, 360 de 360 linhas). Ver deliverables/D4_1_cenarios.md.
 CONFIGS = {
     "Base": (5, ONE),
     "S4": (4, ONE),
     "B2": (5, {**ONE, "counter": 2}),
-    "I2": (5, {**ONE, "security": 2}),
 }
 
 

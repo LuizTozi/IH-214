@@ -33,9 +33,9 @@ class TestPilot(unittest.TestCase):
             ])
         return rows
 
-    def test_reference_filter_has_eight_cells(self):
-        self.assertEqual(len(list(cells(["referencia"]))), 8)
-        self.assertEqual(len(list(cells())), 48)
+    def test_reference_filter_has_six_cells(self):
+        self.assertEqual(len(list(cells(["referencia"]))), 6)
+        self.assertEqual(len(list(cells())), 36)
         with self.assertRaises(ValueError):
             list(cells(["inexistente"]))
 

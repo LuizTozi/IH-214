@@ -18,12 +18,14 @@ número de ordem. Varreduras ocorrem após as liberações do mesmo instante.
 
 - FCFS: a aeronave que não inicia a chegada até t + 300 s desvia, e o terminal é
   avisado (PAR-055, PAR-062).
-- Agenda: decide em t pelo módulo d4_agenda; recusa avisa o terminal. Na execução,
-  o toque não ocorre antes do instante planejado e usa o stand reservado; a saída
-  do stand não ocorre antes da saída planejada (horários mínimos). Entre
-  solicitações prontas prevalece o menor horário planejado; uma demora propaga o
-  início até a primeira disponibilidade conjunta (não há bloqueio por compromisso
-  ainda não pronto).
+- Agenda: decide em t pelo módulo d4_agenda; recusa avisa o terminal. Na execução
+  (D4.1 v2.2), o toque não ocorre antes do instante planejado e usa o stand
+  reservado. A saída planejada é prioridade, não horário mínimo: a aeronave pronta
+  antes do plano sai assim que rota e TLOF estiverem livres, como na renegociação
+  de uma reserva compatível com o plano de recursos (LIT-008, §5.2.1.2, p. 82).
+  Entre solicitações prontas prevalece o menor horário planejado; uma demora
+  propaga o início até a primeira disponibilidade conjunta (não há bloqueio por
+  compromisso ainda não pronto).
 """
 
 from decimal import Decimal
@@ -213,9 +215,8 @@ class Airside:
         f["ready_depart_ms"] = env.now
         if self.policy == "fcfs":
             req = self._request("dep", fid, key=env.now)
-        else:   # agenda: a saída planejada é horário mínimo e chave de prioridade
-            req = self._request("dep", fid, key=f["planned_exit_ms"],
-                                eligible_from=f["planned_exit_ms"])
+        else:   # agenda: a saída planejada é só chave de prioridade (D4.1 v2.2)
+            req = self._request("dep", fid, key=f["planned_exit_ms"])
         yield req["event"]
         f["stand_exit_ms"] = env.now
         self._close(stand_occ)
@@ -299,8 +300,10 @@ def metrics(flights, passengers, intervals, horizon, n_stands):
     carrying = [f for f in departed if not f["empty"]]
     landed = [f for f in flights.values() if f["touchdown_s"] is not None]
     lateness = [max(Decimal(0), f["liftoff_s"] - f["std_s"]) for f in departed]
-    waits = sorted(p["boarding_start_s"] - p["arrival_s"] for p in passengers.values()
-                   if p["boarding_start_s"] is not None)
+    # Espera após o processamento: fim da inspeção até o início do embarque (VAR-045).
+    # Inclui caminhada e acesso à aeronave (51,6 s) e a espera pela aeronave ou pelo grupo.
+    post = sorted(p["boarding_start_s"] - p["ready_s"] for p in passengers.values()
+                  if p["boarding_start_s"] is not None)
     lost = sum(p["state"].startswith(("left_", "not_arrived_")) for p in passengers.values())
 
     def busy(resource, key=None):
@@ -318,7 +321,9 @@ def metrics(flights, passengers, intervals, horizon, n_stands):
         "departed": len(departed),
         "departed_empty": len(departed) - len(carrying),
         "pending": states.count("pending"),
-        "departures_per_h": len(departed) / hours,
+        # VAR-016: decolagens com passageiros; as vazias ficam em liftoffs_per_h.
+        "departures_per_h": len(carrying) / hours,
+        "liftoffs_per_h": len(departed) / hours,
         "punctual": sum(f["punctual"] for f in departed),
         "mean_lateness_s": mean(lateness),
         "retained_flights": sum(f["await_s"] > 0 for f in carrying),
@@ -328,9 +333,10 @@ def metrics(flights, passengers, intervals, horizon, n_stands):
         "outside_window": sum(f["outside_window"] for f in flights.values()),
         "late_vs_plan": sum(f["planned_exit_s"] is not None and f["stand_exit_s"] is not None
                             and f["stand_exit_s"] > f["planned_exit_s"] for f in flights.values()),
-        "boarded_passengers": len(waits),
+        "boarded_passengers": len(post),
         "lost_passengers": lost,
-        "terminal_to_board_p95_s": waits[ceil(0.95 * len(waits)) - 1] if waits else None,
+        "post_security_mean_s": mean(post),
+        "post_security_p95_s": post[ceil(0.95 * len(post)) - 1] if post else None,
         # Ocupação física / (unidades × horizonte); a posse inclui reserva e separação.
         "utilization_tlof": busy("tlof_occupied") / to_s(horizon),
         "utilization_route": busy("route_occupied") / to_s(horizon),

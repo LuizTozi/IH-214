@@ -76,7 +76,9 @@ def forecast_exit(airside, fid, entry_or_tau, now, ready_now):
     else:
         entry = f["stand_entry_ms"] if f["stand_entry_ms"] is not None else entry_or_tau + ARR_ROUTE
         projected = stand_exit(entry + STAND_INBOUND + f["charge_ms"], pax)
-    return max(projected, f["planned_exit_ms"] or 0, now)
+    # D4.1 v2.2: o calendário usa a previsão atualizada, sem o piso da saída planejada,
+    # pois a execução não retém a aeronave pronta até o plano.
+    return max(projected, now)
 
 
 def calendar(airside, now, ready_now):

@@ -84,6 +84,15 @@ class TestAirsideFCFS(unittest.TestCase):
         self.assertEqual(flight(r, "B")["state"], "departed")
         self.assertTrue(flight(r, "B")["empty"])
         self.assertEqual(r["metrics"]["departed_empty"], 1)
+        # VAR-016: a decolagem vazia não entra na vazão, só no total de decolagens.
+        self.assertEqual(r["metrics"]["departures_per_h"], 0)
+        self.assertEqual(r["metrics"]["liftoffs_per_h"] * 8, 1)
+
+    def test_post_security_wait(self):
+        # R = 0: pronto na sala em t + 315; aeronave já pronta; caminhada + porta = 51,6 s.
+        r = run_cell([row("A", 3000, 0, [3000])], ONE, 5, "fcfs")
+        self.assertEqual(r["metrics"]["post_security_mean_s"], S("51.6"))
+        self.assertEqual(r["metrics"]["post_security_p95_s"], S("51.6"))
 
     def test_pending_at_horizon(self):
         r = run_cell([row("A", 28000, 30, [27500])], ONE, 5, "fcfs")
@@ -146,12 +155,13 @@ class TestAgenda(unittest.TestCase):
         self.assertEqual(r["passengers"]["B-P2"]["state"], "not_arrived_refusal")
         self.assertEqual(r["metrics"]["refused"], 1)
 
-    def test_pessimistic_forecast_holds_aircraft_until_planned_exit(self):
+    def test_ready_aircraft_leaves_before_pessimistic_plan(self):
+        # D4.1 v2.2: a saída planejada é prioridade, não horário mínimo (LIT-008 §5.2.1.2).
         rows = [row("A", 3000, 30, [3500])]          # ainda não chegou na decisão
         base = flight(run_cell(rows, ONE, 5, "agenda"), "A")
         self.assertEqual(base["planned_exit_s"], S("5266.6"))   # 4800 + 315 + 124,6 + 27
         self.assertEqual(base["ready_depart_s"], S("5131.6"))
-        self.assertEqual((base["stand_exit_s"], base["stand_blocked_s"]), (S("5266.6"), S("135.0")))
+        self.assertEqual((base["stand_exit_s"], base["stand_blocked_s"]), (S("5131.6"), 0))
         perfect = flight(run_cell(rows, ONE, 5, "agenda", perfect=True), "A")
         self.assertEqual(perfect["planned_exit_s"], S("5131.6"))
         self.assertEqual(perfect["stand_blocked_s"], 0)

@@ -4,11 +4,12 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from d4_analise import ci, contrast, index_rows, numeric, write_report
+from d4_analise import (cell_summaries, ci, contrast, contrast_summaries, index_rows,
+                        numeric, write_report)
 
 
 def row(seed, family, config, policy, departed, offered=10, counter=20, security=5):
-    return {
+    values = {
         "seed": str(seed), "family": family, "config": config, "policy": policy,
         "departed": str(departed), "departed_empty": "0", "offered": str(offered),
         "punctual": str(departed), "retained_flights": "0", "counter_complete": "10",
@@ -16,6 +17,17 @@ def row(seed, family, config, policy, departed, offered=10, counter=20, security
         "security_within_limit": "9", "departures_per_h": str(departed / 8),
         "counter_mean_wait_s": str(counter), "security_mean_wait_s": str(security),
     }
+    for key in ("cancelled_empty", "refused", "diverted", "pending", "liftoffs_per_h",
+                "mean_lateness_s", "mean_await_s", "mean_stand_blocked_s",
+                "post_security_mean_s", "post_security_p95_s", "utilization_tlof",
+                "utilization_route", "utilization_stands", "held_stands",
+                "counter_p95_wait_s", "counter_censored_at_horizon", "counter_left_refusal",
+                "counter_left_diversion", "baggage_mean_wait_s", "baggage_p95_wait_s",
+                "baggage_complete", "security_p95_wait_s", "security_censored_at_horizon",
+                "security_left_refusal", "security_left_diversion", "boarded_passengers",
+                "lost_passengers"):
+        values.setdefault(key, "0")
+    return values
 
 
 class TestAnalysis(unittest.TestCase):
@@ -48,43 +60,38 @@ class TestAnalysis(unittest.TestCase):
         with self.assertRaises(ValueError):
             index_rows([item, dict(item)])
 
-    def test_report_keeps_direction_and_denominators_visible(self):
-        cells = []
-        contrasts = []
-        for policy in ("fcfs", "agenda"):
-            for metric in ("offered", "refused", "diverted", "departed", "pending",
-                           "coverage_offered", "counter_mean_wait_s", "retained_fraction",
-                           "mean_await_s", "mean_stand_blocked_s", "utilization_stands"):
-                cells.append({"analysis_version": "test", "family": "referencia",
-                              "config": "Base", "policy": policy, "metric": metric,
-                              "mean": 1.0, "ci_low": 0.5, "ci_high": 1.5})
-        families = ("referencia", "demanda_baixa", "demanda_alta", "sem_recarga",
-                    "recarga_longa")
-        for family in families:
-            contrasts.append({"analysis_version": "test", "family": family,
-                              "contrast": "policy_Base", "metric": "departures_per_h",
-                              "mean": -0.1, "ci_low": -0.2, "ci_high": 0.0})
-        for name, metric in (("stands_fcfs", "departures_per_h"),
-                             ("stands_agenda", "departures_per_h"),
-                             ("counter_fcfs", "counter_mean_wait_s"),
-                             ("counter_agenda", "counter_mean_wait_s"),
-                             ("security_fcfs", "security_mean_wait_s"),
-                             ("security_agenda", "security_mean_wait_s")):
-            contrasts.append({"analysis_version": "test", "family": "referencia",
-                              "contrast": name, "metric": metric,
-                              "mean": 1.0, "ci_low": 0.5, "ci_high": 1.5})
-        for family in ("info_perfeita", "info_perfeita_sem_recarga"):
-            for config in ("Base", "S4", "B2", "I2"):
-                contrasts.append({"analysis_version": "test", "family": family,
-                                  "contrast": f"information_{config}",
-                                  "metric": "departures_per_h", "mean": 0.1,
-                                  "ci_low": 0.0, "ci_high": 0.2})
+    def test_primary_only_in_reference_family(self):
+        rows = []
+        for seed in range(1, 31):
+            for family in ("referencia", "demanda_baixa", "demanda_alta", "sem_recarga",
+                           "recarga_longa"):
+                for config in ("Base", "S4", "B2"):
+                    for policy in ("fcfs", "agenda"):
+                        rows.append(row(seed, family, config, policy, 8 + seed % 3))
+            for family in ("info_perfeita", "info_perfeita_sem_recarga"):
+                for config in ("Base", "S4", "B2"):
+                    rows.append(row(seed, family, config, "agenda", 8 + seed % 2))
+        contrasts = contrast_summaries(rows, "test")
+        primary = {(c["family"], c["contrast"]) for c in contrasts
+                   if c["classification"] == "primary"}
+        self.assertEqual({family for family, _ in primary}, {"referencia"})
+        self.assertEqual({name for _, name in primary},
+                         {"policy_Base", "stands_fcfs", "stands_agenda",
+                          "counter_fcfs", "counter_agenda"})
+        cells = cell_summaries(rows, "test")
         with tempfile.TemporaryDirectory() as folder:
             path = Path(folder) / "report.md"
             write_report(cells, contrasts, path, "results.csv")
             report = path.read_text(encoding="utf-8")
             self.assertIn("Agenda − FCFS", report)
-            self.assertIn("denominadores", report)
+            self.assertIn("Denominadores", report)
+            self.assertNotIn("I2", report)
+
+    def test_departures_exclude_empty_flights_in_coverage(self):
+        item = row(1, "referencia", "Base", "fcfs", 8)
+        item["departed_empty"] = "2"
+        self.assertEqual(numeric(item, "coverage_offered"), 0.6)
+        self.assertEqual(numeric(item, "retained_fraction"), 0.0)
 
 
 if __name__ == "__main__":

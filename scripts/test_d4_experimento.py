@@ -1,4 +1,4 @@
-"""Integração da D4.2 (etapa 5): uma réplica completa pelas 48 células."""
+"""Integração da D4.2 (etapa 5): uma réplica completa pelas 36 células (D4.1 v2.2)."""
 
 import csv
 import tempfile
@@ -22,11 +22,11 @@ class TestExperimentRunner(unittest.TestCase):
     def tearDownClass(cls):
         cls.folder.cleanup()
 
-    def test_48_distinct_cells_per_replication(self):
-        self.assertEqual(len(list(cells())), 48)
+    def test_36_distinct_cells_per_replication(self):
+        self.assertEqual(len(list(cells())), 36)
         keys = {(r["family"], r["config"], r["policy"]) for r in self.rows}
-        self.assertEqual(len(keys), 48)
-        self.assertEqual(len(self.csv_rows), 48)
+        self.assertEqual(len(keys), 36)
+        self.assertEqual(len(self.csv_rows), 36)
         self.assertTrue(self.day_file.exists())
 
     def test_pairing_uses_one_day(self):
@@ -62,8 +62,9 @@ class TestExperimentRunner(unittest.TestCase):
                         if key.startswith(("counter_", "baggage_", "security_")):
                             self.assertEqual(base[key], s4[key], (family, policy, key))
 
-    def test_configs_cover_the_four_contrasts(self):
-        self.assertEqual(set(CONFIGS), {"Base", "S4", "B2", "I2"})
+    def test_configs_cover_the_three_contrasts(self):
+        # I2 saiu na D4.1 v2.2: reproduzia a Base por construção (serviços determinísticos).
+        self.assertEqual(set(CONFIGS), {"Base", "S4", "B2"})
 
 
 if __name__ == "__main__":
