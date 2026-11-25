@@ -30,6 +30,19 @@ POLICY = {
     "agenda": {"label": "Admissão antecipada", "color": VERMILLION, "marker": "s",
                "linestyle": "--"},
 }
+POLICY_EN = {"fcfs": "Local FCFS", "agenda": "Advance admission"}
+
+
+def language():
+    """Idioma pedido na linha de comando: --lang pt (padrão) ou --lang en."""
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--lang", choices=("pt", "en"), default="pt")
+    return parser.parse_args().lang
+
+
+def suffix(lang):
+    return "" if lang == "pt" else "_en"
 
 
 def apply_style():
@@ -49,10 +62,11 @@ def apply_style():
     })
 
 
-def comma(digits):
-    """Formatador de eixo com vírgula decimal."""
+def comma(digits, lang="pt"):
+    """Formatador de eixo: vírgula decimal em português, ponto em inglês; sinal de menos."""
+    sep = "," if lang == "pt" else "."
     return FuncFormatter(
-        lambda value, _pos: f"{value:.{digits}f}".replace(".", ",").replace("-", "\u2212"))
+        lambda value, _pos: f"{value:.{digits}f}".replace(".", sep).replace("-", "\u2212"))
 
 
 def read(path):

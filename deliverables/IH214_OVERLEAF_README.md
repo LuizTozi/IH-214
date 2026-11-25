@@ -28,3 +28,6 @@ O arquivo `.docx` do modelo está em tamanho Carta e espaçamento simples, embor
 
 O evento pede o envio final em Word: transponha o texto para o `.docx` oficial sem alterar os estilos. Os resultados da D4 já foram inseridos. Os trechos em vermelho (`\pendente{...}`) aguardam somente coautores, endereço, e-mail e biografia fornecidos pelo autor. As regras de escrita estão em `AGENTS.md` e em `deliverables/EVENTO_AERO2027.md`, no repositório.
 
+## Artigo completo em inglês (rascunho)
+
+`aero2027/artigo_en/artigo_aero2027_en.tex` reúne o artigo completo em inglês com a tipografia e a ordem de seções do modelo AERO2027 (o evento exige apenas o resumo; o formato do artigo completo é uma suposição declarada no arquivo). Para compilar no Overleaf, escolha esse arquivo em *Menu → Main document*. As referências estão em `aero2027/artigo_en/referencias_aero.tex`, geradas de `references/references.bib` por `gerar_referencias.py`, e as figuras em inglês são `figures/fig_d4_*_en.pdf`. Trechos em vermelho aguardam dados e aprovação dos autores.
