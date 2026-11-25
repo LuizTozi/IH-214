@@ -1,6 +1,6 @@
 # D4.5 — Síntese reproduzível dos contrastes (D4.1 v2.2)
 
-Fonte: `../data/d4/resultados_d4_4.csv`. Analisador: `d2df0b1`. Cada estimativa usa as réplicas
+Fonte: `../data/d4/resultados_d4_4.csv`. Analisador: `9a14260`. Cada estimativa usa as réplicas
 independentes válidas; as diferenças são calculadas dentro da réplica e resumidas por
 média e intervalo t bilateral de 95%. Proporções são médias das razões por réplica.
 Todos os números desta síntese vêm de `resumo_celulas_d4_5.csv` e
@@ -62,6 +62,8 @@ A linha de decolados com passageiros está em decolagens/h (VAR-016).
 
 Contrastes pareados B2 − Base (exploratórios): conformidade ao limite do balcão 0.315 [0.277; 0.353] (FCFS) e 0.291 [0.254; 0.328] (agenda); espera média após a inspeção 124.7 [107.9; 141.5] s (FCFS) e 112.7 [98.3; 127.1] s (agenda).
 
+Mesma população (embarcados), B2 − Base: espera no balcão -140.6 [-157.8; -123.4] s (FCFS) e -125.7 [-141.1; -110.2] s (agenda); chegada ao início do embarque -5.4 [-10.0; -0.9] s (FCFS) e -2.9 [-7.5; 1.7] s (agenda).
+
 Denominadores totais (30 réplicas): espera no balcão Base FCFS 2.529, B2 FCFS 2.608, Base agenda 2.468, B2 agenda 2.541; voos com passageiros Base FCFS 987, B2 FCFS 998, Base agenda 979, B2 agenda 986.
 
 ## Sensibilidade do contraste de política na Base (exploratória)
@@ -73,6 +75,19 @@ Denominadores totais (30 réplicas): espera no balcão Base FCFS 2.529, B2 FCFS 
 | 8 pedidos/h | -0.037 [-0.080; 0.005] |
 | 6 pedidos/h, sem recarga | -0.054 [-0.088; -0.020] |
 | 6 pedidos/h, recarga 60 min | -0.013 [-0.027; 0.002] |
+| 6 pedidos/h, serviço exponencial (suposto) | -0.033 [-0.068; 0.001] |
+
+## Recursos sob serviço exponencial nas mesmas médias (exploratória, PAR-063)
+
+| Contraste | Determinístico (referência) | Exponencial |
+|---|---:|---:|
+| Base − S4, FCFS (decolagens com passageiros/h) | 0.487 [0.439; 0.536] | 0.467 [0.415; 0.519] |
+| Base − S4, agenda | 0.492 [0.440; 0.544] | 0.479 [0.429; 0.530] |
+| B2 − Base, FCFS (espera no balcão, s) | -141.5 [-158.4; -124.7] | -231.5 [-267.6; -195.4] |
+| B2 − Base, agenda | -125.3 [-140.5; -110.1] | -210.1 [-244.2; -176.1] |
+| B2 − Base, FCFS (conformidade do balcão) | 0.315 [0.277; 0.353] | 0.358 [0.317; 0.400] |
+| B2 − Base, FCFS (espera após a inspeção, s) | 124.7 [107.9; 141.5] | 205.4 [174.7; 236.1] |
+| Espera média na inspeção, Base FCFS (s) | 0.0 [0.0; 0.0] | 31.0 [22.9; 39.1] |
 
 ## Informação perfeita na agenda (exploratória)
 
