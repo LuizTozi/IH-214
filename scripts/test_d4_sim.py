@@ -88,6 +88,12 @@ class TestAirsideFCFS(unittest.TestCase):
         self.assertEqual(r["metrics"]["departures_per_h"], 0)
         self.assertEqual(r["metrics"]["liftoffs_per_h"] * 8, 1)
 
+    def test_boarded_population_metrics(self):
+        # R = 0: chega em 3000, balcão 180 + bagagem 45 + inspeção 90; embarque em 3000 + 315 + 51,6.
+        r = run_cell([row("A", 3000, 0, [3000])], ONE, 5, "fcfs")
+        self.assertEqual(r["metrics"]["arrival_to_board_mean_s"], S("366.6"))
+        self.assertEqual(r["metrics"]["boarded_counter_wait_mean_s"], 0)
+
     def test_post_security_wait(self):
         # R = 0: pronto na sala em t + 315; aeronave já pronta; caminhada + porta = 51,6 s.
         r = run_cell([row("A", 3000, 0, [3000])], ONE, 5, "fcfs")

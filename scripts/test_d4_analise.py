@@ -20,6 +20,7 @@ def row(seed, family, config, policy, departed, offered=10, counter=20, security
     for key in ("cancelled_empty", "refused", "diverted", "pending", "liftoffs_per_h",
                 "mean_lateness_s", "mean_await_s", "mean_stand_blocked_s",
                 "post_security_mean_s", "post_security_p95_s", "utilization_tlof",
+                "arrival_to_board_mean_s", "boarded_counter_wait_mean_s",
                 "utilization_route", "utilization_stands", "held_stands",
                 "counter_p95_wait_s", "counter_censored_at_horizon", "counter_left_refusal",
                 "counter_left_diversion", "baggage_mean_wait_s", "baggage_p95_wait_s",
@@ -64,7 +65,7 @@ class TestAnalysis(unittest.TestCase):
         rows = []
         for seed in range(1, 31):
             for family in ("referencia", "demanda_baixa", "demanda_alta", "sem_recarga",
-                           "recarga_longa"):
+                           "recarga_longa", "servico_variavel"):
                 for config in ("Base", "S4", "B2"):
                     for policy in ("fcfs", "agenda"):
                         rows.append(row(seed, family, config, policy, 8 + seed % 3))

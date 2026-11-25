@@ -288,12 +288,20 @@ def collect(airside, terminal, horizon, servers, n_stands, policy, perfect):
                  for res, key, a, b in airside.intervals if a < horizon]
     return {"flights": flights, "passengers": passengers, "intervals": intervals,
             "summary": summarize(terminal.visits, horizon),
-            "metrics": metrics(flights, passengers, intervals, horizon, n_stands),
+            "metrics": metrics(flights, passengers, intervals, horizon, n_stands,
+                               counter_waits(terminal.visits, horizon)),
             "config": {"servers": dict(servers), "n_stands": n_stands, "policy": policy,
                        "perfect": perfect, "horizon_s": to_s(horizon)}}
 
 
-def metrics(flights, passengers, intervals, horizon, n_stands):
+def counter_waits(visits, horizon):
+    """Espera no balcão por passageiro (s), para visitas com início observado."""
+    return {v["id"]: to_s(v["start_ms"] - v["entry_ms"]) for v in visits
+            if v["station"] == "counter" and v["start_ms"] is not None
+            and v["start_ms"] < horizon}
+
+
+def metrics(flights, passengers, intervals, horizon, n_stands, counter_wait=None):
     hours = Decimal(horizon) / 3_600_000
     states = [f["state"] for f in flights.values()]
     departed = [f for f in flights.values() if f["state"] == "departed"]
@@ -305,6 +313,12 @@ def metrics(flights, passengers, intervals, horizon, n_stands):
     post = sorted(p["boarding_start_s"] - p["ready_s"] for p in passengers.values()
                   if p["boarding_start_s"] is not None)
     lost = sum(p["state"].startswith(("left_", "not_arrived_")) for p in passengers.values())
+    # Mesma população (embarcados): chegada ao início do embarque e espera no balcão,
+    # para comparar com a espera após a inspeção (D4.1 v2.3, revisão crítica F06).
+    boarded = [pid for pid, p in passengers.items() if p["boarding_start_s"] is not None]
+    door = [passengers[pid]["boarding_start_s"] - passengers[pid]["arrival_s"] for pid in boarded]
+    counter_wait = counter_wait or {}
+    boarded_counter = [counter_wait[pid] for pid in boarded if pid in counter_wait]
 
     def busy(resource, key=None):
         return sum(b - a for res, k, a, b in intervals if res == resource and (key is None or k == key))
@@ -337,6 +351,8 @@ def metrics(flights, passengers, intervals, horizon, n_stands):
         "lost_passengers": lost,
         "post_security_mean_s": mean(post),
         "post_security_p95_s": post[ceil(0.95 * len(post)) - 1] if post else None,
+        "arrival_to_board_mean_s": mean(door),
+        "boarded_counter_wait_mean_s": mean(boarded_counter),
         # Ocupação física / (unidades × horizonte); a posse inclui reserva e separação.
         "utilization_tlof": busy("tlof_occupied") / to_s(horizon),
         "utilization_route": busy("route_occupied") / to_s(horizon),

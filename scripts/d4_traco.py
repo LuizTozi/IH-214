@@ -17,7 +17,7 @@ from d4_sim import run_cell
 
 
 def run(day, config):
-    rate, charge, _ = FAMILIES["referencia"]
+    rate, charge, _, _ = FAMILIES["referencia"]
     stands, servers = CONFIGS[config]
     return run_cell(family_requests(day, rate, charge), servers, stands, "fcfs")
 

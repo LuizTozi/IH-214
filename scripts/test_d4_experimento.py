@@ -1,4 +1,4 @@
-"""Integração da D4.2 (etapa 5): uma réplica completa pelas 36 células (D4.1 v2.2)."""
+"""Integração da D4.2 (etapa 5): uma réplica completa pelas 42 células (D4.1 v2.3)."""
 
 import csv
 import tempfile
@@ -22,17 +22,17 @@ class TestExperimentRunner(unittest.TestCase):
     def tearDownClass(cls):
         cls.folder.cleanup()
 
-    def test_36_distinct_cells_per_replication(self):
-        self.assertEqual(len(list(cells())), 36)
+    def test_42_distinct_cells_per_replication(self):
+        self.assertEqual(len(list(cells())), 42)
         keys = {(r["family"], r["config"], r["policy"]) for r in self.rows}
-        self.assertEqual(len(keys), 36)
-        self.assertEqual(len(self.csv_rows), 36)
+        self.assertEqual(len(keys), 42)
+        self.assertEqual(len(self.csv_rows), 42)
         self.assertTrue(self.day_file.exists())
 
     def test_pairing_uses_one_day(self):
         self.assertEqual(len({r["day_id"] for r in self.rows}), 1)
         self.assertEqual(len({r["code_version"] for r in self.rows}), 1)
-        for family, (rate, _, _) in FAMILIES.items():
+        for family, (rate, _, _, _) in FAMILIES.items():
             offered = {r["offered"] for r in self.rows if r["family"] == family}
             self.assertEqual(len(offered), 1, family)    # mesma demanda em todas as células
 

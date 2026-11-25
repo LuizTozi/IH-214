@@ -2,7 +2,7 @@
 política × réplica, com versão do código, semente e identificador do dia oferecido.
 
 Cada réplica é um dia gerado por d4_dia a partir da semente; todas as células da
-réplica usam o mesmo dia (pareamento). 36 execuções por réplica (D4.1 v2.2).
+réplica usam o mesmo dia (pareamento). 42 execuções por réplica (D4.1 v2.3).
 
 Uso: python d4_experimento.py --seeds 1 2 3 --out data/d4/resultados.csv \\
          [--days-dir data/d4/dias] [--families referencia demanda_alta]
@@ -20,15 +20,18 @@ from d4_sim import run_cell
 
 ROOT = Path(__file__).resolve().parent.parent
 
-# família: (pedidos/h, recarga em min, informação perfeita)
+# família: (pedidos/h, recarga em min, informação perfeita, serviço variável)
+# servico_variavel (D4.1 v2.3): referência com balcão e inspeção exponenciais nas
+# mesmas médias, limite superior clássico de variabilidade (SUPOSTO, PAR-063).
 FAMILIES = {
-    "referencia": (6, 30, False),
-    "demanda_baixa": (4, 30, False),
-    "demanda_alta": (8, 30, False),
-    "sem_recarga": (6, 0, False),
-    "recarga_longa": (6, 60, False),
-    "info_perfeita": (6, 30, True),
-    "info_perfeita_sem_recarga": (6, 0, True),
+    "referencia": (6, 30, False, False),
+    "demanda_baixa": (4, 30, False, False),
+    "demanda_alta": (8, 30, False, False),
+    "sem_recarga": (6, 0, False, False),
+    "recarga_longa": (6, 60, False, False),
+    "servico_variavel": (6, 30, False, True),
+    "info_perfeita": (6, 30, True, False),
+    "info_perfeita_sem_recarga": (6, 0, True, False),
 }
 ONE = {"counter": 1, "baggage": 1, "security": 1}
 # configuração: (stands, servidores por estação)
@@ -47,7 +50,7 @@ def cells(families=None):
     unknown = set(selected) - set(FAMILIES)
     if unknown:
         raise ValueError(f"unknown families: {sorted(unknown)}")
-    for family, (rate, charge, perfect) in FAMILIES.items():
+    for family, (rate, charge, perfect, _variable) in FAMILIES.items():
         if family not in selected:
             continue
         for config in CONFIGS:
@@ -85,9 +88,10 @@ def run(seeds, out, days_dir=None, families=None):
         if days_dir is not None:
             save_day(day, Path(days_dir) / f"dia_{seed:04d}.json")
         for family, config, policy in cells(families):
-            rate, charge, perfect = FAMILIES[family]
+            rate, charge, perfect, variable = FAMILIES[family]
             stands, servers = CONFIGS[config]
-            result = run_cell(family_requests(day, rate, charge), servers, stands, policy, perfect)
+            result = run_cell(family_requests(day, rate, charge, variable), servers, stands,
+                              policy, perfect)
             rows.append({"seed": seed, "day_id": ident, "family": family, "config": config,
                          "policy": policy, "perfect": perfect, "rate_per_h": rate,
                          "charge_min": charge, "n_stands": stands,

@@ -104,3 +104,21 @@ class TestDayGenerator(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+class TestServiceVariability(unittest.TestCase):
+    """D4.1 v2.3: serviço variável sorteado antes da política, sem alterar os demais sorteios."""
+
+    def test_variable_service_draws_exponential_with_declared_means(self):
+        from d4_dia import family_requests, generate_day
+        day = generate_day(20001)
+        fixed = family_requests(day, 6, 30)
+        variable = family_requests(day, 6, 30, variable_service=True)
+        self.assertEqual([r["id"] for r in fixed], [r["id"] for r in variable])
+        for a, b in zip(fixed, variable):
+            for p, q in zip(a["manifest"], b["manifest"]):
+                self.assertEqual(p["arrival_s"], q["arrival_s"])      # pareamento preservado
+                self.assertIsNone(p["counter_service_s"])
+                self.assertGreaterEqual(q["counter_service_s"], 0)
+        counter = [float(p["counter_service_s"]) for r in variable for p in r["manifest"]]
+        self.assertAlmostEqual(sum(counter) / len(counter), 180, delta=40)
+

@@ -106,7 +106,12 @@ class Terminal:
             return
         row["state"] = "in_terminal"
         for station in STATIONS:
-            service = to_ms(person["bag_s"] if station == "baggage" else SERVICE_S[station])
+            if station == "baggage":
+                service = to_ms(person["bag_s"])
+            elif person.get(f"{station}_s") is not None:   # família de serviço variável
+                service = to_ms(person[f"{station}_s"])
+            else:
+                service = to_ms(SERVICE_S[station])
             visit = {"id": person["id"], "flight": person["flight"], "station": station,
                      "entry_ms": self.env.now, "start_ms": None, "end_ms": None,
                      "server": None, "exit_ms": None, "exit_reason": None}
@@ -167,8 +172,8 @@ class Terminal:
 
         def remaining(pid, visit):
             elapsed = now - visit["start_ms"]
-            if visit["station"] != "baggage":
-                return duration(pid, visit["station"]) - elapsed
+            if visit["station"] != "baggage":           # com serviço variável, pode já ter passado
+                return max(0, duration(pid, visit["station"]) - elapsed)
             if perfect:
                 return to_ms(self.persons[pid]["bag_s"]) - elapsed
             if elapsed < BAG_LOW:
@@ -205,7 +210,8 @@ class Terminal:
 def passengers_from_family(rows):
     """Converte os pedidos de uma família (d4_dia) em passageiros presentes."""
     return [{"id": p["id"], "flight": r["id"], "arrival_s": p["arrival_s"],
-             "bag_s": p["bag_service_s"]}
+             "bag_s": p["bag_service_s"], "counter_s": p.get("counter_service_s"),
+             "security_s": p.get("security_service_s")}
             for r in rows for p in r["manifest"] if p["arrival_s"] is not None]
 
 

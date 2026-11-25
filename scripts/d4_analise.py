@@ -21,7 +21,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 REFERENCE = "referencia"
 REGULAR_FAMILIES = ("referencia", "demanda_baixa", "demanda_alta", "sem_recarga",
-                    "recarga_longa")
+                    "recarga_longa", "servico_variavel")
 PERFECT_CONTROLS = {
     "info_perfeita": "referencia",
     "info_perfeita_sem_recarga": "sem_recarga",
@@ -54,6 +54,8 @@ CELL_METRICS = {
     "mean_stand_blocked_s": "departed",
     "post_security_mean_s": "boarded_passengers",
     "post_security_p95_s": "boarded_passengers",
+    "arrival_to_board_mean_s": "boarded_passengers",
+    "boarded_counter_wait_mean_s": "boarded_passengers",
     "utilization_tlof": None,
     "utilization_route": None,
     "utilization_stands": None,
@@ -225,6 +227,13 @@ def contrast_summaries(rows, version):
             # Para onde vai a espera poupada no balcão: sala de embarque (VAR-045).
             add("lounge", family, f"lounge_{policy}", "B2 - Base", "post_security_mean_s",
                 (family, "B2", policy), (family, "Base", policy), "exploratory")
+            # Mesma população (embarcados): espera no balcão e chegada ao embarque.
+            add("boarded_counter", family, f"boarded_counter_{policy}", "B2 - Base",
+                "boarded_counter_wait_mean_s", (family, "B2", policy),
+                (family, "Base", policy), "exploratory")
+            add("door_to_board", family, f"door_to_board_{policy}", "B2 - Base",
+                "arrival_to_board_mean_s", (family, "B2", policy),
+                (family, "Base", policy), "exploratory")
 
     for perfect, control in PERFECT_CONTROLS.items():
         for config in CONFIGS:
@@ -349,6 +358,13 @@ def write_report(cells, contrasts, path, source):
         f"{effect(REFERENCE, 'lounge_fcfs', 'post_security_mean_s', 1)} s (FCFS) e "
         f"{effect(REFERENCE, 'lounge_agenda', 'post_security_mean_s', 1)} s (agenda).",
         "",
+        "Mesma população (embarcados), B2 − Base: espera no balcão "
+        f"{effect(REFERENCE, 'boarded_counter_fcfs', 'boarded_counter_wait_mean_s', 1)} s (FCFS) e "
+        f"{effect(REFERENCE, 'boarded_counter_agenda', 'boarded_counter_wait_mean_s', 1)} s (agenda); "
+        "chegada ao início do embarque "
+        f"{effect(REFERENCE, 'door_to_board_fcfs', 'arrival_to_board_mean_s', 1)} s (FCFS) e "
+        f"{effect(REFERENCE, 'door_to_board_agenda', 'arrival_to_board_mean_s', 1)} s (agenda).",
+        "",
         "Denominadores totais (30 réplicas): espera no balcão "
         + ", ".join(f"{c} {p.upper() if p == 'fcfs' else 'agenda'} "
                     f"{total(REFERENCE, c, p, 'counter_mean_wait_s'):,}".replace(",", ".")
@@ -370,8 +386,31 @@ def write_report(cells, contrasts, path, source):
         ("demanda_alta", "8 pedidos/h"),
         ("sem_recarga", "6 pedidos/h, sem recarga"),
         ("recarga_longa", "6 pedidos/h, recarga 60 min"),
+        ("servico_variavel", "6 pedidos/h, serviço exponencial (suposto)"),
     ):
         lines.append(f"| {label} | {effect(family, 'policy_Base', 'departures_per_h')} |")
+
+    lines.extend([
+        "",
+        "## Recursos sob serviço exponencial nas mesmas médias (exploratória, PAR-063)",
+        "",
+        "| Contraste | Determinístico (referência) | Exponencial |",
+        "|---|---:|---:|",
+    ])
+    for label, name, metric, digits in (
+        ("Base − S4, FCFS (decolagens com passageiros/h)", "stands_fcfs", "departures_per_h", 3),
+        ("Base − S4, agenda", "stands_agenda", "departures_per_h", 3),
+        ("B2 − Base, FCFS (espera no balcão, s)", "counter_fcfs", "counter_mean_wait_s", 1),
+        ("B2 − Base, agenda", "counter_agenda", "counter_mean_wait_s", 1),
+        ("B2 − Base, FCFS (conformidade do balcão)", "counter_los_fcfs",
+         "counter_within_limit_fraction", 3),
+        ("B2 − Base, FCFS (espera após a inspeção, s)", "lounge_fcfs", "post_security_mean_s", 1),
+    ):
+        lines.append(f"| {label} | {effect(REFERENCE, name, metric, digits)} | "
+                     f"{effect('servico_variavel', name, metric, digits)} |")
+    lines.append(f"| Espera média na inspeção, Base FCFS (s) | "
+                 f"{value(REFERENCE, 'Base', 'fcfs', 'security_mean_wait_s', 1)} | "
+                 f"{value('servico_variavel', 'Base', 'fcfs', 'security_mean_wait_s', 1)} |")
 
     lines.extend([
         "",
