@@ -1,6 +1,6 @@
-# D4.5 — Síntese reproduzível dos contrastes (D4.1 v2.2)
+# D4.5 — Síntese reproduzível dos contrastes (D4.1 v2.4)
 
-Fonte: `../data/d4/resultados_d4_4.csv`. Analisador: `9a14260`. Cada estimativa usa as réplicas
+Fonte: `data/d4/resultados_d4_4.csv`. Analisador: `f169f52`. Cada estimativa usa as réplicas
 independentes válidas; as diferenças são calculadas dentro da réplica e resumidas por
 média e intervalo t bilateral de 95%. Proporções são médias das razões por réplica.
 Todos os números desta síntese vêm de `resumo_celulas_d4_5.csv` e
@@ -10,11 +10,11 @@ Todos os números desta síntese vêm de `resumo_celulas_d4_5.csv` e
 
 | Contraste (sentido) | Política | Média [IC 95%] | Unidade |
 |---|---|---:|---|
-| Agenda − FCFS, Base | — | -0.033 [-0.066; -0.001] | decolagens com passageiros/h |
-| Base − S4 | FCFS | 0.487 [0.439; 0.536] | decolagens com passageiros/h |
-| Base − S4 | Agenda | 0.492 [0.440; 0.544] | decolagens com passageiros/h |
-| B2 − Base | FCFS | -141.5 [-158.4; -124.7] | s |
-| B2 − Base | Agenda | -125.3 [-140.5; -110.1] | s |
+| Agenda − FCFS, Base | — | -0.096 [-0.132; -0.060] | decolagens com passageiros/h |
+| Base − S4 | FCFS | 0.479 [0.422; 0.537] | decolagens com passageiros/h |
+| Base − S4 | Agenda | 0.467 [0.404; 0.529] | decolagens com passageiros/h |
+| B2 − Base | FCFS | -99.1 [-114.6; -83.7] | s |
+| B2 − Base | Agenda | -95.2 [-109.6; -80.9] | s |
 
 ## Balanço e mecanismos por demanda na configuração-base
 
@@ -23,27 +23,27 @@ Todos os números desta síntese vêm de `resumo_celulas_d4_5.csv` e
 | Pedidos oferecidos | FCFS | 28.70 [26.90; 30.50] | 43.77 [41.48; 46.05] | 57.97 [55.09; 60.84] |
 | Pedidos oferecidos | Agenda | 28.70 [26.90; 30.50] | 43.77 [41.48; 46.05] | 57.97 [55.09; 60.84] |
 | Recusados | FCFS | 0.00 [0.00; 0.00] | 0.00 [0.00; 0.00] | 0.00 [0.00; 0.00] |
-| Recusados | Agenda | 1.80 [1.23; 2.37] | 7.23 [6.01; 8.46] | 14.63 [12.74; 16.53] |
-| Desviados | FCFS | 1.60 [1.08; 2.12] | 6.77 [5.67; 7.87] | 14.23 [12.42; 16.05] |
+| Recusados | Agenda | 1.97 [1.37; 2.56] | 7.23 [6.17; 8.30] | 14.47 [12.68; 16.25] |
+| Desviados | FCFS | 1.50 [0.99; 2.01] | 6.43 [5.35; 7.51] | 13.13 [11.42; 14.85] |
 | Desviados | Agenda | 0.00 [0.00; 0.00] | 0.00 [0.00; 0.00] | 0.00 [0.00; 0.00] |
-| Decolados com passageiros (vazios à parte) | FCFS | 3.042 [2.866; 3.218] | 4.112 [3.949; 4.276] | 4.800 [4.640; 4.960] |
-| Decolados com passageiros (vazios à parte) | Agenda | 3.017 [2.841; 3.192] | 4.079 [3.922; 4.236] | 4.763 [4.611; 4.914] |
-| Decolagens vazias | FCFS | 0.53 [0.26; 0.81] | 0.87 [0.59; 1.14] | 1.10 [0.72; 1.48] |
-| Decolagens vazias | Agenda | 0.53 [0.26; 0.81] | 0.83 [0.55; 1.11] | 1.13 [0.74; 1.52] |
-| Pendentes no horizonte | FCFS | 2.23 [1.71; 2.76] | 3.23 [2.66; 3.80] | 4.23 [3.75; 4.72] |
-| Pendentes no horizonte | Agenda | 2.23 [1.74; 2.73] | 3.07 [2.51; 3.62] | 4.10 [3.67; 4.53] |
-| Cobertura dos oferecidos | FCFS | 0.852 [0.829; 0.874] | 0.757 [0.734; 0.781] | 0.669 [0.643; 0.694] |
-| Cobertura dos oferecidos | Agenda | 0.845 [0.821; 0.868] | 0.752 [0.728; 0.776] | 0.664 [0.638; 0.690] |
-| Espera média no balcão (s) | FCFS | 94.8 [76.7; 112.9] | 154.8 [136.6; 173.0] | 222.2 [194.6; 249.9] |
-| Espera média no balcão (s) | Agenda | 89.6 [73.0; 106.3] | 137.7 [121.4; 154.0] | 186.4 [165.6; 207.2] |
-| Conformidade ao limite do balcão (180 s) | FCFS | 0.805 [0.768; 0.843] | 0.677 [0.639; 0.715] | 0.563 [0.522; 0.604] |
-| Conformidade ao limite do balcão (180 s) | Agenda | 0.814 [0.779; 0.850] | 0.701 [0.664; 0.738] | 0.611 [0.570; 0.652] |
-| Fração retida pelo grupo | FCFS | 0.052 [0.034; 0.069] | 0.092 [0.070; 0.113] | 0.127 [0.100; 0.154] |
-| Fração retida pelo grupo | Agenda | 0.048 [0.031; 0.065] | 0.079 [0.061; 0.096] | 0.098 [0.074; 0.122] |
-| Espera após a inspeção, média (s) | FCFS | 1289.9 [1250.1; 1329.6] | 1255.5 [1217.7; 1293.3] | 1201.9 [1160.0; 1243.8] |
-| Espera após a inspeção, média (s) | Agenda | 1302.6 [1263.4; 1341.7] | 1283.5 [1247.3; 1319.7] | 1245.8 [1204.0; 1287.6] |
-| Bloqueio do stand após prontidão (s) | FCFS | 4.2 [2.8; 5.7] | 8.0 [6.3; 9.6] | 9.7 [8.2; 11.3] |
-| Bloqueio do stand após prontidão (s) | Agenda | 1.5 [0.9; 2.2] | 2.4 [1.4; 3.5] | 2.4 [1.9; 3.0] |
+| Decolados com passageiros (vazios à parte) | FCFS | 3.125 [2.955; 3.295] | 4.283 [4.115; 4.451] | 5.104 [4.944; 5.264] |
+| Decolados com passageiros (vazios à parte) | Agenda | 3.083 [2.920; 3.247] | 4.188 [4.013; 4.362] | 4.946 [4.794; 5.098] |
+| Decolagens vazias | FCFS | 0.00 [0.00; 0.00] | 0.00 [0.00; 0.00] | 0.00 [0.00; 0.00] |
+| Decolagens vazias | Agenda | 0.00 [0.00; 0.00] | 0.00 [0.00; 0.00] | 0.00 [0.00; 0.00] |
+| Pendentes no horizonte | FCFS | 2.20 [1.72; 2.68] | 3.07 [2.55; 3.58] | 4.00 [3.56; 4.44] |
+| Pendentes no horizonte | Agenda | 2.07 [1.65; 2.48] | 3.03 [2.50; 3.57] | 3.93 [3.53; 4.34] |
+| Cobertura dos oferecidos | FCFS | 0.875 [0.854; 0.897] | 0.788 [0.766; 0.810] | 0.711 [0.688; 0.733] |
+| Cobertura dos oferecidos | Agenda | 0.865 [0.842; 0.888] | 0.771 [0.748; 0.793] | 0.689 [0.666; 0.712] |
+| Espera média no balcão (s) | FCFS | 99.9 [74.4; 125.4] | 108.9 [90.9; 126.9] | 112.3 [95.9; 128.7] |
+| Espera média no balcão (s) | Agenda | 99.4 [74.6; 124.2] | 104.3 [87.5; 121.1] | 114.9 [96.2; 133.5] |
+| Conformidade ao limite do balcão (180 s) | FCFS | 0.820 [0.781; 0.859] | 0.789 [0.760; 0.819] | 0.765 [0.733; 0.798] |
+| Conformidade ao limite do balcão (180 s) | Agenda | 0.821 [0.784; 0.858] | 0.795 [0.767; 0.822] | 0.761 [0.727; 0.795] |
+| Fração retida pelo grupo | FCFS | 0.080 [0.051; 0.108] | 0.083 [0.058; 0.108] | 0.070 [0.051; 0.089] |
+| Fração retida pelo grupo | Agenda | 0.067 [0.040; 0.094] | 0.069 [0.045; 0.092] | 0.068 [0.047; 0.089] |
+| Espera após a inspeção, média (s) | FCFS | 665.8 [634.7; 696.9] | 664.2 [640.2; 688.2] | 665.6 [642.3; 688.8] |
+| Espera após a inspeção, média (s) | Agenda | 682.8 [653.6; 711.9] | 683.8 [660.4; 707.3] | 683.2 [659.5; 706.9] |
+| Bloqueio do stand após prontidão (s) | FCFS | 7.4 [5.2; 9.7] | 10.6 [8.4; 12.9] | 13.4 [10.4; 16.4] |
+| Bloqueio do stand após prontidão (s) | Agenda | 1.5 [0.8; 2.1] | 1.8 [1.1; 2.5] | 2.3 [1.4; 3.2] |
 
 A linha de decolados com passageiros está em decolagens/h (VAR-016).
 
@@ -51,56 +51,53 @@ A linha de decolados com passageiros está em decolagens/h (VAR-016).
 
 | Indicador por réplica | Base FCFS | B2 FCFS | Base agenda | B2 agenda |
 |---|---:|---:|---:|---:|
-| Espera média no balcão (s) | 154.8 [136.6; 173.0] | 13.3 [11.2; 15.3] | 137.7 [121.4; 154.0] | 12.4 [10.5; 14.3] |
-| P95 da espera no balcão (s) | 558.1 [502.5; 613.7] | 102.5 [88.0; 117.1] | 503.6 [446.3; 561.0] | 95.7 [82.7; 108.7] |
-| Conformidade ao limite do balcão | 0.677 [0.639; 0.715] | 0.992 [0.987; 0.996] | 0.701 [0.664; 0.738] | 0.992 [0.989; 0.996] |
-| Espera média na bagagem (s) | 0.0 [0.0; 0.0] | 2.4 [2.1; 2.7] | 0.0 [0.0; 0.0] | 2.4 [2.1; 2.7] |
-| Espera média na inspeção (s) | 0.0 [0.0; 0.0] | 8.0 [7.4; 8.5] | 0.0 [0.0; 0.0] | 7.6 [7.1; 8.1] |
-| Espera após a inspeção, média (s) | 1255.5 [1217.7; 1293.3] | 1380.2 [1349.1; 1411.4] | 1283.5 [1247.3; 1319.7] | 1396.3 [1365.5; 1427.1] |
-| Espera após a inspeção, P95 (s) | 2420.4 [2388.0; 2452.8] | 2493.4 [2469.0; 2517.9] | 2438.1 [2407.0; 2469.2] | 2500.8 [2474.4; 2527.2] |
-| Fração retida pelo grupo | 0.092 [0.070; 0.113] | 0.023 [0.014; 0.033] | 0.079 [0.061; 0.096] | 0.018 [0.011; 0.025] |
+| Espera média no balcão (s) | 108.9 [90.9; 126.9] | 9.8 [6.3; 13.2] | 104.3 [87.5; 121.1] | 9.1 [5.8; 12.4] |
+| P95 da espera no balcão (s) | 567.6 [469.7; 665.5] | 74.1 [38.5; 109.7] | 540.7 [453.1; 628.2] | 59.9 [28.9; 91.0] |
+| Conformidade ao limite do balcão | 0.789 [0.760; 0.819] | 0.980 [0.971; 0.989] | 0.795 [0.767; 0.822] | 0.983 [0.974; 0.991] |
+| Espera média na bagagem (s) | 2.9 [2.4; 3.5] | 3.7 [3.0; 4.5] | 3.0 [2.4; 3.6] | 3.8 [3.0; 4.6] |
+| Espera média na inspeção (s) | 35.5 [28.5; 42.4] | 37.7 [29.7; 45.7] | 35.8 [28.8; 42.8] | 37.5 [30.3; 44.7] |
+| Espera após a inspeção, média (s) | 664.2 [640.2; 688.2] | 748.9 [731.8; 766.0] | 683.8 [660.4; 707.3] | 769.7 [753.6; 785.9] |
+| Espera após a inspeção, P95 (s) | 1108.8 [1080.7; 1136.8] | 1160.9 [1132.0; 1189.7] | 1124.2 [1100.1; 1148.4] | 1179.9 [1148.5; 1211.3] |
+| Fração retida pelo grupo | 0.083 [0.058; 0.108] | 0.029 [0.017; 0.040] | 0.069 [0.045; 0.092] | 0.023 [0.011; 0.034] |
 
-Contrastes pareados B2 − Base (exploratórios): conformidade ao limite do balcão 0.315 [0.277; 0.353] (FCFS) e 0.291 [0.254; 0.328] (agenda); espera média após a inspeção 124.7 [107.9; 141.5] s (FCFS) e 112.7 [98.3; 127.1] s (agenda).
+Contrastes pareados B2 − Base (exploratórios): conformidade ao limite do balcão 0.191 [0.166; 0.216] (FCFS) e 0.188 [0.162; 0.213] (agenda); espera média após a inspeção 84.7 [70.4; 98.9] s (FCFS) e 85.9 [71.2; 100.6] s (agenda).
 
-Mesma população (embarcados), B2 − Base: espera no balcão -140.6 [-157.8; -123.4] s (FCFS) e -125.7 [-141.1; -110.2] s (agenda); chegada ao início do embarque -5.4 [-10.0; -0.9] s (FCFS) e -2.9 [-7.5; 1.7] s (agenda).
+Mesma população (embarcados), B2 − Base: espera no balcão -100.9 [-116.7; -85.1] s (FCFS) e -96.6 [-111.5; -81.8] s (agenda); chegada ao início do embarque -13.7 [-21.2; -6.3] s (FCFS) e -9.3 [-15.1; -3.5] s (agenda).
 
-Denominadores totais (30 réplicas): espera no balcão Base FCFS 2.529, B2 FCFS 2.608, Base agenda 2.468, B2 agenda 2.541; voos com passageiros Base FCFS 987, B2 FCFS 998, Base agenda 979, B2 agenda 986.
+Denominadores totais (30 réplicas): espera no balcão Base FCFS 1.644, B2 FCFS 1.665, Base agenda 1.628, B2 agenda 1.649; voos com passageiros Base FCFS 1.028, B2 FCFS 1.035, Base agenda 1.005, B2 agenda 1.012.
 
 ## Sensibilidade do contraste de política na Base (exploratória)
 
 | Família | Agenda − FCFS, decolagens com passageiros/h: média [IC 95%] |
 |---|---:|
-| 4 pedidos/h | -0.025 [-0.044; -0.006] |
-| 6 pedidos/h, recarga 30 min (principal) | -0.033 [-0.066; -0.001] |
-| 8 pedidos/h | -0.037 [-0.080; 0.005] |
-| 6 pedidos/h, sem recarga | -0.054 [-0.088; -0.020] |
-| 6 pedidos/h, recarga 60 min | -0.013 [-0.027; 0.002] |
-| 6 pedidos/h, serviço exponencial (suposto) | -0.033 [-0.068; 0.001] |
+| 4 pedidos/h | -0.042 [-0.064; -0.019] |
+| 6 pedidos/h, recarga 30 min (principal) | -0.096 [-0.132; -0.060] |
+| 8 pedidos/h | -0.158 [-0.216; -0.101] |
+| 6 pedidos/h, sem recarga | -0.146 [-0.206; -0.086] |
+| 6 pedidos/h, recarga 60 min | -0.013 [-0.035; 0.010] |
+| 15% de ausência | -0.071 [-0.113; -0.029] |
+| Chegada LCC da tarde | -0.104 [-0.143; -0.065] |
+| Janela de 150 s | -0.275 [-0.336; -0.214] |
+| Janela de 600 s | -0.037 [-0.068; -0.007] |
+| Partida deslocada 600 s | -0.083 [-0.123; -0.044] |
+| Partida deslocada 1.200 s | -0.188 [-0.252; -0.123] |
 
-## Recursos sob serviço exponencial nas mesmas médias (exploratória, PAR-063)
+## Quinto stand e segundo balcão em cada família
 
-| Contraste | Determinístico (referência) | Exponencial |
-|---|---:|---:|
-| Base − S4, FCFS (decolagens com passageiros/h) | 0.487 [0.439; 0.536] | 0.467 [0.415; 0.519] |
-| Base − S4, agenda | 0.492 [0.440; 0.544] | 0.479 [0.429; 0.530] |
-| B2 − Base, FCFS (espera no balcão, s) | -141.5 [-158.4; -124.7] | -231.5 [-267.6; -195.4] |
-| B2 − Base, agenda | -125.3 [-140.5; -110.1] | -210.1 [-244.2; -176.1] |
-| B2 − Base, FCFS (conformidade do balcão) | 0.315 [0.277; 0.353] | 0.358 [0.317; 0.400] |
-| B2 − Base, FCFS (espera após a inspeção, s) | 124.7 [107.9; 141.5] | 205.4 [174.7; 236.1] |
-| Espera média na inspeção, Base FCFS (s) | 0.0 [0.0; 0.0] | 31.0 [22.9; 39.1] |
+| Família | Stand FCFS (voos/h) | Stand agenda (voos/h) | Balcão FCFS (s) | Balcão agenda (s) |
+|---|---:|---:|---:|---:|
+| referencia | 0.479 [0.422; 0.537] | 0.467 [0.404; 0.529] | -99.1 [-114.6; -83.7] | -95.2 [-109.6; -80.9] |
+| demanda_baixa | 0.221 [0.174; 0.268] | 0.200 [0.153; 0.247] | -89.7 [-111.0; -68.4] | -89.9 [-111.0; -68.8] |
+| demanda_alta | 0.725 [0.655; 0.795] | 0.650 [0.585; 0.715] | -102.7 [-116.9; -88.5] | -106.1 [-122.8; -89.5] |
+| sem_recarga | 0.017 [0.001; 0.033] | 0.013 [-0.002; 0.027] | -156.7 [-191.7; -121.7] | -150.6 [-182.2; -118.9] |
+| recarga_longa | 0.463 [0.425; 0.500] | 0.463 [0.425; 0.500] | -67.4 [-83.0; -51.9] | -70.0 [-86.1; -53.9] |
+| ausencia_15 | 0.454 [0.384; 0.524] | 0.433 [0.364; 0.502] | -92.2 [-108.5; -75.8] | -87.2 [-102.3; -72.1] |
+| chegada_lcc_tarde | 0.487 [0.431; 0.544] | 0.471 [0.408; 0.534] | -118.7 [-137.6; -99.8] | -109.6 [-124.5; -94.6] |
+| janela_150 | 0.517 [0.462; 0.571] | 0.388 [0.330; 0.445] | -100.2 [-117.5; -83.0] | -89.1 [-108.4; -69.7] |
+| janela_600 | 0.446 [0.383; 0.509] | 0.467 [0.402; 0.531] | -106.9 [-123.5; -90.3] | -107.9 [-125.4; -90.4] |
+| partida_600 | 0.492 [0.436; 0.548] | 0.483 [0.432; 0.535] | -102.8 [-119.5; -86.1] | -97.9 [-113.1; -82.6] |
+| partida_1200 | 0.492 [0.438; 0.545] | 0.392 [0.337; 0.446] | -95.1 [-111.2; -79.0] | -87.9 [-104.6; -71.1] |
 
-## Informação perfeita na agenda (exploratória)
-
-| Família e configuração | Perfeita − declarada, decolagens com passageiros/h | Recusas por réplica |
-|---|---:|---:|
-| Recarga 30 min, Base | 0.004 [-0.015; 0.023] | 0.03 [-0.17; 0.24] |
-| Recarga 30 min, S4 | 0.013 [-0.006; 0.031] | -0.03 [-0.19; 0.12] |
-| Recarga 30 min, B2 | 0.004 [-0.015; 0.023] | 0.00 [-0.20; 0.20] |
-| Sem recarga, Base | -0.004 [-0.013; 0.004] | 0.03 [-0.03; 0.10] |
-| Sem recarga, S4 | -0.004 [-0.013; 0.004] | 0.03 [-0.03; 0.10] |
-| Sem recarga, B2 | 0.000 (sem variação entre réplicas) | 0.00 (sem variação entre réplicas) |
-
-Os resultados são de um cenário sintético com chegadas uniformes supostas, serviços
-determinísticos no balcão e na inspeção, recursos vazios na abertura e horizonte
-terminante de 8 h. Médias de espera descrevem somente visitas com início observado e
-devem ser lidas junto às recusas, aos desvios, à censura e aos denominadores.
+As esperas incluem apenas visitas cujo atendimento começou antes do horizonte.
+Os contrastes family - reference do CSV comparam as sensibilidades à Base da referência
+por semente e política. Intervalos exploratórios são individuais, sem ajuste de multiplicidade.
