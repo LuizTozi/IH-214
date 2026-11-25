@@ -1,6 +1,6 @@
-# D4.1 — Especificação do experimento integrado, versão 2.1
+# D4.1 — Especificação do experimento integrado, versão 2.2
 
-Versão de trabalho revisada em 23/11/2026. A redação do desenho experimental do artigo ocorrerá após a conclusão integral da D4. A unidade de comparação é uma janela operacional sintética. A pergunta é quanto mudam as decolagens por hora, a cobertura da demanda oferecida, a espera **em cada estação do terminal** e a retenção da aeronave pelo grupo quando se altera a admissão, a quantidade de stands ou a quantidade de servidores de uma estação. O piloto avaliará a precisão e a adequação da faixa de carga.
+Versão 2.2 em 25/11/2026, após a revisão das rodadas (`claude/outputs/D4_REVISAO_CLAUDE.md`). Versão 2.1 em 23/11/2026. A redação do desenho experimental do artigo ocorrerá após a conclusão integral da D4. A unidade de comparação é uma janela operacional sintética. A pergunta é quanto mudam as decolagens por hora, a cobertura da demanda oferecida, a espera **em cada estação do terminal** e a retenção da aeronave pelo grupo quando se altera a admissão, a quantidade de stands ou a quantidade de servidores do balcão. O piloto avaliará a precisão e a adequação da faixa de carga.
 
 ## Por que a versão 1 foi revista
 
@@ -27,6 +27,17 @@ A versão 2.1 aplica os pontos da revisão crítica:
 - **Ponto 5:** a STD acompanha a recarga, com a folga estimada e justificada.
 - **Pontos menores:** declaração dos contrastes principais e exploratórios.
 
+## Por que a versão 2.2
+
+As rodadas da v2.1 (30 réplicas, código `954995e`) foram revistas em 25/11/2026. Decisões do autor, com as células afetadas:
+
+1. **Execução agendada.** Na v2.1, a saída planejada era horário mínimo e o calendário não antecipava saídas já planejadas. Variantes contrafactuais nos mesmos dias mostraram que essa regra respondia por cerca de 70% do contraste agenda − FCFS (−0,129 para −0,037 decolagem/h). A v2.2 adota a regra que corresponde à fonte: o ConOps da NASA (LIT-008, §5.2.1.2, p. 82) prevê reservas com janela e a renegociação, quando a aeronave não cumpre a janela, cedo ou tarde, se o novo horário for compatível com o plano de recursos. Aqui, a saída planejada passa a ser **prioridade**, e não horário mínimo; a aeronave pronta sai quando rota e TLOF estão livres, e o calendário usa a previsão atualizada. A fonte descreve a reserva de chegada; aplicá-la à partida é **suposição** dos autores. Afeta todas as células de agenda.
+2. **Retirada da I2.** Com balcão determinístico de 180 s (PAR-046) e inspeção de 90 s (PAR-047), as chegadas à inspeção distam pelo menos 150 s com um balcão; não há fila na inspeção, e a I2 reproduziu a Base em todas as colunas (360 de 360 linhas). O contraste não testava a hipótese do servidor adicional na inspeção e foi retirado. A redução de configurações leva a 36 execuções por réplica.
+3. **Vazão com passageiros.** Grupos totalmente ausentes só são conhecidos no fechamento do manifesto (t + R); com recarga, a aeronave já admitida decola vazia. A v2.2 conta em decolagens/h só os voos com passageiros, como define a VAR-016, e relata as decolagens vazias à parte. A cobertura dos oferecidos também exclui voos vazios.
+4. **Métrica de percurso.** O P95 da chegada ao início do embarque (VAR-012) ficou em cerca de 2.820 s em todas as células, dominado pela antecedência de chegada (15 a 60 min). A comparação passa a usar a espera do fim da inspeção ao início do embarque (VAR-045), que mostra para onde se desloca a espera poupada no balcão.
+
+As rodadas definitivas foram refeitas com as mesmas sementes e dias (`data/d4/dias_d4_4/`). O piloto da D4.3 não foi refeito: o mínimo de 30 réplicas continua sendo o critério limitante, e as semilarguras obtidas estão em `data/d4/sintese_d4_5.md`.
+
 ## Configurações e contrastes
 
 | Configuração | Stands | Balcões | Postos de inspeção | Papel |
@@ -34,16 +45,16 @@ A versão 2.1 aplica os pontos da revisão crítica:
 | Base | 5 | 1 | 1 | referência de todos os contrastes |
 | S4 | 4 | 1 | 1 | contraste de estacionamento: Base menos S4 |
 | B2 | 5 | 2 | 1 | contraste do balcão: B2 menos Base |
-| I2 | 5 | 1 | 2 | contraste da inspeção: I2 menos Base |
 
-Cada configuração roda sob duas políticas: agendamento antecipado e FCFS local. Isso dá 8 células por família. Há quatro contrastes principais, todos pareados dentro da réplica:
+A configuração I2 (segundo posto de inspeção) foi retirada na v2.2; ver "Por que a versão 2.2".
+
+Cada configuração roda sob duas políticas: agendamento antecipado e FCFS local. Isso dá 6 células por família. Há três contrastes principais, todos pareados dentro da réplica:
 
 - **Política:** agenda menos FCFS em cada configuração.
 - **Estacionamento:** Base menos S4 sob política fixa.
 - **Balcão:** B2 menos Base sob política fixa.
-- **Inspeção:** I2 menos Base sob política fixa.
 
-A estação de bagagem mantém um servidor em todas as células.
+A bagagem e a inspeção mantêm um servidor em todas as células.
 
 **Por que cada contraste afeta o terminal**
 
@@ -63,9 +74,9 @@ A estação de bagagem mantém um servidor em todas as células.
 | Informação perfeita | 6 | 30 min | chegadas e durações de bagagem realizadas |
 | Informação perfeita sem recarga | 6 | 0 min | chegadas e durações de bagagem realizadas |
 
-- **Cinco primeiras famílias:** 8 células cada, total de 40.
-- **Duas famílias de informação perfeita:** cada uma acrescenta quatro execuções de agendamento, uma por configuração. Seus controles FCFS são os da referência e os da família sem recarga, respectivamente, pois o FCFS usa apenas eventos realizados.
-- **Total:** 48 execuções distintas por réplica. Pedidos futuros permanecem desconhecidos em todas as células.
+- **Cinco primeiras famílias:** 6 células cada, total de 30.
+- **Duas famílias de informação perfeita:** cada uma acrescenta três execuções de agendamento, uma por configuração. Seus controles FCFS são os da referência e os da família sem recarga, respectivamente, pois o FCFS usa apenas eventos realizados.
+- **Total:** 36 execuções distintas por réplica (48 na v2.1, com a I2). Pedidos futuros permanecem desconhecidos em todas as células.
 
 A informação perfeita é cruzada com recarga de 30 e de 0 min. Com recarga zero, o ciclo do stand é curto. A reserva feita pela previsão mais tardia do grupo pesa mais na ocupação dos stands, e o valor da informação tende a ser maior. O cruzamento mostra se esse valor depende da duração do ciclo.
 
@@ -96,7 +107,7 @@ Como as durações são lineares no número de passageiros, o ciclo médio é o 
 | 6 | 13,5 | 0,68 | 0,74 |
 | 8 | 18 | 0,90 | 0,99 |
 
-Na demanda alta, a configuração S4 fica acima da capacidade estimada. A inspeção (90 s) chega a no máximo 0,45. Essa folga é coerente com Feldhoff 2022, que não observou esperas na inspeção acima do limite em nenhum de seus nove cenários (p. 10). A autora atribui as esperas baixas nas estações seguintes ao atraso gerado pelo balcão, que fica antes delas. O contraste I2 pode, portanto, resultar pequeno, e esse também é um resultado. Já o B2 pode deslocar parte da espera para a inspeção.
+Na demanda alta, a configuração S4 fica acima da capacidade estimada. A inspeção (90 s) chega a no máximo 0,45. Essa folga é coerente com Feldhoff 2022, que não observou esperas na inspeção acima do limite em nenhum de seus nove cenários (p. 10). A autora atribui as esperas baixas nas estações seguintes ao atraso gerado pelo balcão, que fica antes delas. Com os serviços determinísticos adotados, a espera na inspeção é nula por construção quando há um balcão (v2.2). Já o B2 pode deslocar parte da espera para a bagagem, a inspeção e a sala de embarque.
 
 ## Construção do dia oferecido
 
@@ -210,8 +221,10 @@ Assim, as duas políticas têm o mesmo prazo máximo para iniciar o atendimento,
 **Execução agendada**
 
 - Respeitar a ordem dos compromissos por recurso, seus horários mínimos e as precedências físicas.
-- **Interpretação adotada na D4.2, a revisar pelo autor.**
-  - **Horários mínimos:** o toque não ocorre antes do instante planejado, e a saída do stand não ocorre antes da saída planejada. A aeronave pronta antes do plano aguarda no stand, e essa espera entra no tempo bloqueado.
+- **Regra decidida na v2.2** (na v2.1 a saída planejada era horário mínimo).
+  - **Toque:** não ocorre antes do instante planejado e usa o stand reservado.
+  - **Saída:** a saída planejada é prioridade, não horário mínimo. A aeronave pronta antes do plano sai quando rota e TLOF estão livres, como numa renegociação compatível com o plano de recursos (LIT-008, §5.2.1.2, p. 82; transferência da chegada para a partida **suposta**).
+  - **Calendário:** as decisões seguintes usam a previsão atualizada de cada voo, sem o piso da saída planejada.
   - **Ordem dos compromissos:** é aplicada como prioridade. Entre solicitações prontas, prevalece a de menor horário planejado. Um compromisso que ainda não está pronto não bloqueia os seguintes.
   - **Por que não a ordem estrita:** como todo toque e toda partida usam o TLOF e a rota, a ordem estrita serializaria o vertiporto inteiro atrás de qualquer atraso.
 - A agenda reserva também a partida (rota e TLOF a partir da saída planejada). Um toque pode, portanto, ser adiado dentro da janela para que a partida prevista não se sobreponha a outra.
@@ -232,7 +245,7 @@ A tabela usa a mesma notação do texto: t é o pedido, STD = t + 900 + R, e R �
 
 | Mecanismo | Condição esperada | Famílias e contrastes |
 |---|---|---|
-| Fila por estação | Ocupação do balcão entre 0,45 e 0,90 | Todas. Os contrastes B2, I2 e de política mudam a espera |
+| Fila por estação | Ocupação do balcão entre 0,45 e 0,90 | Todas. Os contrastes B2 e de política mudam a espera |
 | Retenção pelo grupo | Chegada tardia (até t + R) somada a cerca de 315 s de serviço e à fila. A aeronave fica pronta em torno de t + 180 s + R | Todas. Cresce com a fila do balcão, logo com a demanda, e cai em B2 |
 | Bloqueio por estacionamento | Ocupação dos stands perto de 1 | Demanda alta e S4 |
 | Efeito da informação | Agenda reserva o stand pela previsão mais tardia do grupo | Famílias de informação perfeita, com recarga de 30 e de 0 min |
@@ -248,12 +261,11 @@ Para evitar conclusões a partir de muitos intervalos simultâneos, cada contras
 
 | Contraste | Indicador principal |
 |---|---|
-| Agenda menos FCFS, na Base | Decolagens por hora |
-| Base menos S4, sob cada política | Decolagens por hora |
+| Agenda menos FCFS, na Base | Decolagens com passageiros por hora |
+| Base menos S4, sob cada política | Decolagens com passageiros por hora |
 | B2 menos Base, sob cada política | Espera média no balcão |
-| I2 menos Base, sob cada política | Espera média na inspeção |
 
-Todos os demais resultados são explicativos ou exploratórios, inclusive retenção pelo grupo, P95, conformidade, pontualidade e as famílias de sensibilidade. Eles serão relatados com intervalo de 95%, mas sem afirmação de efeito confirmado. O piloto da D4.3 dimensiona as réplicas pelo indicador principal que exigir mais réplicas.
+Todos os demais resultados são explicativos ou exploratórios, inclusive retenção pelo grupo, P95, conformidade, espera após a inspeção, pontualidade e as famílias de sensibilidade. Eles serão relatados com intervalo de 95%, mas sem afirmação de efeito confirmado. O piloto da D4.3 dimensiona as réplicas pelo indicador principal que exigir mais réplicas.
 
 ## Observação e critério de passagem
 
@@ -275,7 +287,7 @@ Todos os demais resultados são explicativos ou exploratórios, inclusive reten�
 
 **Percurso**
 
-- Registrar o P95 da chegada ao início do embarque, quantos iniciaram embarque e o destino das demais reservas.
+- Registrar a espera do fim da inspeção ao início do embarque (média e P95, VAR-045), quantos iniciaram embarque e o destino das demais reservas. O P95 da chegada ao início do embarque (VAR-012) não é usado na comparação (v2.2).
 
 **Ocupação**
 

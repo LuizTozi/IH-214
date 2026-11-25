@@ -32,3 +32,13 @@ Transferências e seus limites:
 - **Recursos por stand:** o carregador e o gate próprios de cada stand são hipótese do modelo.
 
 O deslocamento da espera entre estações e a retenção do stand pelo grupo continuam hipóteses de teste.
+
+## Repercussão da D4 (v2.2) · 25/11/2026
+
+As rodadas definitivas ([síntese D4.5](../d4/sintese_d4_5.md)) testaram as hipóteses desta síntese no cenário sintético:
+
+- **Deslocamento da espera:** observado. O segundo balcão reduziu a espera no balcão e aumentou a espera depois da inspeção, à espera da aeronave na sala de embarque, além de criar pequenas esperas na bagagem e na inspeção. Isso é coerente com a explicação de Feldhoff (p. 10) para a espera baixa nas estações seguintes ao balcão.
+- **Retenção pelo grupo:** diminuiu com o segundo balcão, sem ganho de vazão comparável.
+- **Servidor adicional na inspeção:** retirado das hipóteses. Com serviços determinísticos e um balcão mais lento que a inspeção, não se forma fila na inspeção; o contraste não testava a hipótese.
+- **Política sob recursos fixos:** a admissão antecipada ficou ligeiramente abaixo do FCFS em decolagens com passageiros. D029 (Halder e Gandhi) encontrou ganho de um sequenciamento por regras sobre o FCFS, mas com outra regra: reordena partidas, não admite pedidos antecipadamente. As duas evidências não se contradizem; mostram que o efeito depende da regra comparada.
+- **Bloqueio por estacionamento (D001):** observado no contraste de 5 contra 4 stands, com o traço de eventos em `data/d4/traco_d4_6.md`.

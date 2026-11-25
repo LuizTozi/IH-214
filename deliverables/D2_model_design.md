@@ -18,6 +18,19 @@ pendentes. As fontes citadas nessas passagens foram conferidas no texto
 integral em 21/11/2026. Os testes das fases A–D continuam passando (18 testes
 e 5 subtestes). O estado de 19/11 permanece no commit `8d508bf`.
 
+**Revisão de 25 de novembro de 2026, após a D4 (v2.2).** A execução do
+experimento mostrou três pontos em que a D2 precisava de precisão, sem mudar
+topologia, entradas ou traços A–D:
+(1) a vazão (VAR-016) conta só decolagens com passageiros; as decolagens
+vazias, de grupos ausentes conhecidos apenas no fechamento do manifesto, são
+relatadas à parte;
+(2) o tempo da chegada ao início do embarque (VAR-012) continua definido, mas
+não serve para comparar desenhos quando a chegada antecede a partida em 15 a
+60 min. A comparação usa a espera do fim da inspeção ao início do embarque
+(VAR-045);
+(3) a regra de execução da agenda (VAR-039) foi fixada: a saída planejada é
+prioridade, não horário mínimo (LIT-008, §5.2.1.2, p. 82).
+
 ## Decisões tomadas para a versão 0
 
 ### Topologia-base regulatória
@@ -256,14 +269,14 @@ dos dois contrastes continua sendo hipótese a testar nos experimentos.
 
 | Dimensão | Métrica | Definição operacional |
 |---|---|---|
-| Fluxo eVTOL | throughput | partidas concluídas por hora |
+| Fluxo eVTOL | throughput | decolagens com passageiros por hora; vazias à parte (VAR-016) |
 | Congestionamento | utilização e bloqueio | fração de ocupação por recurso; tempo ou ocorrência de bloqueio |
-| Serviço do passageiro | tempo até embarque | chegada ao terminal até início do embarque individual (VAR-012) |
+| Serviço do passageiro | espera após a inspeção | fim da inspeção até início do embarque individual (VAR-045); a VAR-012, da chegada ao embarque, fica como descrição |
 | Confiabilidade | P95 da espera e pontualidade | percentil 95; proporção que parte dentro da tolerância declarada |
 | LoS (IATA ADRM, critério de tempo) | atendimento ao tempo máximo de espera | por estação, proporção das esperas mensuráveis iguais ou inferiores ao respectivo limite (VAR-015) |
 | Equidade | dispersão por classe/coorte | diferença de espera entre grupos definidos no cenário |
 
-A espera média por estação resume o congestionamento típico entre as visitas com início de atendimento observado. O P95 do tempo entre chegada ao terminal e início do embarque caracteriza os passageiros com maior demora entre os que iniciaram embarque. A diferença de espera média entre coortes, quando definidas no cenário, permite examinar a distribuição dessa demora.
+A espera média por estação resume o congestionamento típico entre as visitas com início de atendimento observado. A espera do fim da inspeção ao início do embarque (VAR-045) mostra quanto da demora ocorre depois do processamento, à espera da aeronave ou do grupo. O P95 da chegada ao embarque (VAR-012) não é usado na comparação, pois, com chegadas de 15 a 60 min antes da partida, reflete sobretudo a antecedência. A diferença de espera média entre coortes, quando definidas no cenário, permite examinar a distribuição dessa demora.
 
 Cada tabela comparativa identificará a **demanda oferecida comum** e, por
 política, os pedidos admitidos, recusados, cancelados, concluídos e pendentes ao

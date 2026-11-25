@@ -100,7 +100,9 @@ réplicas independentes, sementes 20001 a 20030.
 
 ## D4.4 · Executar os contrastes pareados
 
-**D4.4 concluída em 24/11/2026.** Foram executadas 30 réplicas independentes (sementes 20001 a
+**D4.4 refeita em 25/11/2026 sob a D4.1 v2.2.** A revisão de `claude/outputs/D4_REVISAO_CLAUDE.md` levou o autor a quatro decisões: saída planejada como prioridade, não horário mínimo; retirada da I2; vazão só com voos de passageiros; e espera após a inspeção no lugar do P95 chegada–embarque. Com as mesmas sementes e dias, foram executadas 36 células por réplica e 1.080 linhas, versão de código `1262bb2`. Os dias arquivados não mudaram. O balanço de pedidos fecha em todas as linhas, e os 72 testes passam.
+
+**Primeira execução, 24/11/2026 (v2.1, substituída).** Foram executadas 30 réplicas independentes (sementes 20001 a
 20030), 48 células por réplica e 1.440 linhas no total. O arquivo
 `data/d4/resultados_d4_4.csv` registra a versão de código `954995e`; os 30 dias oferecidos estão
 em `data/d4/dias_d4_4/`. A conferência pós-execução encontrou 1.440 chaves de célula distintas,
@@ -113,12 +115,14 @@ interpretação pertencem à D4.5.
 |---|---|---|
 | Qual o efeito da admissão antecipada? | Agendamento e FCFS local | Mesmos recursos, pedidos oferecidos, passageiros e durações em cada par. A recusa altera a carga do terminal |
 | Qual o efeito do estacionamento? | 5 stands (Base) contra 4 stands (S4) | Mesma política e mesma demanda em cada par. Repetir sob ambas as políticas |
-| Qual o efeito de um servidor no terminal? | Segundo balcão (B2) e segundo posto de inspeção (I2), um por vez | Mesma política e mesma demanda. Medir a espera por estação, o deslocamento da fila e a retenção pelo grupo |
+| Qual o efeito de um servidor no terminal? | Segundo balcão (B2); o segundo posto de inspeção (I2) saiu na v2.2 por não ter fila a remover com serviços determinísticos | Mesma política e mesma demanda. Medir a espera por estação, o deslocamento da fila e a retenção pelo grupo |
 | Em que condições o efeito muda? | Demanda de 4, 6 e 8 pedidos/h. Recarga no stand de 0, 30 e 60 min. Informação perfeita na agenda, com recarga de 30 e de 0 min | Variar um fator por vez a partir do caso-base. Preservar as demais etapas do turnaround |
 
 ## D4.5 · Medir desempenho e explicar o mecanismo
 
-**D4.5 concluída em 24/11/2026.** O analisador versionado em `scripts/d4_analise.py` produziu
+**D4.5 refeita em 25/11/2026 (v2.2).** O analisador produziu 1.332 resumos de célula e 79 contrastes, com 30 réplicas válidas. Contrastes principais só na família de referência. A síntese é gerada a partir das tabelas, sem números escritos no código, e inclui o balanço por demanda e a conformidade ao limite do balcão. A espera pelo horário mínimo deixou de existir; o bloqueio restante do stand é disputa de rota ou TLOF.
+
+**Primeira análise, 24/11/2026 (v2.1, substituída).** O analisador versionado em `scripts/d4_analise.py` produziu
 1.632 resumos de célula e 82 contrastes, todos com 30 réplicas válidas. As tabelas de máquina
 estão em `data/d4/resumo_celulas_d4_5.csv` e `data/d4/contrastes_d4_5.csv`; a leitura com
 sentidos, intervalos, populações e limites está em
@@ -130,15 +134,17 @@ Esses arquivos são a fonte quantitativa para a redação da D4.6 e do resumo AE
 |---|---|
 | Partidas e atendimento da demanda | Decolagens observadas por hora e por pedido oferecido. Exibir ao lado cancelamentos, recusas (agenda), desvios (FCFS) e pendências para detectar seleção pela admissão |
 | Atraso e pontualidade | Medir atraso em relação ao horário solicitado de partida. Informar partidas dentro da tolerância sobre decolagens observadas e o tamanho desse denominador |
-| Serviço ao passageiro | Por estação, apresentar espera até início do serviço, conformidade ao limiar da D2, denominador, esperas censuradas e saídas por recusa. Para bagagem, apresentar a espera. Calcular o P95 chegada–início do embarque entre percursos observados, com o número de embarcados e perdidos |
-| Retenção pelo grupo | Por voo, comparar o instante em que o último confirmado fica pronto com o instante em que a aeronave fica pronta para embarque. Relatar a fração de voos retidos e a duração da retenção. Verificar se B2 e I2 reduzem a retenção e se a espera se desloca entre estações |
+| Serviço ao passageiro | Por estação, apresentar espera até início do serviço, conformidade ao limiar da D2, denominador, esperas censuradas e saídas por recusa. Para bagagem, apresentar a espera. Calcular a espera do fim da inspeção ao início do embarque (média e P95, VAR-045), com o número de embarcados e perdidos. O P95 chegada–início do embarque saiu da comparação na v2.2 |
+| Retenção pelo grupo | Por voo, comparar o instante em que o último confirmado fica pronto com o instante em que a aeronave fica pronta para embarque. Relatar a fração de voos retidos e a duração da retenção. Verificar se B2 reduz a retenção e se a espera se desloca entre estações |
 | Gargalo | Confrontar ocupação física por recurso, tempo bloqueado e filas com os instantes de prontidão do grupo e da aeronave. Verificar se acrescentar o stand reduz o bloqueio e se a espera se desloca para outro recurso |
 
 Calcular cada diferença dentro da réplica e resumir as diferenças entre réplicas com média e intervalo de confiança de 95%. Declarar o sentido da subtração nas tabelas. Se uma réplica terminar sem decolagens ou embarques, registrar o indicador condicional correspondente como indefinido e informar quantos pares permitem estimá-lo. Preservar essa réplica na análise de partidas/h.
 
 ## D4.6 · Redigir e conferir a entrega
 
-**D4.6 concluída em 24/11/2026.** `sections/results.tex` foi substituído pelo relato das rodadas
+**D4.6 refeita em 25/11/2026 (v2.2).** A seção de resultados foi reescrita com as rodadas da v2.2. Inclui a tabela por demanda que acompanha a figura, o traço de eventos (`data/d4/traco_d4_6.md`, gerado por `scripts/d4_traco.py`), a conformidade ao limite do balcão, a espera após a inspeção e o confronto com D029.
+
+**Primeira redação, 24/11/2026 (v2.1, substituída).** `sections/results.tex` foi substituído pelo relato das rodadas
 executadas, com a figura de vazão por demanda, tabelas de balanço e efeitos, denominadores,
 sensibilidades e limites. A seção foi incluída em `main.tex`. O resumo AERO2027 recebeu os
 resultados arquivados; permanecem pendentes apenas dados humanos de autoria, afiliação e
