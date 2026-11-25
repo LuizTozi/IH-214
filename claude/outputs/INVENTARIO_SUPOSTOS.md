@@ -42,3 +42,17 @@
 
 - `scripts/fontes_janssen.py` (reprodutível; lê `data/raw/janssen2020/`, fora do Git, conferido pelo MD5).
 - `data/fontes/janssen_servico_inspecao.csv`, `janssen_intervalos_inspecao.csv` e `janssen_tamanho_grupo.csv`.
+
+## Progresso em 25/11/2026 (tarde)
+
+**Decisões do autor:**
+- inspeção com ocupação única, reamostrando os tempos observados de Janssen;
+- grupos maiores que 4 excluídos e a distribuição renormalizada;
+- downloads de material aberto autorizados.
+
+| ID | Fonte encontrada | Dado | Situação |
+|---|---|---|---|
+| PAR-046 (balcão) | K. Marintseva, Proc. National Aviation University 59(2), 97–104 (2014), DOI 10.18372/2306-1472.59.6799; Tab. 1, p. 100; observação no aeroporto de Boryspil | Balcão convencional (CUTE), por voo, média/DP/n em min: MOW 3,51/4,77/160; ALA 1,92/1,30/60; WAW 1,58/1,03/88; TLL 3,24/3,26/56. A autora conclui que o serviço é exponencial (Fig. 4). Média ponderada pelos 364 passageiros: 164 s. | **Resolvido**: exponencial com média de 164 s (ponderação pelos n da tabela). |
+| PAR-054 (forma da chegada) | M. N. Postorino, L. Mantecchini, C. Malandri, F. Paganelli, Transp. Res. Procedia 37, 338–345 (2019), DOI 10.1016/j.trpro.2018.12.201, CC BY-NC-ND; dados do aeroporto de Bologna, 6 voos, semana de pico de inverno | Weibull escolhida pelo teste χ² entre Gauss, Poisson, Gamma e Lognormal (eq. 4, p. 343). Parâmetros da Fig. 4: manhã LCC α = 4, β = 5,3; FC α = 3,7, β = 6,5; tarde LCC α = 5,5, β = 13,4; FC α = 4,1, β = 6,3. | **Pendente**: confirmar a unidade de x (o eixo mostra ESD em horas, mas α = 4 h contradiz o texto). Ler a seção de método do PDF. |
+| PAR-053 (ausência) | Lawrence, Hong e Cherrier, Proc. 9th ACM SIGKDD, 397–406 (2003), DOI 10.1145/956750.956796 (citado por terceiros com 6 a 10%) | — | **Pendente**: ler a fonte primária (sem cópia aberta no OpenAlex; testar o CiteSeerX). |
+| PAR-045, PAR-048, PAR-043, PAR-044 | — | — | **Pendentes**. |
