@@ -222,6 +222,9 @@ def contrast_summaries(rows, version):
             add("counter_los", family, f"counter_los_{policy}", "B2 - Base",
                 "counter_within_limit_fraction", (family, "B2", policy),
                 (family, "Base", policy), "exploratory")
+            # Para onde vai a espera poupada no balcão: sala de embarque (VAR-045).
+            add("lounge", family, f"lounge_{policy}", "B2 - Base", "post_security_mean_s",
+                (family, "B2", policy), (family, "Base", policy), "exploratory")
 
     for perfect, control in PERFECT_CONTROLS.items():
         for config in CONFIGS:
@@ -338,6 +341,13 @@ def write_report(cells, contrasts, path, source):
                           for p in POLICIES for c in ("Base", "B2"))
         lines.append(f"| {label} | {cols} |")
     lines.extend([
+        "",
+        "Contrastes pareados B2 − Base (exploratórios): conformidade ao limite do balcão "
+        f"{effect(REFERENCE, 'counter_los_fcfs', 'counter_within_limit_fraction')} (FCFS) e "
+        f"{effect(REFERENCE, 'counter_los_agenda', 'counter_within_limit_fraction')} (agenda); "
+        "espera média após a inspeção "
+        f"{effect(REFERENCE, 'lounge_fcfs', 'post_security_mean_s', 1)} s (FCFS) e "
+        f"{effect(REFERENCE, 'lounge_agenda', 'post_security_mean_s', 1)} s (agenda).",
         "",
         "Denominadores totais (30 réplicas): espera no balcão "
         + ", ".join(f"{c} {p.upper() if p == 'fcfs' else 'agenda'} "
