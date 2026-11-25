@@ -4,6 +4,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from d4_experimento import FAMILIES
 from d4_analise import (cell_summaries, ci, contrast, contrast_summaries, index_rows,
                         numeric, write_report)
 
@@ -64,14 +65,10 @@ class TestAnalysis(unittest.TestCase):
     def test_primary_only_in_reference_family(self):
         rows = []
         for seed in range(1, 31):
-            for family in ("referencia", "demanda_baixa", "demanda_alta", "sem_recarga",
-                           "recarga_longa", "servico_variavel"):
+            for family in FAMILIES:
                 for config in ("Base", "S4", "B2"):
                     for policy in ("fcfs", "agenda"):
                         rows.append(row(seed, family, config, policy, 8 + seed % 3))
-            for family in ("info_perfeita", "info_perfeita_sem_recarga"):
-                for config in ("Base", "S4", "B2"):
-                    rows.append(row(seed, family, config, "agenda", 8 + seed % 2))
         contrasts = contrast_summaries(rows, "test")
         primary = {(c["family"], c["contrast"]) for c in contrasts
                    if c["classification"] == "primary"}

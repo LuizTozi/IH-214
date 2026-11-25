@@ -8,7 +8,8 @@ ONE = {"counter": 1, "baggage": 1, "security": 1}
 
 
 def pax(pid, arrival, bag=45, flight="F1"):
-    return {"id": pid, "flight": flight, "arrival_s": Decimal(arrival), "bag_s": Decimal(bag)}
+    return {"id": pid, "flight": flight, "arrival_s": Decimal(arrival), "bag_s": Decimal(bag),
+            "counter_s": 180, "security_s": 90}
 
 
 def visits_of(result, pid):
@@ -101,7 +102,7 @@ class TestTerminal(unittest.TestCase):
         self.assertEqual(run_terminal(people, ONE), run_terminal(people, ONE))
 
     def test_absent_reservations_are_excluded(self):
-        rows = family_requests(generate_day(6), 8, 0)
+        rows = family_requests(generate_day(6), 8, 0, absence=0.15)
         people = passengers_from_family(rows)
         absent = sum(p["arrival_s"] is None for r in rows for p in r["manifest"])
         total = sum(len(r["manifest"]) for r in rows)

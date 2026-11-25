@@ -29,7 +29,7 @@ class TestAirsideFCFS(unittest.TestCase):
         f = flight(r, "A")
         self.assertEqual(f["state"], "departed")
         self.assertEqual(f["touchdown_s"], 3000)
-        self.assertEqual(f["liftoff_s"] - f["touchdown_s"], S("2329.0"))   # 279,8 + 1800 + 2 x 124,6
+        self.assertEqual(f["liftoff_s"] - f["touchdown_s"], S("2324.0"))   # 274,8 + 1800 + 2 x 124,6
         self.assertEqual(f["stand_exit_s"] - f["stand_entry_s"], S("2195.7"))
         self.assertEqual(f["await_s"], 0)
         self.assertTrue(f["punctual"])
@@ -37,11 +37,11 @@ class TestAirsideFCFS(unittest.TestCase):
         self.assertEqual(sorted(occupied), sorted([
             ("tlof_occupied", 3000, S("3037.7")), ("route_occupied", S("3037.7"), S("3060.5")),
             ("stand_occupied", S("3060.5"), S("5256.2")), ("route_occupied", S("5256.2"), S("5279.0")),
-            ("tlof_occupied", S("5279.0"), S("5329.0"))]))
+            ("tlof_occupied", S("5279.0"), S("5324.0"))]))
 
     def test_route_spaces_simultaneous_arrivals(self):
         r = run_cell([row("A", 3000, 30, [2100]), row("B", 3000, 30, [2100])], ONE, 5, "fcfs")
-        self.assertEqual([flight(r, k)["touchdown_s"] for k in "AB"], [3000, S("3060.5")])
+        self.assertEqual([flight(r, k)["touchdown_s"] for k in "AB"], [3000, S("3067.7")])
         self.assertEqual([flight(r, k)["stand"] for k in "AB"], [1, 2])
 
     def test_diversion_after_window_removes_passengers(self):
@@ -54,20 +54,29 @@ class TestAirsideFCFS(unittest.TestCase):
         self.assertEqual(r["metrics"]["diverted"], 1)
 
     def test_window_end_is_inclusive(self):
-        # A rota limita: cinco toques a cada 60,5 s desde 3000 s; o sexto voo toca em 3302,5 s.
+        # A rota limita: cinco toques a cada 67,7 s desde 3000 s; o sexto voo toca em 3338,5 s.
         first = [row(f"F{i}", 3000, 30, [2100]) for i in range(5)]
-        ok = run_cell(first + [row("X", S("3002.5"), 30, [2100])], ONE, 6, "fcfs")
-        self.assertEqual(flight(ok, "X")["touchdown_s"], S("3302.5"))      # exatamente t + 300 s
-        late = run_cell(first + [row("X", S("3002.4"), 30, [2100])], ONE, 6, "fcfs")
+        ok = run_cell(first + [row("X", S("3038.5"), 30, [2100])], ONE, 6, "fcfs")
+        self.assertEqual(flight(ok, "X")["touchdown_s"], S("3338.5"))      # exatamente t + 300 s
+        late = run_cell(first + [row("X", S("3038.4"), 30, [2100])], ONE, 6, "fcfs")
         self.assertEqual(flight(late, "X")["state"], "diverted")            # precisaria de 300,1 s
 
+    def test_cell_window_reaches_dispatch_and_agenda(self):
+        rows = [row("A", 3000, 30, [2100]), row("B", 3000, 30, [2100])]
+        for policy, missed in (("fcfs", "diverted"), ("agenda", "refused")):
+            narrow = flight(run_cell(rows, ONE, 2, policy, window_s=60), "B")
+            wide = flight(run_cell(rows, ONE, 2, policy, window_s=150), "B")
+            self.assertEqual(narrow["state"], missed)
+            self.assertEqual(wide["state"], "departed")
+            self.assertFalse(wide["outside_window"])
+
     def test_group_retains_aircraft(self):
-        # R = 0: aeronave pronta em t + 180; passageiro chega em t e fica pronto em t + 315.
+        # R = 0: aeronave pronta em t + 180; passageiro chega em t e fica pronto em t + 336,452.
         r = run_cell([row("A", 3000, 0, [3000])], ONE, 5, "fcfs")
         f = flight(r, "A")
         self.assertEqual(f["ready_board_s"], 3180)
-        self.assertEqual(f["await_s"], 135)
-        self.assertEqual(f["liftoff_s"], S("3539.4"))
+        self.assertEqual(f["await_s"], S("156.452"))
+        self.assertEqual(f["liftoff_s"], S("3555.852"))
         self.assertEqual(r["metrics"]["retained_flights"], 1)
 
     def test_departure_blocked_by_arrival_on_route(self):
@@ -75,8 +84,8 @@ class TestAirsideFCFS(unittest.TestCase):
         r = run_cell(rows, ONE, 5, "fcfs")
         a = flight(r, "A")
         self.assertEqual(a["ready_depart_s"], S("3331.6"))
-        self.assertEqual(a["stand_exit_s"], S("3382.1"))
-        self.assertEqual(a["stand_blocked_s"], S("50.5"))
+        self.assertEqual(a["stand_exit_s"], S("3389.3"))
+        self.assertEqual(a["stand_blocked_s"], S("57.7"))
 
     def test_empty_group(self):
         r = run_cell([row("A", 3000, 0, [None, None]), row("B", 3000, 30, [None])], ONE, 5, "fcfs")
@@ -89,13 +98,13 @@ class TestAirsideFCFS(unittest.TestCase):
         self.assertEqual(r["metrics"]["liftoffs_per_h"] * 8, 1)
 
     def test_boarded_population_metrics(self):
-        # R = 0: chega em 3000, balcão 180 + bagagem 45 + inspeção 90; embarque em 3000 + 315 + 51,6.
+        # R = 0: chega em 3000, balcão 164 + bagagem 45 + inspeção 127,452; embarque em 3000 + 315 + 51,6.
         r = run_cell([row("A", 3000, 0, [3000])], ONE, 5, "fcfs")
-        self.assertEqual(r["metrics"]["arrival_to_board_mean_s"], S("366.6"))
+        self.assertEqual(r["metrics"]["arrival_to_board_mean_s"], S("388.052"))
         self.assertEqual(r["metrics"]["boarded_counter_wait_mean_s"], 0)
 
     def test_post_security_wait(self):
-        # R = 0: pronto na sala em t + 315; aeronave já pronta; caminhada + porta = 51,6 s.
+        # R = 0: pronto na sala em t + 336,452; aeronave já pronta; caminhada + porta = 51,6 s.
         r = run_cell([row("A", 3000, 0, [3000])], ONE, 5, "fcfs")
         self.assertEqual(r["metrics"]["post_security_mean_s"], S("51.6"))
         self.assertEqual(r["metrics"]["post_security_p95_s"], S("51.6"))
@@ -146,9 +155,9 @@ class TestAgenda(unittest.TestCase):
         # partida: B toca em 3075,8 s e sai do stand quando a partida de A termina.
         r = run_cell([row("A", 3000, 30, [2100]), row("B", 3000, 30, [2100])], ONE, 5, "agenda")
         a, b = flight(r, "A"), flight(r, "B")
-        self.assertEqual([a["planned_touchdown_s"], b["planned_touchdown_s"]], [3000, S("3075.8")])
+        self.assertEqual([a["planned_touchdown_s"], b["planned_touchdown_s"]], [3000, S("3097.8")])
         self.assertEqual([a["stand"], b["stand"]], [1, 2])
-        self.assertEqual(b["planned_exit_s"], S("5207.4"))
+        self.assertEqual(b["planned_exit_s"], S("5229.4"))
         self.assertEqual(b["stand_exit_s"], b["planned_exit_s"])
 
     def test_refusal_at_decision_removes_passengers(self):
@@ -165,7 +174,7 @@ class TestAgenda(unittest.TestCase):
         # D4.1 v2.2: a saída planejada é prioridade, não horário mínimo (LIT-008 §5.2.1.2).
         rows = [row("A", 3000, 30, [3500])]          # ainda não chegou na decisão
         base = flight(run_cell(rows, ONE, 5, "agenda"), "A")
-        self.assertEqual(base["planned_exit_s"], S("5266.6"))   # 4800 + 315 + 124,6 + 27
+        self.assertEqual(base["planned_exit_s"], S("5288.052"))   # 4800 + 315 + 124,6 + 27
         self.assertEqual(base["ready_depart_s"], S("5131.6"))
         self.assertEqual((base["stand_exit_s"], base["stand_blocked_s"]), (S("5131.6"), 0))
         perfect = flight(run_cell(rows, ONE, 5, "agenda", perfect=True), "A")
@@ -177,8 +186,8 @@ class TestAgenda(unittest.TestCase):
         rows = [row("A", 3000, 0, [2950], bag=60)]
         r = run_cell(rows, ONE, 5, "agenda")
         a = flight(r, "A")
-        self.assertEqual(a["planned_exit_s"], S("3416.6"))
-        self.assertEqual(a["stand_exit_s"], S("3431.6"))
+        self.assertEqual(a["planned_exit_s"], S("3438.052"))
+        self.assertEqual(a["stand_exit_s"], S("3453.052"))
         self.assertEqual(r["metrics"]["late_vs_plan"], 1)
         p = flight(run_cell(rows, ONE, 5, "agenda", perfect=True), "A")
         self.assertEqual(p["planned_exit_s"], p["stand_exit_s"])
@@ -202,9 +211,9 @@ def check_resources(test, result, stands):
             test.assertGreaterEqual(a2, b1, f"{resource} overlap")
     tlof = sorted((a, b) for res, _, a, b in spans if res == "tlof_separation")
     occupied = sorted((a, b) for res, _, a, b in spans if res == "tlof")
-    for _, sep_end in tlof:
+    for sep_start, sep_end in tlof:
         for a, _ in occupied:
-            test.assertFalse(sep_end - 3 < a < sep_end, "TLOF used during separation")
+            test.assertFalse(sep_start <= a < sep_end, "TLOF used during separation")
     for k in range(1, stands + 1):
         rows = sorted((a, b) for res, key, a, b in spans if res == "stand" and key == k)
         for (a1, b1), (a2, _) in zip(rows, rows[1:]):

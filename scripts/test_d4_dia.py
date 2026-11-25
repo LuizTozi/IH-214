@@ -1,4 +1,10 @@
 import json
+import math
+from collections import Counter
+from statistics import mean
+
+from d4_param import GROUP_WEIGHTS, SECURITY_TIMES_S, ARRIVAL_PROFILES
+from d4_dia import arrival_lead
 import tempfile
 import unittest
 from decimal import Decimal
@@ -30,9 +36,9 @@ class TestDayGenerator(unittest.TestCase):
             self.assertTrue(0 <= r["mark"] < 1)
             self.assertTrue(1 <= len(r["reservations"]) <= 4)
             for p in r["reservations"]:
-                self.assertTrue(900 <= p["lead_s"] <= 3600 and is_ms(p["lead_s"]))
+                self.assertTrue(0 <= p["lead_u"] < 1)
                 self.assertTrue(30 <= p["bag_s"] <= 60 and is_ms(p["bag_s"]))
-                self.assertIsInstance(p["absent"], bool)
+                self.assertTrue(0 <= p["absence_u"] < 1)
         ids = [p["id"] for r in day["requests"] for p in r["reservations"]]
         self.assertEqual(len(ids), len(set(ids)))
 
@@ -81,12 +87,35 @@ class TestDayGenerator(unittest.TestCase):
         kept = sum(r["mark"] < 0.75 for r in requests) / len(requests)
         self.assertAlmostEqual(kept, 0.75, delta=0.02)
         seats = [len(r["reservations"]) for r in requests]
-        self.assertAlmostEqual(sum(seats) / len(seats), 2.5, delta=0.05)
-        people = [p for r in requests for p in r["reservations"]]
-        self.assertAlmostEqual(sum(p["absent"] for p in people) / len(people), 0.10, delta=0.01)
-        leads = [float(p["lead_s"]) for p in people]
-        self.assertAlmostEqual(sum(leads) / len(leads), 2250, delta=15)
+        counts = Counter(seats)
+        for k, weight in GROUP_WEIGHTS.items():
+            self.assertAlmostEqual(counts[k] / len(seats), weight / sum(GROUP_WEIGHTS.values()), delta=.017)
+        sample = [p for d in days for r in family_requests(d, 8, 30, absence=.15) for p in r["manifest"]]
+        self.assertAlmostEqual(mean(p["arrival_s"] is None for p in sample), .15, delta=.01)
+        self.assertAlmostEqual(mean(float(p["counter_service_s"]) for p in sample), 164, delta=4)
+        self.assertEqual(len(SECURITY_TIMES_S), 2389)
+        self.assertTrue({p["security_service_s"] for p in sample} <= set(SECURITY_TIMES_S))
+        self.assertAlmostEqual(mean(p["security_service_s"] for p in sample), mean(SECURITY_TIMES_S), delta=2)
 
+    def test_compressed_conditional_weibull(self):
+        for profile, (scale, shape, xmax) in ARRIVAL_PROFILES.items():
+            cdf = lambda x: 1 - math.exp(-(x / scale) ** shape)
+            for u in (0, .1, .5, .9, .999999):
+                lead = float(arrival_lead(u, profile))
+                self.assertTrue(900 <= lead <= 3600)
+                x = 1 + (lead - 900) * (xmax - 1) / 2700
+                self.assertAlmostEqual((cdf(x) - cdf(1)) / (cdf(xmax) - cdf(1)), u, delta=.00001)
+
+    def test_sensitivity_reuses_reservations_and_durations(self):
+        day = generate_day(20001)
+        base = family_requests(day, 6, 30)
+        varied = family_requests(day, 6, 30, absence=.15, arrival="lcc_afternoon", std_offset_s=600)
+        for r, s in zip(base, varied, strict=True):
+            self.assertEqual(r["target_departure_s"] - s["target_departure_s"], 300)
+            for p, q in zip(r["manifest"], s["manifest"], strict=True):
+                self.assertIsNotNone(p["arrival_s"])
+                for key in ("id", "bag_service_s", "counter_service_s", "security_service_s"):
+                    self.assertEqual(p[key], q[key])
     def test_archive_roundtrip(self):
         day = generate_day(21)
         with tempfile.TemporaryDirectory() as folder:
@@ -104,21 +133,3 @@ class TestDayGenerator(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-
-class TestServiceVariability(unittest.TestCase):
-    """D4.1 v2.3: serviço variável sorteado antes da política, sem alterar os demais sorteios."""
-
-    def test_variable_service_draws_exponential_with_declared_means(self):
-        from d4_dia import family_requests, generate_day
-        day = generate_day(20001)
-        fixed = family_requests(day, 6, 30)
-        variable = family_requests(day, 6, 30, variable_service=True)
-        self.assertEqual([r["id"] for r in fixed], [r["id"] for r in variable])
-        for a, b in zip(fixed, variable):
-            for p, q in zip(a["manifest"], b["manifest"]):
-                self.assertEqual(p["arrival_s"], q["arrival_s"])      # pareamento preservado
-                self.assertIsNone(p["counter_service_s"])
-                self.assertGreaterEqual(q["counter_service_s"], 0)
-        counter = [float(p["counter_service_s"]) for r in variable for p in r["manifest"]]
-        self.assertAlmostEqual(sum(counter) / len(counter), 180, delta=40)
-
