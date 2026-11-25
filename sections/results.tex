@@ -2,6 +2,7 @@
 % data/d4/resultados_d4_4.csv (rodadas), data/d4/resumo_celulas_d4_5.csv
 % (células), data/d4/contrastes_d4_5.csv (diferenças pareadas),
 % data/d4/sintese_d4_5.md (leitura) e data/d4/traco_d4_6.md (traço de eventos).
+% Figuras: figures/gen_fig_d4_{vazao,contrastes,espera}.py (estilo em figures/estilo_d4.py).
 \section{D4 — Resultados e discussão}
 \label{sec:resultados}
 
@@ -114,7 +115,8 @@ execução, portanto, pesa tanto quanto a admissão na comparação entre polít
 
 \subsection{Recursos, espera no terminal e retenção do grupo}
 
-A Tabela~\ref{tab:d4-efeitos-principais} reúne os contrastes principais. O quinto stand
+A Tabela~\ref{tab:d4-efeitos-principais} reúne os contrastes principais, e a
+Figura~\ref{fig:d4-contrastes} os situa ao lado dos exploratórios. O quinto stand
 acrescentou cerca de 0,5 decolagem com passageiros por hora sob ambas as políticas. Na S4, a média
 de desvios sob FCFS foi 11,27 pedidos por réplica, contra 6,77 na Base, e a de recusas sob agenda,
 11,63 contra 7,23. A ocupação física por stand passou de 55,3\% para 60,4\% sob FCFS. O traço de
@@ -143,6 +145,16 @@ B2 $-$ Base & Agenda & $-125,3$ ($-140,5$; $-110,1$) & espera no balcão, s \\
 \end{tabular}
 \end{table}
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{figures/fig_d4_contrastes.pdf}
+  \caption{Contrastes pareados na configuração-base e sua sensibilidade. Pontos são médias das
+  diferenças dentro da réplica; barras, ICs~$t$ de 95\% ($n=30$). Marcadores cheios indicam os
+  contrastes principais definidos antes das rodadas; vazios, os exploratórios. Em (b), a espera no
+  balcão conta visitas com início observado, e a espera após a inspeção, passageiros embarcados.}
+  \label{fig:d4-contrastes}
+\end{figure}
+
 O segundo balcão reduziu a espera média no balcão de 154,8 para 13,3~s sob FCFS e de 137,7 para
 12,4~s sob agenda, com 2.529 e 2.608 atendimentos sob FCFS na Base e em B2, e 2.468 e 2.541 sob
 agenda. Pelo critério de tempo do LoS da IATA adotado na D2, a fração de esperas no balcão
@@ -151,9 +163,20 @@ dentro de 180~s subiu 31,5 pontos percentuais sob FCFS (27,7 a 35,3) e 29,1 sob 
 esperas médias de 2,4~s na bagagem e de 8,0 e 7,6~s na inspeção, estações em que a Base não forma
 fila; e a espera entre o fim da inspeção e o início do embarque aumentou 124,7~s sob FCFS (107,9 a
 141,5) e 112,7~s sob agenda (98,3 a 127,1). Como o embarque depende da aeronave, a maior parte da
-espera poupada no balcão passou à sala de embarque. O deslocamento para as estações seguintes é
+espera poupada no balcão passou à sala de embarque (Figura~\ref{fig:d4-espera}). O deslocamento para as estações seguintes é
 coerente com a explicação de \citet{feldhoff2022}, que atribuiu a baixa espera na inspeção ao
 atraso produzido no balcão.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{figures/fig_d4_espera.pdf}
+  \caption{Espera média na família de referência, Base e B2, sob as duas políticas. (a) Espera até
+  o início do atendimento em cada estação, entre visitas com início observado; com um balcão, a
+  bagagem e a inspeção não formam fila. (b) Espera do fim da inspeção ao início do embarque, entre
+  embarcados, incluindo 51,6~s de caminhada e acesso à aeronave. As populações diferem entre os
+  painéis, e as médias não se somam. Barras de erro: ICs~$t$ de 95\% ($n=30$).}
+  \label{fig:d4-espera}
+\end{figure}
 
 O alívio do balcão também antecipou a prontidão do grupo. Na Base, 9,2\% dos voos FCFS decolados
 com passageiros foram retidos pelo grupo, por 18,1~s em média; em B2, 2,3\% e 2,1~s. Sob agenda, as

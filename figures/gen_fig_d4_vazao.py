@@ -1,75 +1,42 @@
-"""Gera a figura D4 de vazão por demanda a partir do resumo arquivado."""
+"""Figura D4: decolagens com passageiros por hora segundo a demanda, na configuração-base.
 
-import csv
-from pathlib import Path
+Fonte: data/d4/resumo_celulas_d4_5.csv (média e IC t de 95%, 30 réplicas).
+Gráfico de linhas: a demanda é um eixo ordenado e as duas políticas são comparadas
+no mesmo dia oferecido. Saída: figures/fig_d4_vazao_demanda.{pdf,png}.
+"""
 
 import matplotlib.pyplot as plt
 
+from estilo_d4 import (CELLS, POLICY, TEXT_WIDTH_IN, apply_style, cells, comma, estimate,
+                       save)
 
-ROOT = Path(__file__).resolve().parent.parent
-SOURCE = ROOT / "data" / "d4" / "resumo_celulas_d4_5.csv"
-OUTPUT = ROOT / "figures" / "fig_d4_vazao_demanda"
 FAMILIES = (("demanda_baixa", 4), ("referencia", 6), ("demanda_alta", 8))
-STYLES = {
-    "fcfs": {"label": "FCFS local", "color": "#0072B2", "marker": "o", "linestyle": "-"},
-    "agenda": {"label": "Admissão antecipada", "color": "#D55E00", "marker": "s",
-               "linestyle": "--"},
-}
-
-
-def load():
-    with SOURCE.open(encoding="utf-8", newline="") as handle:
-        rows = list(csv.DictReader(handle))
-    indexed = {(row["family"], row["config"], row["policy"], row["metric"]): row
-               for row in rows}
-    data = {}
-    for policy in STYLES:
-        values = []
-        for family, rate in FAMILIES:
-            row = indexed[(family, "Base", policy, "departures_per_h")]
-            values.append((rate, float(row["mean"]), float(row["ci_low"]),
-                           float(row["ci_high"])))
-        data[policy] = values
-    return data
+OFFSET = {"fcfs": -0.06, "agenda": 0.06}   # afasta as barras de erro sobrepostas
 
 
 def main():
-    plt.rcParams.update({
-        "font.family": "serif",
-        "font.serif": ["Times New Roman", "DejaVu Serif"],
-        "font.size": 10,
-        "axes.labelsize": 10,
-        "legend.fontsize": 9,
-        "figure.dpi": 300,
-        "savefig.dpi": 300,
-        "savefig.bbox": "tight",
-        "axes.spines.top": False,
-        "axes.spines.right": False,
-    })
-    fig, ax = plt.subplots(figsize=(6.75, 3.1))
-    for policy, values in load().items():
-        style = STYLES[policy]
-        x = [item[0] for item in values]
-        mean = [item[1] for item in values]
-        low = [item[2] for item in values]
-        high = [item[3] for item in values]
-        errors = [[m - lo for m, lo in zip(mean, low)],
-                  [hi - m for m, hi in zip(mean, high)]]
-        ax.errorbar(x, mean, yerr=errors, label=style["label"], color=style["color"],
-                    marker=style["marker"], linestyle=style["linestyle"], linewidth=1.8,
-                    markersize=5, capsize=3, zorder=3)
+    apply_style()
+    index = cells()
+    fig, ax = plt.subplots(figsize=(TEXT_WIDTH_IN, 2.6))
+    for policy, style in POLICY.items():
+        rates, means, low, high = [], [], [], []
+        for family, rate in FAMILIES:
+            mean, lo, hi = estimate(index[(family, "Base", policy, "departures_per_h")])
+            rates.append(rate + OFFSET[policy])
+            means.append(mean)
+            low.append(mean - lo)
+            high.append(hi - mean)
+        ax.errorbar(rates, means, yerr=[low, high], label=style["label"],
+                    color=style["color"], marker=style["marker"],
+                    linestyle=style["linestyle"], capsize=3, elinewidth=1, zorder=3)
+    ax.set_xticks([rate for _, rate in FAMILIES])
     ax.set_xlabel("Taxa nominal de pedidos no período de oferta (pedidos/h)")
     ax.set_ylabel("Decolagens com passageiros (h$^{-1}$)")
-    ax.set_xticks([4, 6, 8])
-    ax.grid(axis="y", alpha=0.25, linestyle="--", linewidth=0.6)
-    ax.legend(frameon=False, loc="upper left")
-    fig.savefig(OUTPUT.with_suffix(".pdf"), metadata={
-        "Title": "Vazão por demanda na configuração-base",
-        "Subject": "Fonte: data/d4/resumo_celulas_d4_5.csv; média e IC t de 95%, n=30",
-    })
-    fig.savefig(OUTPUT.with_suffix(".png"), dpi=300)
-    plt.close(fig)
-    print(f"{OUTPUT.with_suffix('.pdf')} e {OUTPUT.with_suffix('.png')}")
+    ax.yaxis.set_major_formatter(comma(1))
+    ax.grid(axis="x", visible=False)
+    ax.legend(loc="upper left")
+    save(fig, "fig_d4_vazao_demanda", "Vazão por demanda na configuração-base",
+         f"Fonte: {CELLS.relative_to(CELLS.parents[2])}; média e IC t de 95%, n = 30")
 
 
 if __name__ == "__main__":

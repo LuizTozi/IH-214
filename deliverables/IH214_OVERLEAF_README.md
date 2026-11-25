@@ -2,7 +2,7 @@
 
 Envie este ZIP como novo projeto no Overleaf. O arquivo principal é `main.tex`; a bibliografia usa BibTeX e `plainnat`. O PDF local foi compilado com pdfLaTeX, BibTeX e duas passagens adicionais de pdfLaTeX.
 
-Esta versão contém os blocos D2 a D4. A D2 reúne desenho operacional e resultados de verificação sintética em `sections/model_and_design.tex` e `sections/verification_results.tex`. A D3 contém a base teórica em `sections/theoretical_basis.tex`. A D4 apresenta os experimentos pareados, seus denominadores e limites em `sections/results.tex`, com a figura vetorial em `figures/fig_d4_vazao_demanda.pdf`. Introdução, conclusão, resumo e palavras-chave do manuscrito serão incorporados quando a D5 for trabalhada.
+Esta versão contém os blocos D2 a D4. A D2 reúne desenho operacional e resultados de verificação sintética em `sections/model_and_design.tex` e `sections/verification_results.tex`. A D3 contém a base teórica em `sections/theoretical_basis.tex`. A D4 apresenta os experimentos pareados, seus denominadores e limites em `sections/results.tex`, com três figuras vetoriais em `figures/` (vazão por demanda, contrastes pareados e deslocamento da espera), geradas no repositório por `figures/gen_fig_d4_*.py` a partir dos CSVs de `data/d4/`. Introdução, conclusão, resumo e palavras-chave do manuscrito serão incorporados quando a D5 for trabalhada.
 
 Ao alterar uma seção, atualize as fontes de dados ou referências correspondentes e recompile o PDF e o ZIP. Os traços da D2 e os experimentos da D4 são sintéticos. O piloto da D4.3 não foi combinado às 30 réplicas definitivas. As tabelas reproduzíveis de célula e contraste acompanham o pacote em `data/d4/`.
 
