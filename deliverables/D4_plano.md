@@ -1,5 +1,7 @@
 # D4 — Plano de análise dos resultados
 
+A D4.1 v2.4 e a D5 foram concluídas. A especificação vigente abre em D4_1_cenarios.md. Resultados, reprodução e destino estão em [D5](D5.md). As etapas e decisões abaixo documentam os planos anteriores.
+
 A D4 deve explicar como a política de admissão e a quantidade de recursos do lado ar e do terminal afetam as partidas, a espera em cada estação do terminal e a retenção da aeronave pelo grupo no vertiporto simulado. O produto será uma seção de resultados e discussão em `sections/results.tex`, com comparação à literatura e implicações práticas. As conclusões gerais do artigo ficam para a D5.
 
 ## Fases de trabalho e repercussões nas entregas anteriores

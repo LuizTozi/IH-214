@@ -16,6 +16,18 @@
 
 \begin{document}
 
+\title{Um stand ou um balcão? Vazão de aeronaves e espera de passageiros em um vertiporto}
+\author{L. H. Tozi \\ Instituto Tecnológico de Aeronáutica}
+\date{IH-214 --- versão de pesquisa D5}
+\maketitle
+\begin{abstract}
+Um stand adicional pode acomodar uma aeronave em recarga, enquanto um segundo balcão pode antecipar o atendimento de passageiros cujo embarque ainda depende da aeronave. Comparamos essas decisões em um vertiporto sintético com um TLOF e três estações de passageiros. Em 30 dias pareados de oito horas, a 6 pedidos/h, recarga de 30 minutos e alocação FCFS, o quinto stand acrescentou 0,479 decolagem com passageiros/h (IC 95\% 0,422 a 0,537). O segundo balcão reduziu a espera pelo atendimento em 99,1~s (83,7 a 114,6). Entre os que embarcaram, a chegada ao início do embarque encurtou 13,7~s (6,3 a 21,2). O valor do stand para a vazão cresce com a demanda nas configurações testadas. A economia no balcão deve ser acompanhada ao longo da jornada.
+\end{abstract}
+\noindent\textbf{Palavras-chave} Vertiportos, simulação de eventos discretos, capacidade de estacionamento, filas de passageiros.
+
+\section{D1 — Introdução}
+Quando há espaço para ampliar um único recurso, um stand atende aeronaves, enquanto um balcão atende passageiros. Os dois fluxos se encontram no embarque. Um passageiro pronto pode esperar a recarga terminar, e uma aeronave pronta pode ficar retida pelo último integrante do grupo. Estudos de estacionamento descrevem o bloqueio de chegadas e estudos de terminal descrevem a espera pelo serviço \citep{guerreiro2020,feldhoff2022}. Este estudo pergunta quanto cada ampliação muda as decolagens com passageiros e a espera até o embarque, sob diferentes níveis de demanda, tempos de recarga e regras de admissão.
+
 \input{sections/model_and_design}
 \input{sections/verification_results}
 \input{sections/theoretical_basis}

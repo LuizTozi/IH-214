@@ -23,7 +23,7 @@ TEXT = {
            "panels": {"fcfs": "(a) FCFS local", "agenda": "(b) Admissão antecipada"},
            "title": "Vazão por demanda: 5 contra 4 stands"},
     "en": {"x": "Nominal request rate (requests/h)",
-           "y": "Passenger departures (h$^{-1}$)",
+           "y": "Occupied flights (h$^{-1}$)",
            "labels": {"Base": "5 stands (Base)", "S4": "4 stands (S4)"},
            "panels": {"fcfs": "(a) Local FCFS", "agenda": "(b) Advance admission"},
            "title": "Throughput by demand: 5 versus 4 stands"},

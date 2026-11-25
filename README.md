@@ -14,7 +14,7 @@ O manuscrito será desenvolvido em LaTeX e organizado por entregáveis. O Vertip
 - `scripts/`: rotinas reproduzíveis de preparação e análise.
 - `figures/`: figuras finais do manuscrito.
 
-Nenhuma pergunta de pesquisa, hipótese ou resultado está fixado neste estágio.
+A D5 compara um quinto stand com um segundo balcão. O resumo destina-se ao AERO2027. Ver [D5, highlights e reprodução](deliverables/D5.md).
 
 ## Ambiente e execução
 
@@ -26,17 +26,13 @@ conda activate ih214                  # ativa o ambiente
 cd scripts && python -m unittest      # roda todos os testes
 ```
 
-Experimento da D4: uma linha por célula (48 por réplica), com os dias arquivados.
+Experimento da D4: uma linha por célula (66 por réplica), com os dias arquivados.
 
 ```bash
 cd scripts && python d4_experimento.py --seeds 1 2 3 --out ../data/d4/resultados.csv --days-dir ../data/d4/dias
 ```
 
-O registro da verificação está em `data/d4/verificacao_d4_2.md`.
-O piloto de precisão da D4.3 está em `data/d4/resultado_piloto_d4_3.md`; ele fixou 30 réplicas
-independentes para a D4.4, sem combinar as sementes do piloto com o experimento definitivo.
-As rodadas definitivas da D4.4 estão em `data/d4/resultados_d4_4.csv`, com os dias arquivados em
-`data/d4/dias_d4_4/`. A análise pareada da D4.5 está em `data/d4/sintese_d4_5.md`, com tabelas
-reproduzíveis de células e contrastes no mesmo diretório. A D4.6 está integrada a
-`sections/results.tex`; o próximo bloco do manuscrito é a D5.
-
+A versão D4.1 v2.4 usa as sementes 20001–20030. Os dias e as 1.980 execuções estão em
+`data/d4/dias_d4_4/` e `data/d4/resultados_d4_4.csv`. O relatório
+`data/d4/sintese_d4_5.md` apresenta os contrastes e suas incertezas.
+O piloto histórico e os testes determinísticos da D2 documentam versões anteriores.

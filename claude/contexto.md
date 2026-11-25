@@ -1,5 +1,14 @@
 # IH-214 — Contexto e pedido de revisão ao Claude
 
+## Retomada a partir de 8fafba5 · D5
+
+O gerador 1.2 e a especificação D4.1 v2.4 implementam as decisões finais do inventário. Código das rodadas f169f52, arquivos definitivos 0f9a016. Foram 76 testes, 30 dias, 1.980 execuções e 225 contrastes. O replay em diretório separado reproduziu os mesmos bytes. Consulte `deliverables/D5.md` para os produtos e a reprodução, e `data/d4/comparacao_versoes.csv` para o efeito conjunto da mudança.
+
+**Claude, revise prioritariamente** a correspondência entre a equação 4 de Postorino e a compressão em `arrival_lead`, a inferência dos grupos por contagem de passageiros/tamanho, a transferência do tempo próprio de Janssen para um servidor exclusivo e a previsão residual da agenda para serviços estocásticos. Cruze os contrastes do quinto stand e do segundo balcão com os denominadores e avalie a seleção dos embarcados. Confira os dois textos e o resumo Word, inclusive a distinção entre o AERO2027 e a proposta de periódico. Registre um novo parecer em `claude/outputs/D5_REVISAO_CLAUDE.md`.
+
+## Histórico da primeira passagem D4
+
+
 ## Onde o Codex deixou o projeto
 
 O Claude concluiu a verificação D4.2 e preparou o modelo do resumo AERO2027. O Codex retomou do commit `034cb6d` e trabalhou até `13ffc2b`. O próximo bloco do manuscrito é a D5.

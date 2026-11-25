@@ -1,5 +1,7 @@
 # D4.2 — Registro de verificação
 
+A revisão v2.4 passou em 76 testes e reproduziu integralmente 30 dias. A descrição abaixo documenta a verificação original.
+
 Concluída em 23/11/2026, sobre a especificação D4.1 v2.1. Ambiente Conda `ih214` (`environment.yml`: Python 3.12, SimPy 4.1.2). Para reproduzir:
 
 ```bash

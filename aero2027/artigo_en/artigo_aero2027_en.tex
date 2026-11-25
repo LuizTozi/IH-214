@@ -8,14 +8,8 @@
 % text 12 pt justified with Word-equivalent 1.5 line spacing, A4, 2.54 cm margins.
 % Writing target: journal standard.
 %
-% Evidence sources (every number below comes from these archived files, D4.1 v2.3,
-% code 9a14260): data/d4/resumo_celulas_d4_5.csv, data/d4/contrastes_d4_5.csv,
-% data/d4/sintese_d4_5.md, data/d4/traco_d4_6.md; multiplicity-adjusted intervals and
-% per-retained-flight retention computed from data/d4/resultados_d4_4.csv
-% (claude/outputs/REVISAO_CRITICA_ARTIGO_EN.md); earlier-version values from the v2.1
-% archive (commit 5decc6f). Model inputs: data/parameter_registry.csv and
-% data/model_dictionary.csv. Literature claims: data/d3/extracao.md,
-% data/d3/sintese_mecanismos.md and data/literature_matrix.csv.
+% D4.1 v2.4, code f169f52. Sources: data/d4/{resultados_d4_4,resumo_celulas_d4_5,contrastes_d4_5,comparacao_versoes}.csv and traco_d4_6.md.
+
 % References are generated from references/references.bib by gerar_referencias.py.
 %
 % Build: python gerar_referencias.py artigo_aero2027_en.tex ../../references/references.bib referencias_aero.tex
@@ -70,23 +64,7 @@ Of Capacity Increments At A Passenger Vertiport\par}
 \end{center}
 
 \section*{Abstract}
-A vertiport operator with room for one more resource must choose between another aircraft stand
-and another check-in counter. The two options act on different populations, aircraft and
-passengers, and are joined at the stand, where an aircraft waits for its passengers and boarding
-waits for the aircraft. Airside models size pads and stands without a terminal, terminal models
-size stations without an airside, and coupled models report aggregate passenger delay rather than
-queues at each station. We built a verified discrete-event model of a vertiport with one TLOF, a
-shared taxi route and five stands. Charging and individual boarding are synchronised with check-in,
-carry-on baggage and security queues, and both increments are compared over 30 paired 8-h synthetic
-days. At 6 requests/h with 30-min charging, a fifth stand added 0.487 passenger
-departures/h (95\% CI: 0.439--0.536); the gain grew with demand, from 0.229 at 4 requests/h to
-0.688 at 8, and nearly vanished without charging. A second counter cut mean check-in waiting by 141.5~s
-(124.7--158.4) and raised compliance with the IATA 180-s limit from 68\% to 99\%. For the same
-boarded passengers, the time from terminal arrival to boarding fell by only 5.4~s (0.9--10.0),
-because the waiting reappeared after security while the aircraft charged. Both effects held under
-exponential service times, and the counter effect grew to 231.5~s. Advance admission of flights
-changed throughput by less than 1\% relative to first-come, first-served. Inputs are literature
-values or stated assumptions, so the results compare designs rather than predict a site.
+Should a vertiport operator add an aircraft stand or a check-in counter? Airside models link parking to throughput \cite{guerreiro2020}, while terminal models track station queues \cite{feldhoff2022}. Coupled studies also report aggregate passenger delay \cite{preisHornung2022}. We compare the two investments in a paired discrete-event simulation linking charging, passenger processing and individual boarding over thirty 8-h days. At 6 requests/h with 30-min charging and first-come, first-served admission, a fifth stand added 0.479 departures carrying passengers per hour (95\% CI 0.422--0.537). A second counter shortened mean check-in waiting by 99.1~s among visits that reached service (83.7--114.6). Among passengers who boarded, it shortened mean time from terminal arrival to boarding by 13.7~s (6.3--21.2). The stand gain increased with demand and nearly disappeared without charging. The counter primarily relieved the check-in queue. These estimates compare infrastructure options at a synthetic vertiport.
 
 {\itshape\textbf{Keywords:} Vertiport; Urban Air Mobility; Discrete-Event Simulation; Passenger
 Processing; Stand Capacity; Level of Service\par}
@@ -127,7 +105,7 @@ policy acts, so that every configuration faces identical days. Second, paired re
 pre-declared primary indicators estimate the effect of each increment on departures and on station
 waiting, and follow the same passengers from arrival to boarding to show where the waiting removed
 from check-in goes. Third, sensitivity families locate the conditions under which each increment
-pays off and test whether the conclusions survive service-time variability. We also test whether
+improves its target outcome as demand, charging, arrivals, absences and timing change. We also test whether
 admitting flights in advance, instead of FCFS, changes these conclusions.
 
 Section~\ref{sec:background} sets out the queueing mechanisms, Section~\ref{sec:method} the model
@@ -165,10 +143,7 @@ aircraft while the others charge or wait for passengers. An additional counter a
 readiness instead. Feldhoff \cite{feldhoff2022} observed, without an airside, that a second counter
 reduces counter waiting, and attributed the low waiting at later stations to the delay created at
 the counter. We hypothesised that a second counter advances boarding when the group holds the
-aircraft, and only moves the waiting to the lounge when the aircraft is still charging. A competing
-hypothesis on an additional security post could not be tested in the base design, because
-deterministic check-in and security services leave security without a queue
-(Section~\ref{sec:design}).
+aircraft, and only moves the waiting to the lounge when the aircraft is still charging. Security remains a single post in all three configurations.
 
 Evaluating service requires knowing where and for whom the waiting occurs. Feldhoff
 \cite{feldhoff2022} separates total processing time from the share of passengers whose wait exceeds
@@ -214,16 +189,16 @@ values marked ``author'' are scenario assumptions.}
 \toprule
 Input & Value & Source \\
 \midrule
-Touchdown to TLOF exit (towed); separation & 37.7 s; 3 s & author distances, \cite{preisHornung2022}; author \\
+Touchdown to TLOF exit (towed); separation & 37.7 s; 30 s & design distances, \cite{preisHornung2022} \\
 Taxi per route leg & 22.8 s & author distances, \cite{preisHornung2022,wille2024icas} \\
 Tow removal, deboarding, gate exit & 27; 65.8; 26.7 s & \cite{preisHornung2022} \\
 Walk, aircraft access, boarding per passenger & 31.9; 19.7; 73.0 s & \cite{preisHornung2022} \\
-Tow attachment; departure TLOF occupation & 27 s; 50 s & \cite{preisHornung2022}; author \\
+Tow attachment; departure TLOF occupation & 27 s; 45 s & \cite{preisHornung2022,preisHornung2022heuristic} \\
 Declared charging per turnaround & 0, 30 or 60 min & \cite{preis2023} \\
-Check-in; security (base: deterministic) & 180 s; 90 s & author \\
+Check-in; single-post security & Mean 164 s; mean 127.5 s & \cite{marintseva2014,janssen2020security} \\
 Carry-on baggage check & U(30, 60) s & \cite{feldhoffSoaresRoque2021} \\
-Passenger arrival before scheduled departure & 15--60 min, uniform & window \cite{feldhoff2022}; shape author \\
-Reservations per request; no-show probability & 1--4; 0.10 & author \\
+Passenger arrival before scheduled departure & 15--60 min & \cite{feldhoff2022,postorino2019} \\
+Reservations per request; no-show probability & 1--4; 0 or 0.15 & \cite{janssen2020security,vojtek2021} \\
 Station waiting limits (check-in, security) & 180 s; 180 s & IATA via \cite{feldhoff2022} \\
 \bottomrule
 \end{tabular}
@@ -238,8 +213,11 @@ falls below 0.75 and 0.5, respectively, so lower-demand days are nested subsets 
 one. A request issued at time $t$ has a scheduled departure $\mathrm{STD}=t+900~\text{s}+R$, where
 $R$ is the declared charging time, and its manifest closes 900~s before the STD. Passengers who show
 up arrive between 60 and 15~min before the STD; the window comes from Feldhoff \cite{feldhoff2022},
-while the uniform shape is our assumption because the source does not publish the parameters of its
-beta distribution. A group with nobody present at manifest closure is cancelled if its aircraft has
+and the profile from six flights studied in Bologna \cite{postorino2019}. We draw the quantile of a Weibull distribution conditional on $1\le x\le x_{\max}$ and transform it to $900+2700(x-1)/(x_{\max}-1)$ seconds before STD. The morning full-service profile uses scale 3.7, shape 6.5 and upper bound 9. The afternoon low-cost profile uses 5.5, 13.4 and 14. This mapping preserves profile shape within the selected range.
+
+Janssen et al.'s checkpoint records \cite{janssen2020security} supply the inspection times and group sizes. A post serves one passenger at a time. We sample with replacement from 2,389 sums of personal handling times, including baggage delivery and reclaim and recorded additional screening. For party sizes one through four, the passenger counts are 791, 1,172, 209 and 147. We divide each count by party size and normalise over the four categories, giving approximately 53.3, 39.5, 4.7 and 2.5\% per request. Check-in time follows an exponential distribution with mean 164~s, obtained by weighting the four conventional-counter means by sample size in Marintseva's Table~1 \cite{marintseva2014}. Each reservation has independent random marks for check-in, inspection, arrival and absence. The reference assumes everyone shows up. The 15\% sensitivity transfers a full-flight figure from Smith et al.\ as cited by Vojtek et al.\ \cite{vojtek2021}.
+
+A group with nobody present at manifest closure is cancelled if its aircraft has
 not yet been allocated; an aircraft already admitted completes its cycle and departs empty, and such
 departures are reported separately. Within a family, every cell of a replication receives the same
 requests, manifests, arrivals and service draws.
@@ -247,12 +225,12 @@ requests, manifests, arrivals and service draws.
 \subsection{Allocation policies}
 
 Under FCFS, each resource serves the oldest eligible request. An arriving aircraft needs the TLOF,
-the route and a stand at the same time; if it cannot start its approach within 300~s of the request,
+the route and a stand at the same time; if it cannot start its approach within the touchdown window (300~s in the reference),
 it diverts, and its passengers are notified at that instant and leave the terminal. Under advance
 admission, the request is decided at $t$ against the calendar of admitted commitments. The scheduler
-searches for the first feasible touchdown in $[t, t+300~\text{s}]$ and refuses the request if none
+searches for the first feasible touchdown in $[t, t+w]$ and refuses the request if none
 exists. It forecasts group readiness from the observed queues and declared service times, assuming
-that passengers not yet arrived will arrive at manifest closure. Touchdown does not precede its
+that passengers not yet arrived will arrive at manifest closure. For counter and inspection service already in progress, the forecast uses the declared mean less elapsed time, floored at zero. This dispatch rule can understate remaining service on a long visit. Touchdown does not precede its
 planned time, but the planned stand exit is a priority rather than a minimum time. This mirrors the
 renegotiation of a reservation compatible with the resource plan described for high-density
 vertiports \cite{kunchulia2021}; that source treats arrival reservations, and applying the rule to
@@ -263,15 +241,7 @@ departures is our assumption. No decision uses future requests.
 
 Three configurations share one TLOF, one route, one baggage station and one security post: Base
 (five stands, one counter), S4 (four stands) and B2 (five stands, two counters), each under both
-policies. The reference family has 6 requests/h and 30-min charging. Exploratory families vary one
-factor at a time: 4 and 8 requests/h, 0 and 60~min of charging, and exponential check-in and security
-services with the declared means, a classical upper bound on service variability (coefficient of
-variation 1) that brackets the deterministic base (coefficient of variation 0). Two further families
-give the scheduler perfect information on arrivals and baggage. Service draws for the exponential
-family are generated per passenger before any policy acts, so pairing is preserved. With
-deterministic services and security faster than check-in, successive arrivals at security are at
-least 150~s apart under one counter, so no security queue forms in the base design. The 300-s
-touchdown window and the 900-s STD offset were not varied.
+policies. The reference family has 6 requests/h and 30-min charging. The ten one-factor sensitivities vary demand (4 or 8 requests/h), charging (0 or 60 min), absence (15\%), arrival profile (afternoon low-cost), touchdown window (150 or 600~s), or STD offset (600 or 1,200~s plus charge). Each has the same stochastic station services. The experiment contains 1,980 cells over 30 independent days.
 
 Throughput $X$ counts departures carrying passengers within the window, divided by its 8~h. For
 station $j$, the individual wait is $W_{ij}=t^{\mathrm{start}}_{ij}-t^{\mathrm{entry}}_{ij}$, and the
@@ -291,24 +261,8 @@ goes. Group retention is the time a ready aircraft waits for its passengers.
 Before the definitive runs we fixed one primary indicator per contrast in the reference family:
 passenger departures/h for Base minus S4 under each policy and for advance admission minus FCFS in
 Base, and mean check-in waiting for B2 minus Base under each policy. All other contrasts are
-exploratory. A pilot with 30 independent days estimated the dispersion of the paired differences;
-the largest requirement was 11 replications, below the pre-set minimum of 30, so the definitive runs
-used 30 new days. Each effect is computed within the replication and summarised by its mean and a
-two-sided 95\% $t$ interval \cite{law2023design}; we also report Bonferroni-adjusted intervals for the
-five primary contrasts. Proportions are means of per-replication ratios.
+exploratory. The researcher fixed 30 days for this revision (seeds 20001--20030). The earlier pilot used different inputs. Each estimate is a mean of daily differences and its interval uses a two-sided paired $t$ method \cite{law2023design}. Proportions are first calculated within days. The five primary contrasts can also be assessed simultaneously using a Bonferroni critical value of 2.756 for 29 degrees of freedom. Sensitivity intervals are individual and exploratory.
 
-Four changes followed a review of the first definitive runs and are reported here with their
-effect. (i) In the first version the planned stand exit was a minimum time, which held ready
-aircraft on their stands; we adopted the renegotiation rule above. (ii) Throughput first counted
-every take-off; it now counts departures carrying passengers, the definition fixed in the model
-specification before the runs. Together, (i) and (ii) changed the advance admission minus FCFS
-contrast from $-0.129$ to $-0.033$ departures/h and the stand contrasts from 0.504 and 0.492 to 0.487
-and 0.492.
-(iii) A second security post was dropped because, with one counter, it reproduced Base in every
-output. (iv) The exponential family and the same-population measures were added. Both versions are
-archived with their seeds and code.
-
-% ---------------------------------------------------------------------------------------
 \section{Verification}
 \label{sec:verification}
 
@@ -321,195 +275,84 @@ refusal with passengers leaving from each terminal state, group retention, forec
 at the horizon and the boarded-population measures. Further checks confirm that requests close as
 cancelled, refused, diverted, departed or pending in every cell, that no resource is used beyond its
 capacity and that boarding never starts before readiness plus 51.6~s. Station waits are identical in
-Base and S4 when no request is diverted or refused, as the model implies. The 74 automated tests
-pass, and re-running the archived seeds reproduces every archived cell; adding the exponential
-family left all 1,080 previous cells unchanged. Verification compares the code with its
-specification; it does not validate service times against observed operations.
+Base and S4 when no request is diverted or refused, as the model implies. The 76 automated tests include archive replay, empirical support, group frequencies, conditional arrival quantiles, both dispatch windows and the timing of physical occupation and separation. The original single-stand verification fixtures retain their historical durations.
 
-% ---------------------------------------------------------------------------------------
 \section{Results}
 \label{sec:results}
+\subsection{Departures and stand availability}
+The fifth stand increased occupied-flight throughput under FCFS by 0.479 departures/h (95\% CI 0.422--0.537) at 6 requests/h with 30-min charging. Under advance admission the gain was 0.467 (0.404--0.529). Figure~\ref{fig:vazao_demanda} shows why the demand level matters. Under FCFS the fifth stand added 0.221 departures/h at 4 requests/h and 0.725 at 8. The trace of request R0014 on day 20001 shows the constraint directly. All four stands remained held throughout its 300-s window. With five stands, that aircraft touched down at the request time and departed with one passenger.
 
-\subsection{The fifth stand}
+\begin{figure}[htbp]\centering
+\includegraphics[width=\linewidth]{fig_d4_vazao_demanda_en.pdf}
+\caption{Occupied flights departing per hour by nominal demand. The observation period includes opening and closing effects. Bars give individual 95\% confidence intervals over days.}
+\label{fig:vazao_demanda}\end{figure}
 
-In the reference family, the fifth stand added 0.487 passenger departures/h under FCFS
-(95\% CI: 0.439--0.536) and 0.492 under advance admission (0.440--0.544). Both intervals stay above
-0.42 after Bonferroni adjustment for the five primary contrasts. Figure~\ref{fig:flow} shows that the
-gap between five and four stands widens with demand under both policies, and Table~\ref{tab:balance}
-shows the mechanism. With four stands, FCFS diverted 11.27 requests per replication against 6.77
-with five, and the physical occupation per stand rose from 55.3\% to 60.4\%. The archived event trace
-of seed 20001 isolates one such case. A request issued while four stands were held by cycles of about
-38~min found no position within 300~s and diverted in S4, whereas in Base it landed on the fifth
-stand and departed.
+Table~\ref{tab:balance} places waiting alongside the request balance. Diversions change which passengers can reach a service start even when counter capacity is identical.
 
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=\linewidth]{fig_d4_vazao_demanda_en.pdf}
-  \caption{Passenger departures per hour with five stands (Base) and four stands (S4), by nominal
-  request rate. Points are means of 30 independent replications and bars two-sided 95\% $t$
-  intervals; both configurations share the same offered day within each replication.}
-  \label{fig:flow}
-\end{figure}
+\begin{table}[htbp]\centering\small
+\caption{Mean daily request balance under FCFS and mean check-in waiting among visits reaching service. All departures carry passengers in these full-attendance families.}\label{tab:balance}
+\begin{tabular}{@{}lrrrrrr@{}}\toprule
+Requests/h & Config. & Offered & Diverted & Pending & Departed & Wait (s) \\\midrule
+4 & S4 & 28.7 & 3.4 & 2.0 & 23.2 & 85.2 \\
+4 & Base & 28.7 & 1.5 & 2.2 & 25.0 & 99.9 \\
+6 & S4 & 43.8 & 10.7 & 2.7 & 30.4 & 84.6 \\
+6 & Base & 43.8 & 6.4 & 3.1 & 34.3 & 108.9 \\
+8 & S4 & 58.0 & 19.7 & 3.3 & 35.0 & 89.9 \\
+8 & Base & 58.0 & 13.1 & 4.0 & 40.8 & 112.3 \\
+\bottomrule\end{tabular}\end{table}
 
-\begin{table}[htbp]
-\centering\small
-\caption{Request balance per replication under FCFS, five stands (Base) and four stands (S4), by
-demand (means of 30 replications). Coverage is departures with passengers over offered requests;
-check-in compliance is the share of observed waits within 180~s.}
-\label{tab:balance}
-\renewcommand{\arraystretch}{0.9}
-\begin{tabular}{@{}lcccccc@{}}
-\toprule
-& \multicolumn{2}{c}{4 requests/h} & \multicolumn{2}{c}{6 requests/h} & \multicolumn{2}{c}{8 requests/h} \\
-\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(l){6-7}
-Indicator & Base & S4 & Base & S4 & Base & S4 \\
-\midrule
-Offered requests & 28.70 & 28.70 & 43.77 & 43.77 & 57.97 & 57.97 \\
-Diverted & 1.60 & 3.70 & 6.77 & 11.27 & 14.23 & 20.63 \\
-Empty departures & 0.53 & 0.53 & 0.87 & 0.73 & 1.10 & 0.90 \\
-Pending at horizon & 2.23 & 1.97 & 3.23 & 2.77 & 4.23 & 3.53 \\
-Passenger departures/h & 3.042 & 2.812 & 4.112 & 3.625 & 4.800 & 4.112 \\
-Coverage of offered (\%) & 85.2 & 79.0 & 75.7 & 66.9 & 66.9 & 57.4 \\
-Stand occupation (\%) & 40.3 & 46.5 & 55.3 & 60.4 & 65.5 & 69.4 \\
-Mean check-in wait (s) & 94.8 & 85.5 & 154.8 & 121.4 & 222.2 & 171.6 \\
-Check-in compliance (\%) & 80.5 & 82.3 & 67.7 & 73.5 & 56.3 & 65.0 \\
-\bottomrule
-\end{tabular}
-\end{table}
+\subsection{Waiting before and after check-in}
+Under FCFS, the second counter cut mean waiting from 108.9 to 9.8~s, a paired reduction of 99.1~s (83.7--114.6). The two configurations recorded 1,644 and 1,665 visits with observed check-in starts. Compliance with the 180-s waiting threshold rose from 78.9\% to 98.0\%. Advance admission gave a 95.2-s reduction (80.9--109.6). Figure~\ref{fig:espera} shows positive waiting at security under both configurations.
 
-The terminal rows of Table~\ref{tab:balance} carry a warning about selection. With four stands,
-check-in waiting was shorter (121.4 against 154.8~s at 6 requests/h) and compliance higher, yet no
-terminal resource changed. The improvement comes from diverted requests, whose passengers leave the
-queues, and it would be misread as better service if reported without the request balance.
+Among passengers who started boarding (1,580 in Base, 1,596 in B2 under FCFS), mean check-in waiting fell by 100.9~s (85.1--116.7), but time after security rose by 84.7~s (70.4--98.9). Arrival to boarding improved by 13.7~s (6.3--21.2). These measures use the same eligibility rule within a configuration. Admission and the observation horizon can change who boards across configurations.
 
-The exploratory families locate where the stand pays off (Figure~\ref{fig:contrasts}a). The gain
-rose with demand, from 0.229 departures/h (0.180--0.278) at 4 requests/h to 0.688 (0.628--0.747) at 8.
-It was 0.025 (0.006--0.044) without charging, when stands turn quickly, and 0.458 (0.417--0.500) with
-60-min charging, close to the 30-min value. Exponential service times left it at 0.467
-(0.415--0.519).
+\begin{figure}[htbp]\centering
+\includegraphics[width=\linewidth]{fig_d4_espera_en.pdf}
+\caption{Mean station waiting among visits reaching service (left) and time from security completion to individual boarding among boarded passengers (right). Bars give individual 95\% intervals over 30 days.}
+\label{fig:espera}\end{figure}
 
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=\linewidth]{fig_d4_contrastes_en.pdf}
-  \caption{Paired contrasts of the two resource increments under FCFS. Points are means of
-  within-replication differences; bars are 95\% $t$ intervals ($n=30$). Filled markers are primary
-  contrasts fixed before the runs; open markers are exploratory. In (b), ``boarded'' measures share
-  one population: passengers who started boarding.}
-  \label{fig:contrasts}
-\end{figure}
+\subsection{Sensitivity to operating conditions}
+Table~\ref{tab:sens} gives the resource contrasts under FCFS. Without charging the fifth stand gained only 0.017 occupied departures/h (0.001--0.033). The second counter saved 118.7~s in the afternoon arrival profile and 92.2~s with 15\% absence. Figure~\ref{fig:contrastes} compares the magnitude and uncertainty of selected contrasts. The archive provides both policies in each family.
 
-\subsection{The second check-in counter}
+\begin{table}[htbp]\centering\small
+\caption{Effects of a fifth stand (occupied departures/h) and a second counter (change in mean waiting time), under FCFS. Each row averages differences over 30 paired days.}
+\label{tab:sens}
+\begin{tabular}{@{}lrrrr@{}}\toprule
+Family & Flights/h & 95\% CI & Check-in (s) & 95\% CI \\\midrule
+Reference & 0.479 & [0.422, 0.537] & -99.1 & [-114.6, -83.7] \\
+4 requests/h & 0.221 & [0.174, 0.268] & -89.7 & [-111.0, -68.4] \\
+8 requests/h & 0.725 & [0.655, 0.795] & -102.7 & [-116.9, -88.5] \\
+No charging & 0.017 & [0.001, 0.033] & -156.7 & [-191.7, -121.7] \\
+60-min charge & 0.463 & [0.425, 0.500] & -67.4 & [-83.0, -51.9] \\
+15\% no-shows & 0.454 & [0.384, 0.524] & -92.2 & [-108.5, -75.8] \\
+Afternoon low-cost & 0.487 & [0.431, 0.544] & -118.7 & [-137.6, -99.8] \\
+150-s window & 0.517 & [0.462, 0.571] & -100.2 & [-117.5, -83.0] \\
+600-s window & 0.446 & [0.383, 0.509] & -106.9 & [-123.5, -90.3] \\
+600-s offset & 0.492 & [0.436, 0.548] & -102.8 & [-119.5, -86.1] \\
+1200-s offset & 0.492 & [0.438, 0.545] & -95.1 & [-111.2, -79.0] \\
+\bottomrule\end{tabular}\end{table}
 
-The second counter lowered mean check-in waiting from 154.8 to 13.3~s under FCFS, a reduction of
-141.5~s (124.7--158.4), and from 137.7 to 12.4~s under advance admission, a reduction of 125.3~s
-(110.1--140.5), over 2,529 and 2,608 FCFS visits in Base and B2. Against the IATA 180-s limit,
-compliance rose by 31.5 percentage points (27.7--35.3) under FCFS, from 67.7\% to 99.2\%. B2 also
-created small queues downstream, with mean waits of 2.4~s at baggage and 8.0~s at security, stations
-where Base forms none (Figure~\ref{fig:wait}a). This agrees with Feldhoff's explanation that the
-counter's delay keeps later stations uncongested \cite{feldhoff2022}.
+\begin{figure}[htbp]\centering
+\includegraphics[width=\linewidth]{fig_d4_contrastes_en.pdf}
+\caption{FCFS resource contrasts with individual 95\% paired intervals. The two panels have different units. Solid points identify the reference-family primary contrasts.}
+\label{fig:contrastes}\end{figure}
 
-The same-population measures show where the saved time went (Figure~\ref{fig:contrasts}b). Among
-boarded passengers, check-in waiting fell by 140.6~s (123.4--157.8) under FCFS, while the wait from
-the end of security to boarding rose by 124.7~s (107.9--141.5) and the time from terminal arrival to
-boarding fell by only 5.4~s (0.9--10.0). Under advance admission the corresponding values were
-125.7~s, 112.7~s and 2.9~s ($-1.7$ to 7.5). Nearly 90\% of the waiting removed from check-in thus
-reappeared in the lounge (Figure~\ref{fig:wait}b), because boarding still waited for the charging
-aircraft.
+In the reference Base, advance admission produced 0.096 fewer occupied departures/h than FCFS (95\% CI 0.060--0.132 fewer). Its deficit was 0.275 departures/h at a 150-s window and 0.037 at 600~s. The reference result and all four primary resource effects retain the direction of their estimates under the five-comparison Bonferroni intervals.
 
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=\linewidth]{fig_d4_espera_en.pdf}
-  \caption{Mean waiting in the reference family, Base and B2, under both policies. (a) Wait until
-  service start at each station, over visits with an observed start; with one counter, baggage and
-  security form no queue. (b) Wait from the end of security to the start of boarding, over boarded
-  passengers, including 51.6~s of walking and aircraft access. Populations differ between panels
-  and the means do not add up. Error bars: 95\% $t$ intervals ($n=30$).}
-  \label{fig:wait}
-\end{figure}
-
-The counter also advanced group readiness. Under FCFS, the share of departures held by their group
-fell from 9.2\% in Base to 2.3\% in B2, and the mean retention per retained flight from 196.5~s to
-88.3~s; averaged over all departures with passengers, retention fell from 18.1~s to 2.1~s. Throughput
-did not change comparably (4.158 against 4.112 passenger departures/h), because in the reference
-family the charging cycle and the number of stands, rather than the readiness of the few retained
-groups, set the pace of departures.
-
-The counter effect depended on how many passengers reached the counter and on service variability.
-It was largest without charging, $-268.5$~s ($-328.1$ to $-208.9$), when FCFS diverted almost no
-request (0.17 per replication) and 2,902 passengers reached the counter in Base against 2,529 in the
-reference family; it shrank to $-68.3$~s ($-79.4$ to $-57.2$) with 60-min charging. Under exponential
-service it grew to $-231.5$~s ($-267.6$ to $-195.4$), with compliance rising from 59.7\% to 95.6\%.
-Variability also changed the mechanism. The share of departures held by their group rose to 19.7\%
-in Base and fell to 5.5\% in B2, and the time from arrival to boarding fell by 32.7~s (22.1--43.2), so
-part of the counter's saving then advanced boarding. Exponential service also produced a mean
-security wait of 31.0~s (22.9--39.1) in Base, which a second security post could address.
-
-\subsection{Allocation policy}
-
-Advance admission and FCFS differed in throughput by less than 1\%. In the reference Base, the paired
-difference was $-0.033$ passenger departures/h ($-0.066$ to $-0.001$), 0.8\% of the FCFS mean of
-4.112. The Bonferroni-adjusted interval ($-0.077$ to $0.010$) includes zero, as do the intervals at
-8 requests/h ($-0.080$ to $0.005$) and under exponential service ($-0.068$ to $0.001$). Advance
-admission refused 7.23 requests per replication at decision time, while FCFS diverted 6.77. Perfect
-information on arrivals and baggage did not change the throughput of advance admission (0.004;
-$-0.015$ to $0.023$).
-
-% ---------------------------------------------------------------------------------------
 \section{Discussion}
 \label{sec:discussion}
+The fifth stand gives arriving aircraft somewhere to wait during charging. Its value depends on the duration of stand possession relative to the request stream. The counter serves a different objective. It shortens a passenger queue even when the aircraft cannot yet board, so an operator evaluating this investment solely on check-in waiting overstates its effect on the full journey. The experiment assigns neither costs nor monetary values to the two outcomes.
 
-The two increments solve different problems. The stand is the throughput intervention: it absorbs
-requests that would otherwise find every position held during the touchdown window, the
-parking-induced arrival blocking discussed by Onat et al.\ \cite{onat2026buffer} and the
-parking-limited region found by Guerreiro et al.\ \cite{guerreiro2020}. Its value rises with demand
-and depends on stands being held, by charging or by waiting groups; when aircraft turn around
-without charging, a fifth stand adds almost nothing. The counter is the passenger-service
-intervention: it brings check-in waiting within the IATA limit for nearly every passenger and cuts
-group retention. Whether it also shortens the journey to the aircraft depends on what holds the
-departure. While charging sets the pace, the counter converts check-in queueing into lounge time and
-leaves the arrival-to-boarding time almost unchanged; when groups hold the aircraft more often, as
-under variable service, part of the saving advances boarding.
+The new reference changes several inputs together. Against the archived earlier configuration at the same request seeds, Base FCFS gained 0.171 occupied departures/h (paired 95\% CI 0.114--0.228). Mean check-in waiting fell by 45.9~s (23.9--67.9), while mean security waiting rose by 35.5~s (28.5--42.4). These differences quantify the joint revision. Passenger attributes and manifests differ between versions, which prevents attributing these changes to individual inputs.
 
-These results change what an operator should measure. A station-level indicator credits the counter
-with its full effect; a door-to-aircraft indicator credits it with a few seconds while the fleet
-charges. Reporting both, on the same passengers, prevents a station improvement from being read as
-a journey improvement. The terminal rows of the stand contrast give the converse warning: a
-configuration that diverts more requests looks better at the counter because fewer passengers reach
-it. Request balances and denominators therefore belong next to every waiting statistic.
+We transfer service and arrival data from conventional airports. Single occupancy at security, independent passenger marks, separate chargers and gates, empty initial queues and an eight-hour horizon define the scope. Group composition and within-party arrival dependence at a real vertiport could differ. The delay measures describe observed service starts or boardings. Conditional waits alone cannot value requests that the operator refuses or diverts. In Base, the reference received 43.77 requests per day on average, with 6.43 diversions under FCFS and 7.23 refusals under advance admission. The design distances of 15 and 60 m support ground travel times. Geometric feasibility also depends on aircraft-specific clearance and the flight manual.
 
-The choice of allocation policy did not alter these conclusions. Advance admission and FCFS
-differed by less than 1\% in throughput, with an adjusted interval that includes zero, and the
-stand and counter effects were similar under both. Halder and Gandhi \cite{halderGandhi2025} found
-that rule-based departure sequencing outperformed FCFS in completed flights under fixed resources;
-their rule reorders departures already in operation, whereas ours admits or refuses requests at
-arrival, so the two results concern different decisions. The execution rule mattered more than the
-admission rule. When planned stand exits acted as minimum times, advance admission lost 0.129
-departures/h to FCFS, because aircraft ready ahead of a pessimistic plan were held on their stands.
-Scheduling studies should therefore state whether a plan is a floor or a priority.
-
-The results compare designs within a synthetic scenario. Most durations are expert estimates or
-author assumptions, and the check-in and security means are stipulated; the exponential family
-brackets their variability but does not replace observed distributions, such as the security
-timings published by Janssen et al.\ \cite{janssen2020security}. The arrival shape is assumed
-uniform, each stand has its own charger and gate, the window starts empty and lasts 8~h, and the
-300-s touchdown window and 900-s STD offset were not varied. A second security post, untestable in
-the deterministic design, becomes a candidate increment once service varies.
-
-% ---------------------------------------------------------------------------------------
 \section{Conclusions}
 \label{sec:conclusion}
+At the reference demand and charging duration, the fifth stand primarily serves the flight-throughput objective. The second counter primarily serves the check-in waiting objective. How much of that saving reaches boarding depends on when passengers and aircraft become ready.
 
-A verified coupled model of a single-TLOF vertiport shows that a stand and a check-in counter buy
-different things. At 6 requests/h with 30-min charging, a fifth stand added about 0.5 passenger
-departures per hour, a gain that grew to 0.69 at 8 requests/h and nearly vanished without charging. A
-second counter cut check-in waiting by 125--142~s and lifted compliance with the IATA limit to 99\%,
-yet for the same passengers the time from arrival to boarding fell by about 5~s while the fleet
-charged; under variable service it fell by about 33~s. Advance admission did not change throughput
-by more than 1\% relative to FCFS. For planners, the charging time of the fleet and the expected
-demand indicate which increment to buy, and station-level and door-to-aircraft indicators, reported
-on the same passengers, show how much of a terminal improvement reaches the departure.
+The full-stand event connects Guerreiro et al.'s parking-limited cases and Onat et al.'s arrival blocking to the gain observed here \cite{guerreiro2020,onat2026buffer}. Feldhoff's terminal model identifies the upstream effect of check-in on later queues \cite{feldhoff2022}. Our boarding-time measure links that effect to aircraft readiness, extending the aggregate passenger-delay view of Preis and Hornung \cite{preisHornung2022}. Halder and Gandhi sequence departures already in operation \cite{halderGandhi2025}. Here the scheduler acts at admission, so throughput comparisons between the studies depend on which requests the operator can still refuse.
 
-% ---------------------------------------------------------------------------------------
 \section*{Declarations}
 \textbf{Author contributions:} \pendente{to be completed by the authors (CRediT roles)}.
 \textbf{Funding:} \pendente{to be completed by the authors}.

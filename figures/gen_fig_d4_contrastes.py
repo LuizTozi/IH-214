@@ -6,7 +6,7 @@ definidos antes das rodadas (família de referência); vazios: exploratórios.
 (a) Quinto stand (Base − S4) em cada família de sensibilidade, sob FCFS.
 (b) Segundo balcão (B2 − Base) na referência: espera no balcão entre visitas e, para os
 mesmos passageiros embarcados, espera no balcão, espera após a inspeção e tempo da
-chegada ao embarque; mais a espera no balcão sob serviço exponencial (suposto).
+chegada ao embarque; mais a espera no balcão no perfil de chegada da tarde.
 Uso: python gen_fig_d4_contrastes.py [--lang en]
 Saída: figures/fig_d4_contrastes{,_en}.{pdf,png}.
 """
@@ -29,11 +29,11 @@ STANDS = (
      "departures_per_h", GRAY),
     ("6 pedidos/h, 60 min", "6 requests/h, 60 min", "recarga_longa", "stands_fcfs",
      "departures_per_h", GRAY),
-    ("Serviço exponencial", "Exponential service", "servico_variavel", "stands_fcfs",
+    ("Ausência de 15%", "15% no-shows", "ausencia_15", "stands_fcfs",
      "departures_per_h", GRAY),
 )
 COUNTER = (
-    ("Balcão, todas as visitas", "Check-in, all visits", REF, "counter_fcfs",
+    ("Balcão, serviço iniciado", "Check-in, service started", REF, "counter_fcfs",
      "counter_mean_wait_s", BLUE),
     ("Balcão, embarcados", "Check-in, boarded", REF, "boarded_counter_fcfs",
      "boarded_counter_wait_mean_s", GREEN),
@@ -41,7 +41,7 @@ COUNTER = (
      "post_security_mean_s", GREEN),
     ("Chegada ao embarque, embarcados", "Arrival to boarding, boarded", REF,
      "door_to_board_fcfs", "arrival_to_board_mean_s", GREEN),
-    ("Balcão, serviço exponencial", "Check-in, exponential service", "servico_variavel",
+    ("Balcão, perfil da tarde", "Check-in, afternoon profile", "chegada_lcc_tarde",
      "counter_fcfs", "counter_mean_wait_s", VERMILLION),
 )
 TEXT = {
@@ -49,7 +49,7 @@ TEXT = {
            "b_x": "B2 − Base (s)", "b_t": "(b) Segundo balcão, FCFS",
            "primary": "Principal", "exploratory": "Exploratório",
            "title": "Contrastes pareados dos incrementos de recurso"},
-    "en": {"a_x": "Base − S4 (passenger departures/h)", "a_t": "(a) Fifth stand, FCFS",
+    "en": {"a_x": "Base − S4 (occupied flights/h)", "a_t": "(a) Fifth stand, FCFS",
            "b_x": "B2 − Base (s)", "b_t": "(b) Second check-in counter, FCFS",
            "primary": "Primary", "exploratory": "Exploratory",
            "title": "Paired contrasts of the resource increments"},
