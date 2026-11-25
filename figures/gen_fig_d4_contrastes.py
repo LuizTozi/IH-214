@@ -1,54 +1,58 @@
-"""Figura D4: contrastes pareados com IC de 95% (gráfico de pontos e intervalos).
+"""Figura D4: contrastes pareados dos dois incrementos de recurso, com IC de 95%.
 
 Fonte: data/d4/contrastes_d4_5.csv. Cada ponto é a média das diferenças dentro da
 réplica; a barra é o IC t de 95% (n = 30). Marcadores cheios: contrastes principais
 definidos antes das rodadas (família de referência); vazios: exploratórios.
-Dois painéis porque as unidades diferem (decolagens/h e segundos).
+(a) Quinto stand (Base − S4) em cada família de sensibilidade, sob FCFS.
+(b) Segundo balcão (B2 − Base) na referência: espera no balcão entre visitas e, para os
+mesmos passageiros embarcados, espera no balcão, espera após a inspeção e tempo da
+chegada ao embarque; mais a espera no balcão sob serviço exponencial (suposto).
 Uso: python gen_fig_d4_contrastes.py [--lang en]
 Saída: figures/fig_d4_contrastes{,_en}.{pdf,png}.
 """
 
 import matplotlib.pyplot as plt
 
-from estilo_d4 import (CONTRASTS, GRAY, GREEN, POLICY, TEXT_WIDTH_IN, apply_style, comma,
-                       contrasts, estimate, language, save, suffix)
+from estilo_d4 import (BLUE, CONTRASTS, GRAY, GREEN, VERMILLION, TEXT_WIDTH_IN, apply_style,
+                       comma, contrasts, estimate, language, save, suffix)
 
 REF = "referencia"
-FCFS, AGENDA = POLICY["fcfs"]["color"], POLICY["agenda"]["color"]
 # (rótulo pt, rótulo en, família, contraste, métrica, cor)
-FLOW = (
-    ("Base − S4, FCFS", "Base − S4, FCFS", REF, "stands_fcfs", "departures_per_h", FCFS),
-    ("Base − S4, agenda", "Base − S4, advance", REF, "stands_agenda", "departures_per_h",
-     AGENDA),
-    ("Agenda − FCFS, 6 pedidos/h", "Advance − FCFS, 6 requests/h", REF, "policy_Base",
+STANDS = (
+    ("6 pedidos/h, 30 min", "6 requests/h, 30 min", REF, "stands_fcfs", "departures_per_h",
+     BLUE),
+    ("4 pedidos/h, 30 min", "4 requests/h, 30 min", "demanda_baixa", "stands_fcfs",
      "departures_per_h", GRAY),
-    ("Agenda − FCFS, 4 pedidos/h", "Advance − FCFS, 4 requests/h", "demanda_baixa",
-     "policy_Base", "departures_per_h", GRAY),
-    ("Agenda − FCFS, 8 pedidos/h", "Advance − FCFS, 8 requests/h", "demanda_alta",
-     "policy_Base", "departures_per_h", GRAY),
-    ("Agenda − FCFS, sem recarga", "Advance − FCFS, no charging", "sem_recarga",
-     "policy_Base", "departures_per_h", GRAY),
-    ("Agenda − FCFS, recarga 60 min", "Advance − FCFS, 60-min charging", "recarga_longa",
-     "policy_Base", "departures_per_h", GRAY),
+    ("8 pedidos/h, 30 min", "8 requests/h, 30 min", "demanda_alta", "stands_fcfs",
+     "departures_per_h", GRAY),
+    ("6 pedidos/h, sem recarga", "6 requests/h, no charging", "sem_recarga", "stands_fcfs",
+     "departures_per_h", GRAY),
+    ("6 pedidos/h, 60 min", "6 requests/h, 60 min", "recarga_longa", "stands_fcfs",
+     "departures_per_h", GRAY),
+    ("Serviço exponencial", "Exponential service", "servico_variavel", "stands_fcfs",
+     "departures_per_h", GRAY),
 )
-WAIT = (
-    ("Balcão, FCFS", "Check-in, FCFS", REF, "counter_fcfs", "counter_mean_wait_s", FCFS),
-    ("Balcão, agenda", "Check-in, advance", REF, "counter_agenda", "counter_mean_wait_s",
-     AGENDA),
-    ("Após a inspeção, FCFS", "Post-security, FCFS", REF, "lounge_fcfs",
+COUNTER = (
+    ("Balcão, todas as visitas", "Check-in, all visits", REF, "counter_fcfs",
+     "counter_mean_wait_s", BLUE),
+    ("Balcão, embarcados", "Check-in, boarded", REF, "boarded_counter_fcfs",
+     "boarded_counter_wait_mean_s", GREEN),
+    ("Após a inspeção, embarcados", "Post-security, boarded", REF, "lounge_fcfs",
      "post_security_mean_s", GREEN),
-    ("Após a inspeção, agenda", "Post-security, advance", REF, "lounge_agenda",
-     "post_security_mean_s", GREEN),
+    ("Chegada ao embarque, embarcados", "Arrival to boarding, boarded", REF,
+     "door_to_board_fcfs", "arrival_to_board_mean_s", GREEN),
+    ("Balcão, serviço exponencial", "Check-in, exponential service", "servico_variavel",
+     "counter_fcfs", "counter_mean_wait_s", VERMILLION),
 )
 TEXT = {
-    "pt": {"flow_x": "Diferença em decolagens com passageiros/h", "flow_t": "(a) Partidas",
-           "wait_x": "Diferença B2 − Base na espera média (s)",
-           "wait_t": "(b) Espera do passageiro", "primary": "Principal",
-           "exploratory": "Exploratório", "title": "Contrastes pareados da D4"},
-    "en": {"flow_x": "Difference in passenger departures/h", "flow_t": "(a) Departures",
-           "wait_x": "B2 − Base difference in mean wait (s)",
-           "wait_t": "(b) Passenger waiting", "primary": "Primary",
-           "exploratory": "Exploratory", "title": "D4 paired contrasts"},
+    "pt": {"a_x": "Base − S4 (decolagens com passageiros/h)", "a_t": "(a) Quinto stand, FCFS",
+           "b_x": "B2 − Base (s)", "b_t": "(b) Segundo balcão, FCFS",
+           "primary": "Principal", "exploratory": "Exploratório",
+           "title": "Contrastes pareados dos incrementos de recurso"},
+    "en": {"a_x": "Base − S4 (passenger departures/h)", "a_t": "(a) Fifth stand, FCFS",
+           "b_x": "B2 − Base (s)", "b_t": "(b) Second check-in counter, FCFS",
+           "primary": "Primary", "exploratory": "Exploratory",
+           "title": "Paired contrasts of the resource increments"},
 }
 
 
@@ -76,9 +80,9 @@ def main():
     apply_style()
     index = contrasts()
     fig, (left, right) = plt.subplots(
-        1, 2, figsize=(TEXT_WIDTH_IN, 2.9), gridspec_kw={"width_ratios": [1.15, 1]})
-    panel(left, FLOW, index, 1, text["flow_x"], text["flow_t"], lang)
-    panel(right, WAIT, index, 0, text["wait_x"], text["wait_t"], lang)
+        1, 2, figsize=(TEXT_WIDTH_IN, 2.9), gridspec_kw={"width_ratios": [1, 1.1]})
+    panel(left, STANDS, index, 2, text["a_x"], text["a_t"], lang)
+    panel(right, COUNTER, index, 0, text["b_x"], text["b_t"], lang)
     handles = [
         plt.Line2D([], [], marker="o", color="#333333", linestyle="", label=text["primary"]),
         plt.Line2D([], [], marker="o", color="#333333", markerfacecolor="white",

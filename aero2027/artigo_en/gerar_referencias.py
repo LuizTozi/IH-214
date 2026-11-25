@@ -110,7 +110,7 @@ def item(kind, f):
 
 def main(tex_path, bib_path, out_path):
     tex = Path(tex_path).read_text(encoding="utf-8")
-    tex = re.sub(r"(?m)%.*$", "", tex)                 # ignora comentários
+    tex = re.sub(r"(?m)(?<!\\)%.*$", "", tex)         # ignora comentários (não o \% escapado)
     order = []
     for group in re.findall(r"\\cite\{([^}]+)\}", tex):
         for key in (k.strip() for k in group.split(",")):
