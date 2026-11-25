@@ -56,3 +56,43 @@
 | PAR-054 (forma da chegada) | M. N. Postorino, L. Mantecchini, C. Malandri, F. Paganelli, Transp. Res. Procedia 37, 338–345 (2019), DOI 10.1016/j.trpro.2018.12.201, CC BY-NC-ND; dados do aeroporto de Bologna, 6 voos, semana de pico de inverno | Weibull escolhida pelo teste χ² entre Gauss, Poisson, Gamma e Lognormal (eq. 4, p. 343). Parâmetros da Fig. 4: manhã LCC α = 4, β = 5,3; FC α = 3,7, β = 6,5; tarde LCC α = 5,5, β = 13,4; FC α = 4,1, β = 6,3. | **Pendente**: confirmar a unidade de x (o eixo mostra ESD em horas, mas α = 4 h contradiz o texto). Ler a seção de método do PDF. |
 | PAR-053 (ausência) | Lawrence, Hong e Cherrier, Proc. 9th ACM SIGKDD, 397–406 (2003), DOI 10.1145/956750.956796 (citado por terceiros com 6 a 10%) | — | **Pendente**: ler a fonte primária (sem cópia aberta no OpenAlex; testar o CiteSeerX). |
 | PAR-045, PAR-048, PAR-043, PAR-044 | — | — | **Pendentes**. |
+
+## Estado ao atingir o limite de uso (25/11/2026)
+
+### Resolvido com fonte
+
+| ID | Novo valor | Fonte |
+|---|---|---|
+| PAR-047 | Tempo próprio de inspeção reamostrado: média de 127,5 s, CV 0,52, n = 2.389 | `data/fontes/janssen_tempo_proprio.csv`, gerado por `scripts/fontes_janssen.py` |
+| PAR-052 | Grupos de 1 a 4: 53,3 / 39,5 / 4,7 / 2,5% | Janssen et al. 2020 |
+| PAR-046 | Balcão exponencial, média de 164 s | Marintseva 2014, Tab. 1 |
+| PAR-054 | Chegada por Weibull, com ESD = 0,25 (x + 1) h, conferida pelos picos da Fig. 4; truncada em x ∈ [1, x_max] e comprimida linearmente para 15–60 min antes da STD | Postorino et al. 2019 |
+| PAR-048 | Separação de 30 s | PAR-029, Preis e Hornung 2022, Tab. 3 e A1 |
+| PAR-045 | Ocupação do TLOF na partida de 45 s | Preis e Hornung 2022 (Applied Sciences), §3.2 |
+| PAR-043, PAR-044 | Distâncias de 15 m e 60 m mantidas como leiaute de desenho | Conferidas contra o mínimo da FATO da EASA (1,5 D; raio de 11,4 m com a Eve) |
+
+**Perfis de chegada:**
+- caso-base: convencional da manhã (α = 3,7, β = 6,5, x_max = 9);
+- sensibilidade: baixo custo da tarde (α = 5,5, β = 13,4, x_max = 14).
+
+**Ausência (PAR-053):** 0% no caso-base e 15% na sensibilidade. O valor de 15% é de Smith, Leimkuhler e Darrow (1992), citados por Vojtek et al. 2021, p. 124–125, para voos lotados.
+
+### Próximos passos (não iniciados no código)
+
+1. Reescrever `scripts/d4_dia.py` (versão 1.2 do gerador):
+   - novos sorteios por reserva: `absence_u`, `lead_u`, `counter_u` e `security_u`;
+   - `family_requests(day, rate, charge, absence=0.0, arrival="fc_morning", std_offset_s=900)`.
+
+   Há um rascunho completo na conversa com o Claude.
+2. `d4_param.py`: SEP = 30 000 ms; DEP_OCC = 45 000 ms; COUNTER_DECLARED = 164 000 ms; SECURITY_DECLARED igual à média do conjunto de tempos.
+3. `d4_sim.py` e `d4_agenda.py`: janela de toque como parâmetro de `run_cell`, no lugar da constante `WINDOW`.
+4. Famílias:
+   - manter: referencia, demanda_baixa, demanda_alta, sem_recarga, recarga_longa;
+   - acrescentar: ausencia_15, chegada_lcc_tarde, janela_150, janela_600, partida_600, partida_1200;
+   - retirar: as de informação perfeita e servico_variavel ("menos é mais").
+5. Atualizar os testes (os tempos esperados mudam com a separação e a partida), rodar de novo as 30 réplicas e o analisador.
+6. Artigo:
+   - foco único em stand ou balcão;
+   - conferir se título e resumo correspondem ao texto;
+   - parágrafo final comparando com os estudos de referência (Preis e Hornung, Feldhoff, Guerreiro, Onat, Halder e Gandhi);
+   - fechar a D5 (*highlights* e periódico-alvo).

@@ -12,6 +12,10 @@ Saídas:
    havia terminado de entregar a bagagem antes da passagem anterior (fila presente).
    Nesses períodos o servidor está ocupado, e o intervalo de saída é o tempo de serviço.
 2. Tamanho do grupo de viagem (coluna W do README), para a distribuição de reservas.
+3. Tempo próprio de inspeção por passageiro, para um posto de ocupação única (decisão do
+   autor, 25/11/2026): entrega da bagagem + revista manual + detecção de explosivos +
+   retirada da bagagem, sem as esperas por outros passageiros ou funcionários. O modelo
+   reamostra estes valores observados, sem supor uma distribuição.
 
 Uso: python -I fontes_janssen.py ../data/raw/janssen2020/security_checkpoint_data.xlsx ../data/fontes/
 """
@@ -25,8 +29,9 @@ import zipfile
 from collections import Counter
 from pathlib import Path
 
-COLUMNS = {"K": "drop_start", "M": "drop_end", "N": "wtmd", "U": "reclaim_start",
-           "V": "reclaim_end", "W": "group"}          # README.pdf, tabela de colunas
+COLUMNS = {"K": "drop_start", "M": "drop_end", "N": "wtmd", "Q": "pat_start", "R": "pat_end",
+           "S": "etd_start", "T": "etd_end", "U": "reclaim_start", "V": "reclaim_end",
+           "W": "group"}                              # README.pdf, tabela de colunas
 
 
 def seconds(value):
@@ -97,6 +102,21 @@ def main(xlsx, out_dir):
             if drop_next <= w_prev and 0 < w_next - w_prev <= 600:
                 headways.append(w_next - w_prev)
                 used[name] += 1
+    own = []
+    for rows in sheets.values():
+        for r in rows:
+            t = {k: seconds(r.get(k, "")) for k in COLUMNS.values() if k != "group"}
+            if None in (t["drop_start"], t["drop_end"], t["reclaim_start"], t["reclaim_end"]):
+                continue
+            parts = [t["drop_end"] - t["drop_start"], t["reclaim_end"] - t["reclaim_start"]]
+            for a, b in (("pat_start", "pat_end"), ("etd_start", "etd_end")):
+                if t[a] is not None and t[b] is not None and t[b] >= t[a]:
+                    parts.append(t[b] - t[a])
+            if all(0 <= x <= 600 for x in parts):
+                own.append(sum(parts))
+    with (out / "janssen_tempo_proprio.csv").open("w", newline="", encoding="utf-8") as h:
+        h.write("own_time_s\n" + "\n".join(str(x) for x in sorted(own)) + "\n")
+    print("tempo próprio de inspeção:", summary(own))
     service = summary(headways)
     with (out / "janssen_servico_inspecao.csv").open("w", newline="", encoding="utf-8") as h:
         writer = csv.DictWriter(h, fieldnames=list(service), lineterminator="\n")
